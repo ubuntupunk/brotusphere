@@ -62,6 +62,7 @@ class Router {
                     pageElement.classList.add('active');
                 }
                 window.scrollTo(0, 0);
+                this.updateNavStyle(route.page);
                 if (pageMounts[route.page]) {
                     await pageMounts[route.page]();
                 } else if (route.onMount) {
@@ -79,6 +80,7 @@ class Router {
                 pageElement.classList.add('active');
             }
             window.scrollTo(0, 0);
+            this.updateNavStyle('notFound');
             this.updateActiveLinks();
         }
     }
@@ -109,6 +111,16 @@ class Router {
             const href = link.getAttribute('href');
             link.classList.toggle('active', href === currentPath);
         });
+    }
+
+    updateNavStyle(page) {
+        const navbar = document.getElementById('navbar');
+        const darkHeroPages = ['health', 'science', 'contact'];
+        if (darkHeroPages.includes(page)) {
+            navbar.classList.add('dark-hero');
+        } else {
+            navbar.classList.remove('dark-hero');
+        }
     }
 }
 

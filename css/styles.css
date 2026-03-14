@@ -70,6 +70,54 @@ nav.scrolled {
     padding: 16px 48px;
 }
 
+nav.dark-hero {
+    background: transparent;
+}
+
+nav.dark-hero .logo {
+    color: var(--white);
+}
+
+nav.dark-hero .logo-icon ellipse:last-child {
+    fill: var(--primary);
+}
+
+nav.dark-hero .nav-links a {
+    color: var(--white);
+}
+
+nav.dark-hero .cart-btn svg {
+    stroke: var(--white);
+}
+
+nav.dark-hero .mobile-menu-btn span {
+    background: var(--white);
+}
+
+nav.dark-hero.scrolled {
+    background: rgba(254, 250, 224, 0.95);
+}
+
+nav.dark-hero.scrolled .logo {
+    color: var(--primary);
+}
+
+nav.dark-hero.scrolled .logo-icon ellipse:last-child {
+    fill: #FEFAE0;
+}
+
+nav.dark-hero.scrolled .nav-links a {
+    color: var(--text-primary);
+}
+
+nav.dark-hero.scrolled .cart-btn svg {
+    stroke: var(--text-primary);
+}
+
+nav.dark-hero.scrolled .mobile-menu-btn span {
+    background: var(--text-primary);
+}
+
 .logo {
     font-family: 'Fraunces', serif;
     font-size: 1.8rem;
@@ -1385,6 +1433,7 @@ footer {
 .science-hero h1 {
     font-size: clamp(2.5rem, 6vw, 4rem);
     margin-bottom: 16px;
+    color: var(--white);
 }
 
 .science-hero p {
