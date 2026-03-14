@@ -67,14 +67,7 @@ mobileOverlay.addEventListener('click', () => {
     closeMobileMenu();
 });
 
-// Add to Cart
-document.querySelectorAll('[data-product]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const productId = parseInt(btn.dataset.product);
-        addToCart(productId);
-    });
-});
-
+// Cart Functions
 function addToCart(productId) {
     const existingItem = cart.find(item => item.id === productId);
     if (existingItem) {
@@ -115,20 +108,19 @@ function updateCartUI() {
                         <h4>${product.name}</h4>
                         <div class="price">R${product.price} x ${item.quantity}</div>
                     </div>
-                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Remove</button>
+                    <button class="cart-item-remove" data-remove="${item.id}">Remove</button>
                 </div>
             `;
         }).join('');
         cartTotal.textContent = `R${total}`;
+        
+        document.querySelectorAll('[data-remove]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                removeFromCart(parseInt(btn.dataset.remove));
+            });
+        });
     }
 }
-
-// Contact Form
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Thank you for your message! We\'ll get back to you soon.');
-    e.target.reset();
-});
 
 // Animations
 function initAnimations() {
@@ -149,34 +141,13 @@ function initAnimations() {
 
 // Router Configuration
 const router = new Router({
-    '/': {
-        page: 'home',
-        onMount: initAnimations
-    },
-    '/index.html': {
-        page: 'home',
-        onMount: initAnimations
-    },
-    '/about': {
-        page: 'about',
-        onMount: initAnimations
-    },
-    '/health': {
-        page: 'health',
-        onMount: initAnimations
-    },
-    '/products': {
-        page: 'products',
-        onMount: initAnimations
-    },
-    '/shop': {
-        page: 'products',
-        onMount: initAnimations
-    },
-    '/contact': {
-        page: 'contact',
-        onMount: initAnimations
-    }
+    '/': { page: 'home', onMount: initAnimations },
+    '/index.html': { page: 'home', onMount: initAnimations },
+    '/about': { page: 'about', onMount: initAnimations },
+    '/health': { page: 'health', onMount: initAnimations },
+    '/products': { page: 'products', onMount: initAnimations },
+    '/shop': { page: 'products', onMount: initAnimations },
+    '/contact': { page: 'contact', onMount: initAnimations }
 });
 
 // Initialize

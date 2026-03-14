@@ -1,6 +1,23 @@
+import { home } from './pages/home.js';
+import { about } from './pages/about.js';
+import { health } from './pages/health.js';
+import { products } from './pages/products.js';
+import { contact } from './pages/contact.js';
+import { notFound } from './pages/notFound.js';
+
+const pages = {
+    home,
+    about,
+    health,
+    products,
+    contact,
+    notFound
+};
+
 class Router {
     constructor(routes) {
         this.routes = routes;
+        this.pageContainer = document.getElementById('app');
         this.init();
     }
 
@@ -26,19 +43,51 @@ class Router {
         this.handleRoute();
     }
 
-    handleRoute() {
+    async handleRoute() {
         const path = window.location.pathname || '/';
-        const route = this.routes[path] || this.routes['/'];
+        const route = this.routes[path];
         
         if (route) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const pageElement = document.getElementById(`page-${route.page}`);
-            if (pageElement) {
-                pageElement.classList.add('active');
+            const pageFn = pages[route.page];
+            if (pageFn) {
+                this.pageContainer.innerHTML = pageFn();
+                const pageElement = this.pageContainer.querySelector('.page');
+                if (pageElement) {
+                    pageElement.classList.add('active');
+                }
                 window.scrollTo(0, 0);
                 if (route.onMount) route.onMount();
                 this.updateActiveLinks();
+                this.reinitializeEventListeners();
             }
+        } else {
+            this.pageContainer.innerHTML = pages.notFound();
+            const pageElement = this.pageContainer.querySelector('.page');
+            if (pageElement) {
+                pageElement.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+            this.updateActiveLinks();
+        }
+    }
+
+    reinitializeEventListeners() {
+        document.querySelectorAll('[data-product]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const productId = parseInt(btn.dataset.product);
+                if (typeof addToCart === 'function') {
+                    addToCart(productId);
+                }
+            });
+        });
+
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for your message! We\'ll get back to you soon.');
+                e.target.reset();
+            });
         }
     }
 
