@@ -205,8 +205,9 @@ async function updatePatentsCount() {
 
 async function updateTrialsCount() {
     try {
+        const searchTerm = ' Carpobrotus OR "sour fig" OR anti-inflammatory OR wound healing';
         const response = await fetch(
-            CORS_PROXY + encodeURIComponent('https://clinicaltrials.gov/api/v2/studies?query.cond=Carpobrotus&pageSize=1&fields=nctId')
+            CORS_PROXY + encodeURIComponent(`https://clinicaltrials.gov/api/v2/studies?query.cond=${encodeURIComponent(searchTerm)}&pageSize=1&fields=nctId`)
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -374,8 +375,9 @@ async function fetchPatents() {
 
 async function fetchClinicalTrials() {
     try {
+        const searchTerm = ' Carpobrotus OR "sour fig" OR anti-inflammatory OR wound healing';
         const response = await fetch(
-            CORS_PROXY + encodeURIComponent('https://clinicaltrials.gov/api/v2/studies?query.cond=Carpobrotus&pageSize=10&fields=nctId,briefTitle,overallStatus,phases')
+            CORS_PROXY + encodeURIComponent(`https://clinicaltrials.gov/api/v2/studies?query.cond=${encodeURIComponent(searchTerm)}&pageSize=10&fields=nctId,briefTitle,overallStatus,phases`)
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
