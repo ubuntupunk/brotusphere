@@ -186,8 +186,8 @@ function getFallbackTrials() {
 
 async function updatePapersCount() {
     try {
-        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search.semantic=Carpobrotus%20edulis%20medicinal%20health&per_page=1`);
-        const response = await fetch(url);
+        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=1`);
+        const response = await fetch(CORS_PROXY + encodeURIComponent(url));
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
@@ -332,8 +332,8 @@ function buildOpenAlexUrl(baseUrl) {
 
 async function fetchPapers() {
     try {
-        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search.semantic=Carpobrotus%20edulis%20medicinal%20health&per_page=10&filter=type:article&sort=cited_by_count:desc`);
-        const response = await fetch(url);
+        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=10&filter=type:article&sort=cited_by_count:desc`);
+        const response = await fetch(CORS_PROXY + encodeURIComponent(url));
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
