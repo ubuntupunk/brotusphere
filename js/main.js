@@ -1,3 +1,5 @@
+import Router from './router.js';
+
 // Products Data
 const products = {
     1: { id: 1, name: 'Traditional Sour Fig Jam', price: 85, emoji: '🫐' },
@@ -48,23 +50,6 @@ const closeMobileMenu = () => {
 
 mobileClose.addEventListener('click', closeMobileMenu);
 mobileOverlay.addEventListener('click', closeMobileMenu);
-
-// Page Navigation
-document.querySelectorAll('[data-page]').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const page = link.dataset.page;
-        navigateTo(page);
-        closeMobileMenu();
-    });
-});
-
-function navigateTo(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(`page-${page}`).classList.add('active');
-    window.scrollTo(0, 0);
-    initAnimations();
-}
 
 // Cart Modal
 cartBtn.addEventListener('click', () => {
@@ -162,6 +147,37 @@ function initAnimations() {
     fadeElements.forEach(el => observer.observe(el));
 }
 
+// Router Configuration
+const router = new Router({
+    '/': {
+        page: 'home',
+        onMount: initAnimations
+    },
+    '/index.html': {
+        page: 'home',
+        onMount: initAnimations
+    },
+    '/about': {
+        page: 'about',
+        onMount: initAnimations
+    },
+    '/health': {
+        page: 'health',
+        onMount: initAnimations
+    },
+    '/products': {
+        page: 'products',
+        onMount: initAnimations
+    },
+    '/shop': {
+        page: 'products',
+        onMount: initAnimations
+    },
+    '/contact': {
+        page: 'contact',
+        onMount: initAnimations
+    }
+});
+
 // Initialize
 updateCartUI();
-initAnimations();
