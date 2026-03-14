@@ -247,13 +247,13 @@ async function fetchClinicalTrials() {
 async function updatePapersCount() {
     try {
         const response = await fetch(
-            CORS_PROXY + encodeURIComponent('https://api.semanticscholar.org/graph/v1/paper/search?query=Carpobrotus+edulis&limit=0&fields=title')
+            `${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=1`
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
-        const count = data.total || 0;
+        const count = data.meta?.count || 0;
         document.getElementById('papersCount').textContent = count > 1000 ? `${(count/1000).toFixed(1)}k+` : (count || '500+');
     } catch {
         document.getElementById('papersCount').textContent = '500+';
@@ -379,18 +379,25 @@ export async function initSciencePage() {
 }
 
 const CORS_PROXY = 'https://corsproxy.io/?';
+const OPENALEX_API = 'https://api.openalex.org';
 
 async function fetchPapers() {
     try {
         const response = await fetch(
-            CORS_PROXY + encodeURIComponent('https://api.semanticscholar.org/graph/v1/paper/search?query=Carpobrotus+edulis&limit=10&fields=title,authors,year,citationCount,url')
+            `${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=10&filter=type:article&sort=cited_by_count:desc`
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
-        if (data.data && data.data.length > 0) {
-            return data.data;
+        if (data.results && data.results.length > 0) {
+            return data.results.map(paper => ({
+                title: paper.title,
+                year: paper.publication_year,
+                citationCount: paper.cited_by_count,
+                url: paper.doi ? `https://doi.org/${paper.doi}` : null,
+                authors: paper.authorships?.map(a => ({ name: a.author?.display_name })).slice(0, 3) || []
+            }));
         }
         return null;
     } catch (error) {
