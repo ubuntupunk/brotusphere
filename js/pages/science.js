@@ -332,6 +332,7 @@ function buildOpenAlexUrl(baseUrl) {
 async function fetchPapers() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=10&filter=type:article&sort=cited_by_count:desc`);
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
