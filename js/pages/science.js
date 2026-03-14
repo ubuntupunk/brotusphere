@@ -186,9 +186,8 @@ function getFallbackTrials() {
 
 async function updatePapersCount() {
     try {
-        const response = await fetch(
-            `${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=1`
-        );
+        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=1`);
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
@@ -318,14 +317,21 @@ export async function initSciencePage() {
     initAnimations();
 }
 
+import { OPENALEX_API, OPENALEX_API_KEY } from '../config.js';
+
 const CORS_PROXY = 'https://corsproxy.io/?';
-const OPENALEX_API = 'https://api.openalex.org';
+
+function buildOpenAlexUrl(baseUrl) {
+    const url = new URL(baseUrl);
+    if (OPENALEX_API_KEY) {
+        url.searchParams.set('api_key', OPENALEX_API_KEY);
+    }
+    return url.toString();
+}
 
 async function fetchPapers() {
     try {
-        const response = await fetch(
-            `${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=10&filter=type:article&sort=cited_by_count:desc`
-        );
+        const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus%20edulis&per_page=10&filter=type:article&sort=cited_by_count:desc`);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
