@@ -55,7 +55,7 @@ class Router {
         
         if (route) {
             const pageFn = pages[route.page];
-            if (pageFn) {
+            if (pageFn && typeof pageFn === 'function') {
                 this.pageContainer.innerHTML = pageFn();
                 const pageElement = this.pageContainer.querySelector('.page');
                 if (pageElement) {
@@ -69,6 +69,8 @@ class Router {
                 }
                 this.updateActiveLinks();
                 this.reinitializeEventListeners();
+            } else {
+                console.error('Page function not found for:', route.page);
             }
         } else {
             this.pageContainer.innerHTML = pages.notFound();

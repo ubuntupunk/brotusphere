@@ -1,4 +1,5 @@
-export const home = `
+export function home() {
+    return `
 <div class="page active" id="page-home">
 <section class="hero">
     <div class="hero-bg"></div>
@@ -122,3 +123,4 @@ export const home = `
 </section>
 </div>
 `;
+}

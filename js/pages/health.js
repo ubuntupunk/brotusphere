@@ -1,4 +1,5 @@
-export const health = `
+export function health() {
+    return `
 <div class="page" id="page-health">
 <div class="health-hero">
     <h1>Health & Nutrition</h1>
@@ -71,3 +72,4 @@ export const health = `
 </section>
 </div>
 `;
+}

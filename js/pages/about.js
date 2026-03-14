@@ -1,4 +1,5 @@
-export const about = `
+export function about() {
+    return `
 <div class="page" id="page-about">
 <div class="page-header">
     <h1>About the Sour Fig</h1>
@@ -57,3 +58,4 @@ export const about = `
 </section>
 </div>
 `;
+}

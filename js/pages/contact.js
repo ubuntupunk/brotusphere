@@ -1,4 +1,5 @@
-export const contact = `
+export function contact() {
+    return `
 <div class="page" id="page-contact">
 <div class="contact-hero">
     <h1>Get in Touch</h1>
@@ -53,3 +54,4 @@ export const contact = `
 </section>
 </div>
 `;
+}

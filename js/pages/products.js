@@ -1,4 +1,5 @@
-export const products = `
+export function products() {
+    return `
 <div class="page" id="page-products">
 <div class="shop-hero">
     <h1>Our Products</h1>
@@ -79,3 +80,4 @@ export const products = `
 </section>
 </div>
 `;
+}

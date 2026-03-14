@@ -1,4 +1,5 @@
-export const science = `
+export function science() {
+    return `
 <div class="page" id="page-science">
     <div class="science-hero">
         <h1>Research & Science</h1>
@@ -82,6 +83,7 @@ export const science = `
     </section>
 </div>
 `;
+}
 
 const searchTerms = ['Carpobrotus edulis', 'sour fig health', 'Aizoaceae medicinal'];
 

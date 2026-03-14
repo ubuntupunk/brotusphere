@@ -1,4 +1,5 @@
-export const notFound = `
+export function notFound() {
+    return `
 <div class="page" id="page-notfound">
 <div class="page-header" style="min-height: 60vh; display: flex; align-items: center; justify-content: center; flex-direction: column;">
     <h1 style="font-size: 6rem; color: var(--primary);">404</h1>
@@ -8,3 +9,4 @@ export const notFound = `
 </div>
 </div>
 `;
+}
