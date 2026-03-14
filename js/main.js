@@ -147,7 +147,8 @@ const router = new Router({
     '/health': { page: 'health', onMount: initAnimations },
     '/products': { page: 'products', onMount: initAnimations },
     '/shop': { page: 'products', onMount: initAnimations },
-    '/contact': { page: 'contact', onMount: initAnimations }
+    '/contact': { page: 'contact', onMount: initAnimations },
+    '/science': { page: 'science' }
 });
 
 // Initialize

@@ -3,6 +3,7 @@ import { about } from './pages/about.js';
 import { health } from './pages/health.js';
 import { products } from './pages/products.js';
 import { contact } from './pages/contact.js';
+import { science, initSciencePage } from './pages/science.js';
 import { notFound } from './pages/notFound.js';
 
 const pages = {
@@ -11,7 +12,12 @@ const pages = {
     health,
     products,
     contact,
+    science,
     notFound
+};
+
+const pageMounts = {
+    science: initSciencePage
 };
 
 class Router {
@@ -56,7 +62,11 @@ class Router {
                     pageElement.classList.add('active');
                 }
                 window.scrollTo(0, 0);
-                if (route.onMount) route.onMount();
+                if (pageMounts[route.page]) {
+                    await pageMounts[route.page]();
+                } else if (route.onMount) {
+                    route.onMount();
+                }
                 this.updateActiveLinks();
                 this.reinitializeEventListeners();
             }
