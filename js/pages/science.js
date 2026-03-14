@@ -247,7 +247,7 @@ async function fetchClinicalTrials() {
 async function updatePapersCount() {
     try {
         const response = await fetch(
-            'https://api.semanticscholar.org/graph/v1/paper/search?query=Carpobrotus+edulis&limit=0&fields=title'
+            CORS_PROXY + encodeURIComponent('https://api.semanticscholar.org/graph/v1/paper/search?query=Carpobrotus+edulis&limit=0&fields=title')
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -267,7 +267,7 @@ async function updatePatentsCount() {
 async function updateTrialsCount() {
     try {
         const response = await fetch(
-            'https://clinicaltrials.gov/api/v2/studies?query.term=Carpobrotus&pageSize=1&fields=nctId'
+            CORS_PROXY + encodeURIComponent('https://clinicaltrials.gov/api/v2/studies?query.term=Carpobrotus&pageSize=1&fields=nctId')
         );
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -368,16 +368,73 @@ function initFilters() {
 }
 
 export async function initSciencePage() {
-    document.getElementById('papersCount').textContent = '500+';
-    document.getElementById('patentsCount').textContent = '50+';
-    document.getElementById('trialsCount').textContent = '5+';
-    
-    document.getElementById('papersGrid').innerHTML = getFallbackPapers();
-    document.getElementById('patentsGrid').innerHTML = getFallbackPatents();
-    document.getElementById('trialsGrid').innerHTML = getFallbackTrials();
-    
+    updatePapersCount();
+    updatePatentsCount();
+    updateTrialsCount();
+    loadPapers();
+    loadPatents();
+    loadTrials();
     initFilters();
     initAnimations();
+}
+
+const CORS_PROXY = 'https://corsproxy.io/?';
+
+async function fetchPapers() {
+    try {
+        const response = await fetch(
+            CORS_PROXY + encodeURIComponent('https://api.semanticscholar.org/graph/v1/paper/search?query=Carpobrotus+edulis&limit=10&fields=title,authors,year,citationCount,url')
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.data && data.data.length > 0) {
+            return data.data;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching papers:', error);
+        return null;
+    }
+}
+
+async function fetchPatents() {
+    try {
+        const response = await fetch(
+            CORS_PROXY + encodeURIComponent('https://developer.uspto.gov/ibd-api/v1/patent/application?searchText=Carpobrotus&rows=10')
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.response?.docs && data.response.docs.length > 0) {
+            return data.response.docs;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching patents:', error);
+        return null;
+    }
+}
+
+async function fetchClinicalTrials() {
+    try {
+        const response = await fetch(
+            CORS_PROXY + encodeURIComponent('https://clinicaltrials.gov/api/v2/studies?query.term=Carpobrotus&pageSize=10&fields=nctId,briefTitle,overallStatus,phases')
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.studies && data.studies.length > 0) {
+            return data.studies;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching trials:', error);
+        return null;
+    }
 }
 
 function initAnimations() {
