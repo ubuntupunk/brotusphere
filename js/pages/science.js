@@ -368,12 +368,14 @@ function initFilters() {
 }
 
 export async function initSciencePage() {
-    updatePapersCount();
-    updatePatentsCount();
-    updateTrialsCount();
-    loadPapers();
-    loadPatents();
-    loadTrials();
+    document.getElementById('papersCount').textContent = '500+';
+    document.getElementById('patentsCount').textContent = '50+';
+    document.getElementById('trialsCount').textContent = '5+';
+    
+    document.getElementById('papersGrid').innerHTML = getFallbackPapers();
+    document.getElementById('patentsGrid').innerHTML = getFallbackPatents();
+    document.getElementById('trialsGrid').innerHTML = getFallbackTrials();
+    
     initFilters();
     initAnimations();
 }
