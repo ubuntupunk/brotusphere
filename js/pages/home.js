@@ -169,6 +169,18 @@ export async function initHomePage() {
                 }
             });
         });
+        
+        // Scroll indicator click handler
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (scrollIndicator) {
+            scrollIndicator.style.cursor = 'pointer';
+            scrollIndicator.addEventListener('click', () => {
+                const aboutSection = document.querySelector('.features');
+                if (aboutSection) {
+                    aboutSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
     };
     
     checkProducts();
