@@ -1620,6 +1620,32 @@ footer {
     color: var(--text-secondary);
 }
 
+.biopiracy-card {
+    background: var(--background);
+    padding: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-left: 4px solid var(--secondary);
+}
+
+.biopiracy-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.biopiracy-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.biopiracy-content p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    max-width: 600px;
+}
+
 .trial-card {
     background: var(--background);
     padding: 32px;

@@ -60,6 +60,26 @@ export function science() {
     <section class="research-section">
         <div class="container">
             <div class="section-header">
+                <p class="section-label">Biopiracy & Indigenous Knowledge</p>
+                <h2 class="section-title">Position Paper on Sour Fig Patents</h2>
+                <p class="section-subtitle">Understanding the debate around patent protection for traditional knowledge</p>
+            </div>
+            <div class="biopiracy-card">
+                <div class="biopiracy-icon">📜</div>
+                <div class="biopiracy-content">
+                    <h3>Common Sour Fig (Carpobrotus edulis) Patent Status</h3>
+                    <p>This position paper examines the open science, indigenous knowledge systems, and the biopiracy debate surrounding Carpobrotus edulis patents.</p>
+                    <a href="/docs/Common_Sour_Fig_Position_Paper.pdf" download class="btn btn-secondary">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="research-section">
+        <div class="container">
+            <div class="section-header">
                 <p class="section-label">Clinical Research</p>
                 <h2 class="section-title">Ongoing Studies</h2>
                 <p class="section-subtitle">Current clinical trials and medical research</p>
