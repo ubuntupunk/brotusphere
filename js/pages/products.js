@@ -29,17 +29,27 @@ export function products() {
 }
 
 export async function initProductsPage() {
+    console.log('initProductsPage called');
     const grid = document.getElementById('products-grid');
-    if (!grid) return;
+    if (!grid) {
+        console.log('products-grid not found');
+        return;
+    }
+    
+    console.log('window.appProducts:', window.appProducts);
     
     // Wait for products to be loaded
     const checkProducts = () => {
         const productList = Object.values(window.appProducts || {});
+        console.log('checkProducts, count:', productList.length);
         
         if (productList.length === 0) {
+            console.log('Products empty, retrying...');
             setTimeout(checkProducts, 100);
             return;
         }
+        
+        console.log('Rendering products:', productList.length);
         
         grid.innerHTML = productList.map((product, index) => {
             const emoji = getEmoji(product.category);

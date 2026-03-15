@@ -218,7 +218,11 @@ const router = new Router({
     '/sphere': { page: 'sphere', onMount: initAnimations }
 });
 
-// Initialize
-fetchProducts().then(() => {
+// Initialize - wait for products before router is fully ready
+async function init() {
+    await fetchProducts();
     updateCartUI();
-});
+    console.log('App initialized, products ready');
+}
+
+init();
