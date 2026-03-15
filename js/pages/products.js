@@ -76,6 +76,9 @@ export async function initProductsPage() {
             `;
         }).join('');
         
+        console.log('Grid innerHTML set, length:', grid.innerHTML.length);
+        console.log('First 200 chars:', grid.innerHTML.substring(0, 200));
+        
         // Attach event listeners
         document.querySelectorAll('[data-product]').forEach(btn => {
             btn.addEventListener('click', () => {
