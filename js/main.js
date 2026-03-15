@@ -1,5 +1,7 @@
 import Router from './router.js';
 
+console.log('main.js starting...');
+
 const API_BASE = '/.netlify/functions';
 
 window.appProducts = {};
@@ -204,11 +206,11 @@ function initAnimations() {
 
 // Initialize app - fetch products FIRST, then create router
 async function initApp() {
-    console.log('Starting app...');
+    console.log('initApp starting...');
     
     // Fetch products before creating router
     await fetchProducts();
-    console.log('Products ready, creating router...');
+    console.log('Products loaded, creating router...');
     
     // Now create router
     const router = new Router({
