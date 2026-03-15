@@ -204,12 +204,12 @@ function initAnimations() {
 
 // Router Configuration
 const router = new Router({
-    '/': { page: 'home', onMount: initAnimations },
-    '/index.html': { page: 'home', onMount: initAnimations },
+    '/': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
+    '/index.html': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
     '/about': { page: 'about', onMount: initAnimations },
     '/health': { page: 'health', onMount: initAnimations },
-    '/products': { page: 'products', onMount: initAnimations },
-    '/shop': { page: 'products', onMount: initAnimations },
+    '/products': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
+    '/shop': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
     '/contact': { page: 'contact', onMount: initAnimations },
     '/science': { page: 'science' },
     '/sphere': { page: 'sphere', onMount: initAnimations }
