@@ -1750,9 +1750,9 @@ footer {
     }
 }
 
-/* Sphere Page */
+/* Sphere Page Carousel */
 .sphere-hero {
-    padding: 120px 48px 80px;
+    padding: 120px 48px 60px;
     text-align: center;
     background: linear-gradient(135deg, var(--background) 0%, #f5f0d0 100%);
 }
@@ -1770,27 +1770,49 @@ footer {
     margin: 0 auto;
 }
 
-.sphere-articles {
-    padding: 60px 48px 120px;
+.carousel-hint {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    margin-top: 16px;
+}
+
+.sphere-carousel {
+    position: relative;
+    padding: 0 80px 100px;
     max-width: 900px;
     margin: 0 auto;
 }
 
-.sphere-article {
+.carousel-track-container {
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(40, 54, 24, 0.12);
     background: var(--white);
-    border-radius: 16px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slide-inner {
     padding: 48px;
-    margin-bottom: 48px;
-    box-shadow: 0 4px 20px rgba(40, 54, 24, 0.08);
 }
 
-.article-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--secondary);
-}
-
-.article-category {
+.slide-inner .article-category {
     display: inline-block;
     background: var(--primary);
     color: var(--white);
@@ -1798,131 +1820,153 @@ footer {
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
-.category-medicinal {
+.slide-inner .category-medicinal {
     background: var(--primary);
 }
 
-.category-science {
+.slide-inner .category-science {
     background: var(--secondary);
     color: var(--text-primary);
 }
 
-.article-header h2 {
+.slide-inner h2 {
     font-size: 2rem;
     color: var(--text-primary);
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--secondary);
 }
 
-.article-content h3 {
-    font-size: 1.5rem;
+.slide-content h3 {
+    font-size: 1.4rem;
     color: var(--primary);
-    margin: 32px 0 16px;
+    margin: 28px 0 14px;
 }
 
-.article-content h4 {
-    font-size: 1.2rem;
+.slide-content h4 {
+    font-size: 1.1rem;
     color: var(--text-primary);
-    margin: 24px 0 12px;
+    margin: 20px 0 10px;
 }
 
-.article-content p {
-    margin-bottom: 16px;
-    line-height: 1.8;
+.slide-content p {
+    margin-bottom: 14px;
+    line-height: 1.75;
 }
 
-.article-content ul,
-.article-content ol {
-    margin: 16px 0 24px 24px;
+.slide-content ul {
+    margin: 14px 0 20px 22px;
 }
 
-.article-content li {
-    margin-bottom: 8px;
-    line-height: 1.7;
+.slide-content li {
+    margin-bottom: 6px;
+    line-height: 1.6;
 }
 
-.article-content strong {
+.slide-content strong {
     color: var(--primary);
 }
 
-.article-content em {
-    font-style: italic;
-    color: var(--text-secondary);
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: var(--white);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(40, 54, 24, 0.15);
+    transition: all 0.3s ease;
+    z-index: 10;
 }
 
-.status-validated {
-    background: #d4edda;
-    color: #155724;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin: 12px 0;
-    border-left: 4px solid #28a745;
+.carousel-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.1);
 }
 
-.status-documented {
-    background: #fff3cd;
-    color: #856404;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin: 12px 0;
-    border-left: 4px solid #ffc107;
+.carousel-btn svg {
+    width: 24px;
+    height: 24px;
 }
 
-.status-supported {
-    background: #cce5ff;
-    color: #004085;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin: 12px 0;
-    border-left: 4px solid #007bff;
+.carousel-prev {
+    left: 10px;
 }
 
-.disclaimer {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 16px;
-    border-radius: 8px;
-    margin-top: 24px;
-    border-left: 4px solid #dc3545;
+.carousel-next {
+    right: 10px;
 }
 
-.activity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+.carousel-dots {
+    display: flex;
+    justify-content: center;
     gap: 12px;
-    margin: 24px 0;
+    margin-top: 32px;
 }
 
-.activity-item {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--light-accent) 100%);
-    color: var(--text-primary);
-    padding: 14px 18px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(244, 162, 89, 0.4);
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.carousel-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+.carousel-dot:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
 }
 
 @media (max-width: 768px) {
     .sphere-hero {
-        padding: 100px 24px 60px;
+        padding: 100px 24px 40px;
     }
     
     .sphere-hero h1 {
         font-size: 2.5rem;
     }
     
-    .sphere-articles {
-        padding: 40px 24px 80px;
+    .sphere-carousel {
+        padding: 0 24px 80px;
     }
     
-    .sphere-article {
-        padding: 32px 24px;
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
     }
     
-    .article-header h2 {
+    .carousel-prev {
+        left: -5px;
+    }
+    
+    .carousel-next {
+        right: -5px;
+    }
+    
+    .slide-inner {
+        padding: 28px 20px;
+    }
+    
+    .slide-inner h2 {
         font-size: 1.5rem;
     }
 }
