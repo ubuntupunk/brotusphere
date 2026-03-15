@@ -1886,14 +1886,14 @@ footer {
 }
 
 .activity-item {
-    background: linear-gradient(135deg, var(--primary) 0%, #3d6b1e 100%);
-    color: var(--white);
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--light-accent) 100%);
+    color: var(--text-primary);
     padding: 14px 18px;
     border-radius: 8px;
     text-align: center;
     font-weight: 600;
     font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(45, 80, 22, 0.3);
+    box-shadow: 0 2px 8px rgba(244, 162, 89, 0.4);
 }
 
 @media (max-width: 768px) {
