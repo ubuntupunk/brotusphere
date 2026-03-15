@@ -7,8 +7,10 @@ window.appCart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
 
 async function fetchProducts() {
     try {
+        console.log('Fetching products from:', `${API_BASE}/products`);
         const response = await fetch(`${API_BASE}/products`);
         const data = await response.json();
+        console.log('API response:', data);
         
         if (data.products) {
             window.appProducts = {};
@@ -24,7 +26,8 @@ async function fetchProducts() {
                     emoji: getEmoji(p.category)
                 };
             });
-            console.log('Products loaded:', Object.keys(window.appProducts).length);
+            console.log('Products stored:', window.appProducts);
+            console.log('Products count:', Object.keys(window.appProducts).length);
         }
     } catch (error) {
         console.error('Failed to fetch products:', error);
