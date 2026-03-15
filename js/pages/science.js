@@ -224,33 +224,21 @@ async function loadPapers() {
     console.log('loadPapers called');
     const papers = await fetchPapers();
     console.log('loadPapers got papers:', papers);
+    allPapers = papers;
     
     if (papers === null) {
         console.log('papers is null, showing fallback');
-        grid.innerHTML = getFallbackPapers();
+        renderPapers(null);
         return;
     }
     
     if (papers.length === 0) {
-        grid.innerHTML = '<div class="no-results">No papers found. Try a different search.</div>';
+        renderPapers([]);
         return;
     }
 
     console.log('Rendering papers:', papers.length);
-    const html = papers.map(paper => `
-        <div class="paper-card fade-in">
-            <div class="paper-year">${paper.year || 'N/A'}</div>
-            <h3>${paper.title || 'Untitled'}</h3>
-            <p class="paper-authors">${paper.authors?.join(', ') || 'Unknown'}</p>
-            <div class="paper-meta">
-                <span class="paper-citations">${paper.citationCount || 0} citations</span>
-                ${paper.url ? `<a href="${paper.url}" target="_blank" rel="noopener" class="paper-link">View Paper →</a>` : ''}
-            </div>
-        </div>
-    `).join('');
-    console.log('HTML length:', html.length);
-    grid.innerHTML = html;
-    console.log('Grid innerHTML set, childCount:', grid.children.length);
+    renderPapers(papers);
 }
 
 async function loadPatents() {
@@ -307,11 +295,59 @@ async function loadTrials() {
 
 function initFilters() {
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            
+            const filter = btn.dataset.filter;
+            const grid = document.getElementById('papersGrid');
+            
+            if (filter === 'all') {
+                renderPapers(allPapers);
+            } else {
+                const keywords = {
+                    medicinal: ['medicinal', 'treatment', 'therapy', 'clinical', 'pharmacological', 'antidiabetic', 'anti-hyperglycemic', 'wound', 'healing'],
+                    nutritional: ['nutrition', 'nutrient', 'mineral', 'vitamin', 'antioxidant', 'phenolic', 'flavonoid', 'carotenoid'],
+                    phytochemical: ['phytochemical', 'compound', 'alkaloid', 'tannin', 'saponin', 'extraction', 'bioactive']
+                };
+                
+                const filtered = allPapers.filter(paper => {
+                    const text = (paper.title || '').toLowerCase();
+                    return keywords[filter]?.some(k => text.includes(k));
+                });
+                
+                renderPapers(filtered.length > 0 ? filtered : allPapers);
+            }
+            
+            initAnimations();
         });
     });
+}
+
+function renderPapers(papers) {
+    const grid = document.getElementById('papersGrid');
+    
+    if (!papers) {
+        grid.innerHTML = getFallbackPapers();
+        return;
+    }
+    
+    if (papers.length === 0) {
+        grid.innerHTML = '<div class="no-results">No papers found for this filter.</div>';
+        return;
+    }
+    
+    grid.innerHTML = papers.map(paper => `
+        <div class="paper-card fade-in">
+            <div class="paper-year">${paper.year || 'N/A'}</div>
+            <h3>${paper.title || 'Untitled'}</h3>
+            <p class="paper-authors">${paper.authors?.join(', ') || 'Unknown'}</p>
+            <div class="paper-meta">
+                <span class="paper-citations">${paper.citationCount || 0} citations</span>
+                ${paper.url ? `<a href="${paper.url}" target="_blank" rel="noopener" class="paper-link">View Paper →</a>` : ''}
+            </div>
+        </div>
+    `).join('');
 }
 
 export async function initSciencePage() {
@@ -328,6 +364,8 @@ export async function initSciencePage() {
 import { OPENALEX_API, OPENALEX_API_KEY } from '../config.js';
 
 const CORS_PROXY = 'https://corsproxy.io/?';
+
+let allPapers = [];
 
 function buildOpenAlexUrl(baseUrl) {
     const url = new URL(baseUrl);
