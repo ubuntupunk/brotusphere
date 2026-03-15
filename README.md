@@ -2,6 +2,12 @@
 
 Sour Fig (Carpobrotus) educational website featuring scientific research, products, and health information.
 
+## About the Name
+
+"Brotusphere" combines "brotus" with "sphere." The term **"brotus"** (from the Greek *brotos* meaning "mortal" or "pertaining to mortals") has evolved in informal usage to mean **"something added at no extra charge"** — a bonus, a freebie, an unexpected extra value.
+
+This reflects our mission: to provide free, accessible educational resources about Carpobrotus (Sour Fig) — a plant with remarkable medicinal, nutritional, and ecological value that deserves wider recognition. The knowledge here is a gift, not a commodity.
+
 ## Tech Stack
 
 - Vanilla JavaScript SPA
