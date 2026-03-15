@@ -7,10 +7,8 @@ window.appCart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
 
 async function fetchProducts() {
     try {
-        console.log('Fetching products from:', `${API_BASE}/products`);
         const response = await fetch(`${API_BASE}/products`);
         const data = await response.json();
-        console.log('API response:', data);
         
         if (data.products) {
             window.appProducts = {};
@@ -26,8 +24,7 @@ async function fetchProducts() {
                     emoji: getEmoji(p.category)
                 };
             });
-            console.log('Products stored:', window.appProducts);
-            console.log('Products count:', Object.keys(window.appProducts).length);
+            console.log('Products loaded:', Object.keys(window.appProducts).length);
         }
     } catch (error) {
         console.error('Failed to fetch products:', error);
@@ -205,24 +202,29 @@ function initAnimations() {
     fadeElements.forEach(el => observer.observe(el));
 }
 
-// Router Configuration
-const router = new Router({
-    '/': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
-    '/index.html': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
-    '/about': { page: 'about', onMount: initAnimations },
-    '/health': { page: 'health', onMount: initAnimations },
-    '/products': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
-    '/shop': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
-    '/contact': { page: 'contact', onMount: initAnimations },
-    '/science': { page: 'science' },
-    '/sphere': { page: 'sphere', onMount: initAnimations }
-});
-
-// Initialize - wait for products before router is fully ready
-async function init() {
+// Initialize app - fetch products FIRST, then create router
+async function initApp() {
+    console.log('Starting app...');
+    
+    // Fetch products before creating router
     await fetchProducts();
+    console.log('Products ready, creating router...');
+    
+    // Now create router
+    const router = new Router({
+        '/': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
+        '/index.html': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
+        '/about': { page: 'about', onMount: initAnimations },
+        '/health': { page: 'health', onMount: initAnimations },
+        '/products': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
+        '/shop': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
+        '/contact': { page: 'contact', onMount: initAnimations },
+        '/science': { page: 'science' },
+        '/sphere': { page: 'sphere', onMount: initAnimations }
+    });
+    
     updateCartUI();
-    console.log('App initialized, products ready');
+    console.log('App fully initialized');
 }
 
-init();
+initApp();

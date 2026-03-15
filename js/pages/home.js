@@ -110,20 +110,13 @@ function getEmoji(category) {
 
 export async function initHomePage() {
     const grid = document.getElementById('home-products-grid');
-    if (!grid) {
-        console.log('home-products-grid not found');
-        return;
-    }
-    
-    console.log('initHomePage called, window.appProducts:', window.appProducts);
+    if (!grid) return;
     
     // Wait for products to be loaded from main.js
     const checkProducts = () => {
         const products = Object.values(window.appProducts || {});
-        console.log('checkProducts, products:', products.length);
         
         if (products.length === 0) {
-            console.log('Products not loaded yet, retrying...');
             setTimeout(checkProducts, 100);
             return;
         }
