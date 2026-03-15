@@ -334,6 +334,13 @@ async function fetchPapers() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=10&filter=type:article&sort=cited_by_count:desc`);
         const response = await fetch(CORS_PROXY + encodeURIComponent(url));
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error('Not JSON response:', contentType);
+            return null;
+        }
+        
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
