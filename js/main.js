@@ -1,17 +1,46 @@
 import Router from './router.js';
 
-// Products Data
-const products = {
-    1: { id: 1, name: 'Traditional Sour Fig Jam', price: 85, emoji: '🫐' },
-    2: { id: 2, name: 'Sour Fig Honey', price: 120, emoji: '🍯' },
-    3: { id: 3, name: 'Sour Fig Herbal Tea', price: 65, emoji: '🍵' },
-    4: { id: 4, name: 'Sour Fig Skin Salve', price: 95, emoji: '🧴' },
-    5: { id: 5, name: 'Sour Fig Chutney', price: 75, emoji: '🥫' },
-    6: { id: 6, name: 'Sour Fig Gift Set', price: 250, emoji: '🎁' }
-};
+const API_BASE = '/.netlify/functions';
 
-// Cart State
+let products = {};
 let cart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
+
+async function fetchProducts() {
+    try {
+        const response = await fetch(`${API_BASE}/products`);
+        const data = await response.json();
+        
+        if (data.products) {
+            products = {};
+            data.products.forEach(p => {
+                products[p.id] = {
+                    id: p.id,
+                    name: p.name,
+                    price: parseFloat(p.price),
+                    description: p.description,
+                    stock: p.stock,
+                    category: p.category,
+                    image_url: p.image_url,
+                    emoji: getEmoji(p.category)
+                };
+            });
+            console.log('Products loaded:', Object.keys(products).length);
+        }
+    } catch (error) {
+        console.error('Failed to fetch products:', error);
+    }
+}
+
+function getEmoji(category) {
+    const emojis = {
+        'Preserves': '🫐',
+        'Honey': '🍯',
+        'Tea': '🍵',
+        'Skincare': '🧴',
+        'Gifts': '🎁'
+    };
+    return emojis[category] || '📦';
+}
 
 // DOM Elements
 const navbar = document.getElementById('navbar');
@@ -69,18 +98,32 @@ mobileOverlay.addEventListener('click', () => {
 
 // Cart Functions
 function addToCart(productId) {
-    const existingItem = cart.find(item => item.id === productId);
+    if (!products[productId]) {
+        console.error('Product not found:', productId);
+        return;
+    }
+    
+    const existingItem = cart.find(item => item.productId === productId);
     if (existingItem) {
         existingItem.quantity++;
     } else {
-        cart.push({ id: productId, quantity: 1 });
+        cart.push({ productId, quantity: 1 });
     }
     saveCart();
     updateCartUI();
+    
+    // Show feedback
+    const btn = document.querySelector(`[data-product="${productId}"]`);
+    if (btn) {
+        btn.textContent = 'Added!';
+        setTimeout(() => {
+            btn.textContent = 'Add to Cart';
+        }, 1000);
+    }
 }
 
 function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => item.productId !== productId);
     saveCart();
     updateCartUI();
 }
@@ -99,7 +142,9 @@ function updateCartUI() {
     } else {
         let total = 0;
         cartItems.innerHTML = cart.map(item => {
-            const product = products[item.id];
+            const product = products[item.productId];
+            if (!product) return '';
+            
             total += product.price * item.quantity;
             return `
                 <div class="cart-item">
@@ -108,15 +153,20 @@ function updateCartUI() {
                         <h4>${product.name}</h4>
                         <div class="price">R${product.price} x ${item.quantity}</div>
                     </div>
-                    <button class="cart-item-remove" data-remove="${item.id}">Remove</button>
+                    <button class="cart-item-remove" data-remove="${item.productId}">Remove</button>
                 </div>
             `;
         }).join('');
+        
+        if (cartItems.innerHTML === '') {
+            cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+        }
+        
         cartTotal.textContent = `R${total}`;
         
         document.querySelectorAll('[data-remove]').forEach(btn => {
             btn.addEventListener('click', () => {
-                removeFromCart(parseInt(btn.dataset.remove));
+                removeFromCart(btn.dataset.remove);
             });
         });
     }
@@ -153,4 +203,6 @@ const router = new Router({
 });
 
 // Initialize
-updateCartUI();
+fetchProducts().then(() => {
+    updateCartUI();
+});

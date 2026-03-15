@@ -83,40 +83,8 @@ export function home() {
             <h2 class="section-title">Taste the Difference</h2>
             <p class="section-subtitle">Handcrafted with love using locally sourced sour figs</p>
         </div>
-        <div class="products-grid">
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">Bestseller</span>
-                    🫐
-                </div>
-                <div class="product-info">
-                    <h4>Sour Fig Jam</h4>
-                    <p>Traditional recipe passed down generations</p>
-                    <div class="product-price">R85</div>
-                    <button class="product-btn" data-product="1">Add to Cart</button>
-                </div>
-            </div>
-            <div class="product-card fade-in">
-                <div class="product-image">🍯</div>
-                <div class="product-info">
-                    <h4>Sour Fig Honey</h4>
-                    <p>Natural sweetness with a tangy twist</p>
-                    <div class="product-price">R120</div>
-                    <button class="product-btn" data-product="2">Add to Cart</button>
-                </div>
-            </div>
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">New</span>
-                    🍵
-                </div>
-                <div class="product-info">
-                    <h4>Sour Fig Tea</h4>
-                    <p>Soothing herbal infusion</p>
-                    <div class="product-price">R65</div>
-                    <button class="product-btn" data-product="3">Add to Cart</button>
-                </div>
-            </div>
+        <div class="products-grid" id="home-products-grid">
+            <div class="loading">Loading products...</div>
         </div>
         <div class="products-cta">
             <a href="/products" class="btn" data-link>View All Products</a>
@@ -125,4 +93,63 @@ export function home() {
 </section>
 </div>
 `;
+}
+
+const API_BASE = '/.netlify/functions';
+
+function getEmoji(category) {
+    const emojis = {
+        'Preserves': '🫐',
+        'Honey': '🍯',
+        'Tea': '🍵',
+        'Skincare': '🧴',
+        'Gifts': '🎁'
+    };
+    return emojis[category] || '📦';
+}
+
+export async function initHomePage() {
+    const grid = document.getElementById('home-products-grid');
+    if (!grid) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/products`);
+        const data = await response.json();
+        const products = data.products || [];
+        
+        // Show first 3 products
+        const displayProducts = products.slice(0, 3);
+        
+        grid.innerHTML = displayProducts.map((product, index) => {
+            const emoji = getEmoji(product.category);
+            const badge = index === 0 ? '<span class="product-badge">Bestseller</span>' : '';
+            
+            return `
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    ${badge}
+                    ${emoji}
+                </div>
+                <div class="product-info">
+                    <h4>${product.name}</h4>
+                    <p>${product.description || ''}</p>
+                    <div class="product-price">R${parseFloat(product.price).toFixed(0)}</div>
+                    <button class="product-btn" data-product="${product.id}">Add to Cart</button>
+                </div>
+            </div>
+            `;
+        }).join('');
+        
+        // Re-initialize event listeners
+        document.querySelectorAll('[data-product]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (typeof addToCart === 'function') {
+                    addToCart(btn.dataset.product);
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Failed to load products:', error);
+        grid.innerHTML = '<div class="no-results">Failed to load products</div>';
+    }
 }

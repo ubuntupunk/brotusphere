@@ -1,7 +1,7 @@
-import { home } from './pages/home.js';
+import { home, initHomePage } from './pages/home.js';
 import { about } from './pages/about.js';
 import { health } from './pages/health.js';
-import { products } from './pages/products.js';
+import { products, initProductsPage } from './pages/products.js';
 import { contact } from './pages/contact.js';
 import { science, initSciencePage } from './pages/science.js';
 import { sphere, initSphereCarousel } from './pages/sphere.js';
@@ -19,8 +19,10 @@ const pages = {
 };
 
 const pageMounts = {
+    home: initHomePage,
     science: initSciencePage,
-    sphere: initSphereCarousel
+    sphere: initSphereCarousel,
+    products: initProductsPage
 };
 
 const pageTitles = {
