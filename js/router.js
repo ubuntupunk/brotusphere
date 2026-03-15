@@ -67,10 +67,13 @@ class Router {
 
     async handleRoute() {
         const path = window.location.pathname || '/';
+        console.log('handleRoute:', path);
         const route = this.routes[path];
+        console.log('route:', route);
         
         if (route) {
             const pageFn = pages[route.page];
+            console.log('pageFn:', route.page, pageFn);
             if (pageFn && typeof pageFn === 'function') {
                 this.pageContainer.innerHTML = pageFn();
                 const pageElement = this.pageContainer.querySelector('.page');
@@ -80,6 +83,7 @@ class Router {
                 window.scrollTo(0, 0);
                 this.updateNavStyle(route.page);
                 document.title = pageTitles[route.page] || 'Brotusphere';
+                console.log('pageMounts check:', route.page, pageMounts[route.page]);
                 if (pageMounts[route.page]) {
                     await pageMounts[route.page]();
                 } else if (route.onMount) {
