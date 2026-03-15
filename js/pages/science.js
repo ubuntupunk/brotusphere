@@ -237,7 +237,7 @@ async function loadPapers() {
     }
 
     console.log('Rendering papers:', papers.length);
-    grid.innerHTML = papers.map(paper => `
+    const html = papers.map(paper => `
         <div class="paper-card fade-in">
             <div class="paper-year">${paper.year || 'N/A'}</div>
             <h3>${paper.title || 'Untitled'}</h3>
@@ -248,6 +248,9 @@ async function loadPapers() {
             </div>
         </div>
     `).join('');
+    console.log('HTML length:', html.length);
+    grid.innerHTML = html;
+    console.log('Grid innerHTML set, childCount:', grid.children.length);
 }
 
 async function loadPatents() {
