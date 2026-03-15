@@ -22,6 +22,17 @@ const pageMounts = {
     science: initSciencePage
 };
 
+const pageTitles = {
+    home: 'Brotusphere - Celebrating the Sour Fig',
+    about: 'About - Brotusphere',
+    health: 'Health Benefits - Brotusphere',
+    products: 'Shop - Brotusphere',
+    contact: 'Contact - Brotusphere',
+    science: 'Scientific Research - Brotusphere',
+    sphere: 'Articles & Library - Brotusphere',
+    notFound: 'Page Not Found - Brotusphere'
+};
+
 class Router {
     constructor(routes) {
         this.routes = routes;
@@ -65,6 +76,7 @@ class Router {
                 }
                 window.scrollTo(0, 0);
                 this.updateNavStyle(route.page);
+                document.title = pageTitles[route.page] || 'Brotusphere';
                 if (pageMounts[route.page]) {
                     await pageMounts[route.page]();
                 } else if (route.onMount) {
@@ -83,6 +95,7 @@ class Router {
             }
             window.scrollTo(0, 0);
             this.updateNavStyle('notFound');
+            document.title = pageTitles.notFound;
             this.updateActiveLinks();
         }
     }
