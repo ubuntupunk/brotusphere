@@ -1870,6 +1870,60 @@ footer {
     color: var(--primary);
 }
 
+.status-validated {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    border-left: 4px solid #28a745;
+}
+
+.status-documented {
+    background: #fff3cd;
+    color: #856404;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    border-left: 4px solid #ffc107;
+}
+
+.status-supported {
+    background: #cce5ff;
+    color: #004085;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    border-left: 4px solid #007bff;
+}
+
+.disclaimer {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 24px;
+    border-left: 4px solid #dc3545;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.activity-item {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--light-accent) 100%);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(244, 162, 89, 0.4);
+}
+
 .carousel-btn {
     position: absolute;
     top: 50%;
