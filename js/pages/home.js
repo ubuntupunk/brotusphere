@@ -129,10 +129,11 @@ export async function initHomePage() {
             const badge = index === 0 ? '<span class="product-badge">Bestseller</span>' : '';
             
             return `
-            <div class="product-card fade-in">
+            <div class="product-card fade-in visible">
                 <div class="product-image">
                     ${badge}
                     ${emoji}
+                </div>
                 </div>
                 <div class="product-info">
                     <h4>${product.name}</h4>

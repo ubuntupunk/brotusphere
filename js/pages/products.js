@@ -54,7 +54,7 @@ export async function initProductsPage() {
             const badge = index === 0 ? '<span class="shop-product-badge">Bestseller</span>' : '';
             
             return `
-            <div class="shop-product fade-in">
+            <div class="shop-product fade-in visible">
                 <div class="shop-product-image">
                     ${badge}
                     ${emoji}
