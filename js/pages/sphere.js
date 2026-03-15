@@ -39,6 +39,10 @@ export function sphere() {
                             <p class="status-documented"><strong>Status: Well-Documented</strong></p>
                             <p>The leaf juice functions as a natural astringent and mild antiseptic. This property makes it valuable for preventing infection in wounds and treating various skin conditions. The antiseptic qualities stem from the plant's rich polyphenol content, which provides antimicrobial activity against harmful bacteria.</p>
 
+                            <h3>Powerful Antimicrobial</h3>
+                            <p class="status-validated"><strong>Status: Scientifically Validated</strong></p>
+                            <p>Sour fig exhibits strong antibacterial activity, particularly against Gram-positive bacteria including <em>Staphylococcus aureus</em> (including MRSA). Studies have shown significant inhibitory effects against various drug-resistant pathogens, validating its traditional use for infections.</p>
+
                             <h3>Digestive Aid and Stomach Soother</h3>
                             <p class="status-supported"><strong>Status: Strongly Supported</strong></p>
                             <p>Sour fig has an extensive track record in treating digestive complaints. The leaf juice is traditionally mixed with water and swallowed to treat:</p>
