@@ -187,7 +187,7 @@ function getFallbackTrials() {
 async function updatePapersCount() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=1`);
-        const response = await fetch(CORS_PROXY + encodeURIComponent(url));
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
@@ -333,18 +333,14 @@ function buildOpenAlexUrl(baseUrl) {
 async function fetchPapers() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=10&filter=type:article&sort=cited_by_count:desc`);
-        const response = await fetch(CORS_PROXY + encodeURIComponent(url));
-        
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            console.error('Not JSON response:', contentType);
-            return null;
-        }
+        console.log('Fetching papers from:', url);
+        const response = await fetch(url);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
+        console.log('Papers data:', data);
         if (data.results && data.results.length > 0) {
             return data.results.map(paper => ({
                 title: paper.title,
