@@ -39,11 +39,14 @@ export async function initProductsPage() {
     // Wait for products to be loaded
     const checkProducts = () => {
         const productList = Object.values(window.appProducts || {});
+        console.log('checkProducts, products:', productList.length);
         
         if (productList.length === 0) {
             setTimeout(checkProducts, 100);
             return;
         }
+        
+        console.log('Rendering product list:', productList);
         
         grid.innerHTML = productList.map((product, index) => {
             const emoji = getEmoji(product.category);
