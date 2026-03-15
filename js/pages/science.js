@@ -221,9 +221,12 @@ async function updateTrialsCount() {
 
 async function loadPapers() {
     const grid = document.getElementById('papersGrid');
+    console.log('loadPapers called');
     const papers = await fetchPapers();
+    console.log('loadPapers got papers:', papers);
     
     if (papers === null) {
+        console.log('papers is null, showing fallback');
         grid.innerHTML = getFallbackPapers();
         return;
     }
@@ -233,6 +236,7 @@ async function loadPapers() {
         return;
     }
 
+    console.log('Rendering papers:', papers.length);
     grid.innerHTML = papers.map(paper => `
         <div class="paper-card fade-in">
             <div class="paper-year">${paper.year || 'N/A'}</div>
@@ -333,21 +337,25 @@ function buildOpenAlexUrl(baseUrl) {
 async function fetchPapers() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=10&filter=type:article&sort=cited_by_count:desc`);
+        console.log('Fetching papers from:', url);
         const response = await fetch(url);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
+        console.log('Papers data received:', data.results?.length, 'papers');
         
         if (data.results && data.results.length > 0) {
-            return data.results.map(paper => ({
+            const papers = data.results.map(paper => ({
                 title: paper.title,
                 year: paper.publication_year,
                 citationCount: paper.cited_by_count,
                 url: paper.doi || null,
                 authors: paper.authorships?.slice(0, 3).map(a => a.author?.display_name).filter(Boolean) || []
             }));
+            console.log('Mapped papers:', papers);
+            return papers;
         }
         return null;
     } catch (error) {
