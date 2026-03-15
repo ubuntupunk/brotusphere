@@ -1,11 +1,16 @@
 -- Database Schema for Brotusphere E-commerce
 
--- Users table
-CREATE TABLE IF NOT EXISTS users (
+-- User profiles table (extends Neon's auth)
+-- Links to Neon auth via neon.users table
+CREATE TABLE IF NOT EXISTS user_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    neon_user_id UUID NOT NULL,  -- References neon.users.id
+    name VARCHAR(255),
+    phone VARCHAR(50),
+    default_shipping_address TEXT,
+    default_city VARCHAR(100),
+    default_postal_code VARCHAR(20),
+    default_country VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -28,7 +33,7 @@ CREATE TABLE IF NOT EXISTS products (
 -- Orders table
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(id),
+    user_id UUID REFERENCES user_profiles(id),
     status VARCHAR(50) DEFAULT 'pending',
     total DECIMAL(10,2) NOT NULL,
     shipping_name VARCHAR(255),
@@ -71,6 +76,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_stock_movements_product_id ON stock_movements(product_id);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_neon_id ON user_profiles(neon_user_id);
 
 -- Insert sample products
 INSERT INTO products (name, description, price, stock, sku, category) VALUES

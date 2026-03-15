@@ -19,6 +19,7 @@ export async function handler(event, context) {
     const result = await pool.query(`
       SELECT o.id, o.status, o.total, o.tracking_number, o.tracking_carrier,
              o.shipping_name, o.shipping_city, o.shipping_postal_code, o.created_at,
+             up.name as customer_name, up.phone as customer_phone,
              json_agg(
                json_build_object(
                  'name', p.name,
@@ -27,12 +28,12 @@ export async function handler(event, context) {
                )
              ) FILTER (WHERE oi.id IS NOT NULL) as items
       FROM orders o
-      JOIN users u ON o.user_id = u.id
+      JOIN user_profiles up ON o.user_id = up.id
       LEFT JOIN order_items oi ON o.id = oi.order_id
       LEFT JOIN products p ON oi.product_id = p.id
-      WHERE o.id = $1 AND u.email = $2
-      GROUP BY o.id
-    `, [orderId, email]);
+      WHERE o.id = $1 AND (up.name ILIKE '%' || $2 || '%' OR up.phone = $2)
+      GROUP BY o.id, up.name, up.phone
+    `, [orderId, email.split('@')[0]]);
 
     if (result.rows.length === 0) {
       return {
@@ -44,7 +45,6 @@ export async function handler(event, context) {
 
     const order = result.rows[0];
     
-    // Build tracking message
     let trackingInfo = null;
     if (order.tracking_number) {
       trackingInfo = {

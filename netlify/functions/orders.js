@@ -1,8 +1,27 @@
 import pool from '../lib/db.js';
-import { verifyToken, successResponse, errorResponse } from './utils.js';
+import { verifyNeonAuth, successResponse, errorResponse, parseCookies } from './utils.js';
+
+async function getUserProfile(event) {
+  const cookies = parseCookies(event);
+  const token = cookies['neon-session'] || event.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) return null;
+
+  try {
+    const jwt = await import('jsonwebtoken');
+    const decoded = jwt.default.decode(token);
+    
+    if (!decoded?.sub) return null;
+
+    const result = await pool.query('SELECT id, neon_user_id, name FROM user_profiles WHERE neon_user_id = $1', [decoded.sub]);
+    return result.rows[0] || null;
+  } catch (e) {
+    return null;
+  }
+}
 
 export async function handler(event, context) {
-  const user = await verifyToken(event);
+  const user = await getUserProfile(event);
 
   // GET - List user's orders
   if (event.httpMethod === 'GET') {
@@ -29,7 +48,7 @@ export async function handler(event, context) {
         WHERE o.user_id = $1
         GROUP BY o.id
         ORDER BY o.created_at DESC
-      `, [user.userId]);
+      `, [user.id]);
 
       return successResponse({ orders: result.rows });
     } catch (error) {
@@ -41,7 +60,7 @@ export async function handler(event, context) {
   // POST - Create new order
   if (event.httpMethod === 'POST') {
     if (!user) {
-      return errorResponse(401, 'Unauthorized');
+      return errorResponse(401, 'Please sign in to place an order');
     }
 
     const { items, shipping, paypalOrderId } = JSON.parse(event.body || '{}');
@@ -87,7 +106,7 @@ export async function handler(event, context) {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending')
         RETURNING id
       `, [
-        user.userId,
+        user.id,
         total,
         shipping?.name,
         shipping?.address,
