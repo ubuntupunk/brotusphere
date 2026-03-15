@@ -508,7 +508,7 @@ nav.dark-hero.scrolled .mobile-menu-btn span {
 
 /* Features Section */
 .features {
-    padding: 120px 48px;
+    padding: 80px 48px;
     background: linear-gradient(180deg, var(--background) 0%, var(--white) 100%);
 }
 
@@ -558,7 +558,7 @@ nav.dark-hero.scrolled .mobile-menu-btn span {
 
 /* Products Preview */
 .products-preview {
-    padding: 120px 48px;
+    padding: 60px 48px;
     background: var(--primary);
     color: var(--white);
 }
