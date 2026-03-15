@@ -112,10 +112,14 @@ export async function initHomePage() {
     const grid = document.getElementById('home-products-grid');
     if (!grid) return;
     
-    try {
-        const response = await fetch(`${API_BASE}/products`);
-        const data = await response.json();
-        const products = data.products || [];
+    // Wait for products to be loaded from main.js
+    const checkProducts = () => {
+        const products = Object.values(window.appProducts || {});
+        
+        if (products.length === 0) {
+            setTimeout(checkProducts, 100);
+            return;
+        }
         
         // Show first 3 products
         const displayProducts = products.slice(0, 3);
@@ -133,23 +137,22 @@ export async function initHomePage() {
                 <div class="product-info">
                     <h4>${product.name}</h4>
                     <p>${product.description || ''}</p>
-                    <div class="product-price">R${parseFloat(product.price).toFixed(0)}</div>
+                    <div class="product-price">R${product.price.toFixed(0)}</div>
                     <button class="product-btn" data-product="${product.id}">Add to Cart</button>
                 </div>
             </div>
             `;
         }).join('');
         
-        // Re-initialize event listeners
+        // Attach event listeners
         document.querySelectorAll('[data-product]').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (typeof addToCart === 'function') {
-                    addToCart(btn.dataset.product);
+                if (window.addToCart) {
+                    window.addToCart(btn.dataset.product);
                 }
             });
         });
-    } catch (error) {
-        console.error('Failed to load products:', error);
-        grid.innerHTML = '<div class="no-results">Failed to load products</div>';
-    }
+    };
+    
+    checkProducts();
 }

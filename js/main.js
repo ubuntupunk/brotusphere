@@ -2,8 +2,8 @@ import Router from './router.js';
 
 const API_BASE = '/.netlify/functions';
 
-let products = {};
-let cart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
+window.appProducts = {};
+window.appCart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
 
 async function fetchProducts() {
     try {
@@ -11,9 +11,9 @@ async function fetchProducts() {
         const data = await response.json();
         
         if (data.products) {
-            products = {};
+            window.appProducts = {};
             data.products.forEach(p => {
-                products[p.id] = {
+                window.appProducts[p.id] = {
                     id: p.id,
                     name: p.name,
                     price: parseFloat(p.price),
@@ -24,7 +24,7 @@ async function fetchProducts() {
                     emoji: getEmoji(p.category)
                 };
             });
-            console.log('Products loaded:', Object.keys(products).length);
+            console.log('Products loaded:', Object.keys(window.appProducts).length);
         }
     } catch (error) {
         console.error('Failed to fetch products:', error);
@@ -41,6 +41,10 @@ function getEmoji(category) {
     };
     return emojis[category] || '📦';
 }
+
+// Make functions globally accessible
+window.getAppProducts = () => window.appProducts;
+window.getAppCart = () => window.appCart;
 
 // DOM Elements
 const navbar = document.getElementById('navbar');
@@ -98,17 +102,21 @@ mobileOverlay.addEventListener('click', () => {
 
 // Cart Functions
 function addToCart(productId) {
+    const products = window.appProducts;
+    
     if (!products[productId]) {
         console.error('Product not found:', productId);
         return;
     }
     
+    const cart = window.appCart;
     const existingItem = cart.find(item => item.productId === productId);
     if (existingItem) {
         existingItem.quantity++;
     } else {
         cart.push({ productId, quantity: 1 });
     }
+    window.appCart = cart;
     saveCart();
     updateCartUI();
     
@@ -123,16 +131,18 @@ function addToCart(productId) {
 }
 
 function removeFromCart(productId) {
-    cart = cart.filter(item => item.productId !== productId);
+    window.appCart = window.appCart.filter(item => item.productId !== productId);
     saveCart();
     updateCartUI();
 }
 
 function saveCart() {
-    localStorage.setItem('brotusphere-cart', JSON.stringify(cart));
+    localStorage.setItem('brotusphere-cart', JSON.stringify(window.appCart));
 }
 
 function updateCartUI() {
+    const cart = window.appCart;
+    const products = window.appProducts;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
 
@@ -171,6 +181,9 @@ function updateCartUI() {
         });
     }
 }
+
+// Make addToCart globally accessible
+window.addToCart = addToCart;
 
 // Animations
 function initAnimations() {
