@@ -133,7 +133,6 @@ export async function initHomePage() {
                     ${badge}
                     ${emoji}
                 </div>
-                </div>
                 <div class="product-info">
                     <h4>${product.name}</h4>
                     <p>${product.description || ''}</p>
