@@ -42,8 +42,6 @@ export async function initProductsPage() {
         }
         
         grid.innerHTML = productList.map((product, index) => {
-        
-        grid.innerHTML = productList.map((product, index) => {
             const emoji = getEmoji(product.category);
             const isOutOfStock = product.stock === 0;
             const badge = index === 0 ? '<span class="shop-product-badge">Bestseller</span>' : '';
