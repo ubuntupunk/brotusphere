@@ -50,12 +50,28 @@ export function home() {
             <h2 class="section-title">Nature's Gift to Health</h2>
             <p class="section-subtitle">Discover what makes this humble plant so extraordinary</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card fade-in">
+<div class="features-grid">
+            <div class="feature-card fade-in visible">
                 <div class="feature-icon">💊</div>
                 <h3>Medicinal Properties</h3>
                 <p>Used traditionally for treating wounds, digestive issues, and inflammation. Leaves contain powerful antiseptic and anti-bacterial compounds.</p>
             </div>
+            <div class="feature-card fade-in visible">
+                <div class="feature-icon">🥗</div>
+                <h3>Nutritional Powerhouse</h3>
+                <p>Packed with vitamins, minerals, and essential nutrients. The fruit is an excellent source of vitamin C and dietary fiber.</p>
+            </div>
+            <div class="feature-card fade-in visible">
+                <div class="feature-icon">🌱</div>
+                <h3>Sustainable & Local</h3>
+                <p>Grown natively in South Africa, requiring no irrigation or pesticides. A truly sustainable food and medicinal source.</p>
+            </div>
+            <div class="feature-card fade-in visible">
+                <div class="feature-icon">🍯</div>
+                <h3>Delicious & Versatile</h3>
+                <p>Perfect for jams, preserves, and culinary creations. A unique sweet-tart flavor that delights.</p>
+            </div>
+        </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">🥗</div>
                 <h3>Nutritional Powerhouse</h3>
