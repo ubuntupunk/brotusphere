@@ -9,23 +9,25 @@ E-commerce backend for Brotusphere (Sour Fig products) with shopping cart, PayPa
 
 ### Tech Stack Recommendation
 - **Runtime:** Node.js with Express
-- **Database:** PostgreSQL (for relational data: orders, products, inventory)
+- **Database:** Neon (serverless PostgreSQL) - https://neon.tech
 - **Payment:** PayPal SDK
 - **Authentication:** JWT tokens
-- **Deployment:** Netlify Functions (serverless) or separate Node server
+- **Deployment:** Netlify Functions (serverless)
 
 ### Project Structure
 ```
 backend/
+├── netlify/functions/  # Serverless API endpoints
+│   ├── products.js
+│   ├── cart.js
+│   ├── orders.js
+│   └── paypal.js
 ├── src/
-│   ├── config/         # Environment variables, DB config
-│   ├── controllers/    # Request handlers
-│   ├── models/        # Database schemas
-│   ├── routes/        # API endpoints
-│   ├── services/      # Business logic (PayPal, email, etc.)
-│   └── middleware/    # Auth, validation, error handling
-├── netlify/functions/ # Serverless functions (if using Netlify)
-└── package.json
+│   ├── config/        # Environment variables, DB config
+│   ├── lib/           # Database client (Neon/pg)
+│   └── utils/         # Helper functions
+├── package.json
+└── netlify.toml       # Functions config
 ```
 
 ---
@@ -217,8 +219,9 @@ Backend updates order status → Sends confirmation email
 ## Environment Variables
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:pass@host:5432/brotusphere
+# Database (Neon - https://neon.tech)
+# Get connection string from Neon dashboard
+DATABASE_URL=postgresql://user:password@ep-xxx.us-east-1.aws.neon.tech/brotusphere?sslmode=require
 
 # PayPal
 PAYPAL_CLIENT_ID=your_client_id
@@ -229,6 +232,23 @@ PAYPAL_MODE=sandbox  # or 'live'
 JWT_SECRET=your_jwt_secret
 APP_URL=https://brotusphere.com
 ```
+
+---
+
+## Neon Setup
+
+1. **Create account** at https://neon.tech
+2. **Create project** - Name it "brotusphere"
+3. **Get connection string** from dashboard
+4. **Add to Netlify** - Site Settings → Environment Variables
+5. **Connection string format:** `postgresql://user:pass@host/neon?sslmode=require`
+
+### Neon Free Tier Limits
+- 100 compute hours/month
+- 0.5 GB storage
+- 5 GB bandwidth
+- 10 branches per project
+- Auto-scales to zero when idle
 
 ---
 
