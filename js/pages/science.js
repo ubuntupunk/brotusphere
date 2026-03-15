@@ -318,9 +318,9 @@ export async function initSciencePage() {
     updatePapersCount();
     updatePatentsCount();
     updateTrialsCount();
-    loadPapers();
-    loadPatents();
-    loadTrials();
+    await loadPapers();
+    await loadPatents();
+    await loadTrials();
     initFilters();
     initAnimations();
 }
