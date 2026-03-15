@@ -34,6 +34,7 @@ export function home() {
                 <h3>The Sour Fig Story</h3>
                 <p>Carpobrotus edulis, commonly known as the sour fig or ghauked", has been growing along South African coastlines for millennia. Despite its abundance, this native plant has been overlooked and even vilified.</p>
                 <p>At Brotusphere, we believe it's time to celebrate this remarkable plant for what it truly is: a nutritional powerhouse with significant medicinal properties.</p>
+                <p>The name "Brotusphere" draws from the term <strong>"brotus"</strong> — informally used to mean "something added at no extra charge," a bonus or freebie. This reflects our mission: to provide free, accessible knowledge about a plant that deserves wider recognition. The information here is a gift, not a commodity.</p>
                 <div class="highlight-box">
                     <p class="handwritten" style="font-size: 1.3rem; color: var(--primary);">"The sour fig is not a weed to be eradicated, but a treasure to be celebrated."</p>
                 </div>
@@ -53,12 +54,12 @@ export function home() {
             <div class="feature-card fade-in">
                 <div class="feature-icon">💊</div>
                 <h3>Medicinal Properties</h3>
-                <p>Used traditionally for treating wounds, digestive issues, and inflammation. Rich in antioxidants and anti-inflammatory compounds.</p>
+                <p>Used traditionally for treating wounds, digestive issues, and inflammation. Leaves contain powerful antiseptic and anti-bacterial compounds.</p>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">🥗</div>
                 <h3>Nutritional Powerhouse</h3>
-                <p>Packed with vitamins, minerals, and essential nutrients. Excellent source of vitamin C and dietary fiber.</p>
+                <p>Packed with vitamins, minerals, and essential nutrients. The fruit is en excellent source of vitamin C and dietary fiber.</p>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">🌱</div>
