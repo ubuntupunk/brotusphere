@@ -32,7 +32,7 @@ export function home() {
             </div>
             <div class="about-content">
                 <h3>The Sour Fig Story</h3>
-                <p>Carpobrotus edulis, commonly known as the sour fig or ghauked", has been growing along South African coastlines for millennia. Despite its abundance, this native plant has been overlooked and even vilified.</p>
+                <p>Carpobrotus edulis, commonly known as the sour fig or "suurvytjie", has been growing along South African coastlines for millennia. Despite its abundance, this native plant has been overlooked and even vilified.</p>
                 <p>At Brotusphere, we believe it's time to celebrate this remarkable plant for what it truly is: a nutritional powerhouse with significant medicinal properties.</p>
                 <p>The name "Brotusphere" draws from the term <strong>"brotus"</strong> — informally used to mean "something added at no extra charge," a bonus or freebie. This reflects our mission: to provide free, accessible knowledge about a plant that deserves wider recognition. The information here is a gift, not a commodity.</p>
                 <div class="highlight-box">
@@ -64,7 +64,8 @@ export function home() {
             <div class="feature-card fade-in">
                 <div class="feature-icon">🌱</div>
                 <h3>Sustainable & Local</h3>
-                <p>Grown natively in South Africa, requiring no irrigation or pesticides. A truly sustainable food source.</p>
+                i
+<p>Grown natively in South Africa, requiring no irrigation or pesticides. A truly sustainable food and medicinal source .</p>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">🍯</div>

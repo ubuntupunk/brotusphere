@@ -4,6 +4,7 @@ import { health } from './pages/health.js';
 import { products } from './pages/products.js';
 import { contact } from './pages/contact.js';
 import { science, initSciencePage } from './pages/science.js';
+import { sphere } from './pages/sphere.js';
 import { notFound } from './pages/notFound.js';
 
 const pages = {
@@ -13,6 +14,7 @@ const pages = {
     products,
     contact,
     science,
+    sphere,
     notFound
 };
 

@@ -21,12 +21,12 @@ export function health() {
             <div class="health-card fade-in">
                 <div class="health-card-icon">🔥</div>
                 <h3>Anti-inflammatory Effects</h3>
-                <p>The plant contains compounds that help reduce inflammation in the body, potentially benefiting those with arthritis, joint pain, and other inflammatory conditions.</p>
+                 <p>The plant contains scientifically validated anti-inflammatory compounds including quercetin and kaempferol that help neutralize free radicals, reduce oxidative stress and reduce inflammation.</p>
             </div>
             <div class="health-card fade-in">
                 <div class="health-card-icon">💪</div>
-                <h3>Immune Support</h3>
-                <p>Rich in vitamin C and antioxidants, sour fig helps strengthen the immune system and protects cells from oxidative damage caused by free radicals.</p>
+                <h3>Respiratory Support</h3>
+                <p>Traditionally used for tuberculosis and respiratory infections, sour fig's antimicrobial activity has been scientifically validated against multidrug-resistant Mycobacterium tuberculosis.</p>
             </div>
             <div class="health-card fade-in">
                 <div class="health-card-icon">🫃</div>
@@ -57,15 +57,25 @@ export function health() {
             <div class="content-image">🥬</div>
             <div class="content-text">
                 <h2>What's Inside</h2>
-                <p>Sour fig is a nutrient-dense food that provides a range of essential vitamins, minerals, and beneficial compounds.</p>
-                <ul>
-                    <li><strong>Vitamin C:</strong> Immune support and antioxidant protection</li>
-                    <li><strong>Dietary Fiber:</strong> Digestive health and satiety</li>
-                    <li><strong>Potassium:</strong> Heart health and electrolyte balance</li>
-                    <li><strong>Magnesium:</strong> Muscle function and energy production</li>
-                    <li><strong>Calcium:</strong> Bone health</li>
-                    <li><strong>Antioxidants:</strong> Cellular protection</li>
+                <p>Sour fig contains both nutritional compounds (in the fruit) and medicinal compounds (in the leaves).</p>
+                 <h3>Nutritional Compounds (Fruit):</h3> 
+                 <ul>
+                    <li><strong>High in Carbohydrates (60-70%)</strong> - Energy and fuel</li>
+                    <li><strong>Dietary Fiber</strong> - Digestive health and satiety</li>
+                    <li><strong>Essential Minerals</strong> - Calcium, magnesium, iron, manganese, zinc</li>
+                    <li><strong>Chromium</strong> - 30-143% of RDA, supports blood sugar metabolism</li>
+                    <li><strong>Protein (8-26%)</strong> - Adequate amounts for body function</li>
+                    <li><strong>Omega-3 & Omega-6 Fatty Acids</strong> - Heart and nervous system support</li>
                 </ul>
+                <h3>Medicinal Compounds (Leaves):</h3>
+                <ul>
+                    <li><strong>Phenolic Compounds (50-60% of extract)</strong> - Antioxidant and anti-inflammatory</li>
+                    <li><strong>Flavonoids</strong> - Including quercetin, kaempferol, catechin, rutin</li>
+                    <li><strong>Proanthocyanidins</strong> - Exceptionally high levels (up to 86%)</li>
+                    <li><strong>Terpenoids</strong> - Including oleanolic acid (antimicrobial)</li>
+                    <li><strong>Chlorogenic Acid</strong> - Blood sugar regulation</li>
+                    <li><strong>Tannins</strong> - Wound healing and antimicrobial properties</li>
+                </ul>  
             </div>
         </div>
     </div>

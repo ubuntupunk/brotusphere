@@ -148,7 +148,8 @@ const router = new Router({
     '/products': { page: 'products', onMount: initAnimations },
     '/shop': { page: 'products', onMount: initAnimations },
     '/contact': { page: 'contact', onMount: initAnimations },
-    '/science': { page: 'science' }
+    '/science': { page: 'science' },
+    '/sphere': { page: 'sphere', onMount: initAnimations }
 });
 
 // Initialize
