@@ -42,7 +42,7 @@ export function sphere() {
                             <h3>Powerful Antimicrobial</h3>
                             <p class="status-validated"><strong>Status: Scientifically Validated</strong></p>
                             <p>Sour fig exhibits strong antibacterial activity, particularly against Gram-positive bacteria including <em>Staphylococcus aureus</em> (including MRSA). Studies have shown significant inhibitory effects against various drug-resistant pathogens, validating its traditional use for infections.</p>
-
+                            
                             <h3>Digestive Aid and Stomach Soother</h3>
                             <p class="status-supported"><strong>Status: Strongly Supported</strong></p>
                             <p>Sour fig has an extensive track record in treating digestive complaints. The leaf juice is traditionally mixed with water and swallowed to treat:</p>
