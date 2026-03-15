@@ -28,7 +28,9 @@ export function sphere() {
                             <p>The sour fig (<em>Carpobrotus edulis</em>) has deep roots in South African traditional medicine and cuisine. Indigenous Khoikhoi people have used this plant for generations, developing extensive knowledge of its medicinal properties that continues to be validated by modern science.</p>
                             <p>This remarkable succulent plant offers two distinct types of benefits: the <strong>fruit</strong> provides nutritional value, while the <strong>leaves and their gel-like sap</strong> contain powerful medicinal compounds that have been used for centuries to treat various ailments.</p>
 
-                            <h3>Wound Healing & Burns</h3>
+                            <h3>Traditional Medicinal Uses: Backed by Evidence</h3>
+                            
+                            <h4>Wound Healing & Burns</h4>
                             <p class="status-validated"><strong>Status: Scientifically Validated</strong></p>
                             <p>One of the most well-established uses of sour fig is for treating wounds and burns. Traditional healers have long applied the leaf pulp or juice directly to affected skin, and modern research confirms this wisdom. Scientific studies have demonstrated that the aqueous leaf extract promotes wound closure and increases collagen production—essential processes for proper healing. The extract also inhibits enzymes that break down skin tissue, with over 90% inhibition of collagenase at therapeutic concentrations.</p>
                             <p>The gel from sour fig leaves works similarly to aloe vera and can be squeezed directly onto burns, cuts, and wounds for soothing relief and accelerated healing.</p>
