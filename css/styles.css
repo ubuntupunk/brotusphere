@@ -1801,6 +1801,15 @@ footer {
     margin-bottom: 12px;
 }
 
+.category-medicinal {
+    background: var(--primary);
+}
+
+.category-science {
+    background: var(--secondary);
+    color: var(--text-primary);
+}
+
 .article-header h2 {
     font-size: 2rem;
     color: var(--text-primary);

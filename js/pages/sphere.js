@@ -13,7 +13,7 @@ export function sphere() {
         <div class="container">
             <article class="sphere-article" id="article-medicinal">
                 <div class="article-header">
-                    <span class="article-category">Medicinal Uses</span>
+                    <span class="article-category category-medicinal">Medicinal Uses</span>
                     <h2>The Sour Fig: A South African Medicinal Treasure</h2>
                 </div>
                 <div class="article-content">
@@ -29,7 +29,11 @@ export function sphere() {
 
                     <h4>Powerful Topical Antiseptic</h4>
                     <p class="status-documented"><strong>Status: Well-Documented</strong></p>
-                    <p>The leaf juice functions as a natural astringent and mild antiseptic. This property makes it valuable for preventing infection in wounds and treating various skin conditions.</p>
+                    <p>The leaf juice functions as a natural astringent and antiseptic. This property makes it valuable for preventing infection in wounds and treating various skin conditions.</p>
+
+                    <h4>Powerful broad-spectrum antimicrobial with strong activity</h4>
+                    <p class="status-validated"><strong>Status: Scientifically Validated</strong></p>
+                    <p>Particularly effective against <i>Staphylococcus aureus</i> (including MRSA) and other Gram-positive pathogens. Active against multidrug-resistant bacteria. Functions as systemic antimicrobial agent</p>
 
                     <h4>Digestive Aid and Stomach Soother</h4>
                     <p class="status-supported"><strong>Status: Strongly Supported</strong></p>
@@ -85,7 +89,7 @@ export function sphere() {
 
             <article class="sphere-article" id="article-bioactive">
                 <div class="article-header">
-                    <span class="article-category">Science</span>
+                    <span class="article-category category-science">Science</span>
                     <h2>The Bioactive Compounds of Sour Fig: A Scientific Deep Dive</h2>
                 </div>
                 <div class="article-content">
