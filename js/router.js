@@ -40,10 +40,12 @@ class Router {
     constructor(routes) {
         this.routes = routes;
         this.pageContainer = document.getElementById('app');
+        console.log('Router created, calling init...');
         this.init();
     }
 
     init() {
+        console.log('Router init, container:', this.pageContainer);
         window.addEventListener('popstate', () => this.handleRoute());
         document.addEventListener('click', (e) => this.handleClick(e));
         this.handleRoute();
@@ -67,12 +69,16 @@ class Router {
 
     async handleRoute() {
         const path = window.location.pathname || '/';
+        console.log('handleRoute path:', path);
         const route = this.routes[path];
+        console.log('handleRoute route:', route);
         
         if (route) {
+            console.log('Rendering page:', route.page);
             const pageFn = pages[route.page];
             if (pageFn && typeof pageFn === 'function') {
                 this.pageContainer.innerHTML = pageFn();
+                console.log('Page rendered, container:', this.pageContainer.innerHTML.substring(0, 200));
                 const pageElement = this.pageContainer.querySelector('.page');
                 if (pageElement) {
                     pageElement.classList.add('active');
