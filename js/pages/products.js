@@ -29,8 +29,12 @@ export function products() {
 }
 
 export async function initProductsPage() {
+    console.log('initProductsPage called');
     const grid = document.getElementById('products-grid');
-    if (!grid) return;
+    if (!grid) {
+        console.log('grid not found');
+        return;
+    }
     
     // Wait for products to be loaded
     const checkProducts = () => {
