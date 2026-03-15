@@ -237,7 +237,7 @@ async function loadPapers() {
         <div class="paper-card fade-in">
             <div class="paper-year">${paper.year || 'N/A'}</div>
             <h3>${paper.title || 'Untitled'}</h3>
-            <p class="paper-authors">${paper.authors?.slice(0, 3).map(a => a.name).join(', ') || 'Unknown'}</p>
+            <p class="paper-authors">${paper.authors?.join(', ') || 'Unknown'}</p>
             <div class="paper-meta">
                 <span class="paper-citations">${paper.citationCount || 0} citations</span>
                 ${paper.url ? `<a href="${paper.url}" target="_blank" rel="noopener" class="paper-link">View Paper →</a>` : ''}
@@ -333,21 +333,20 @@ function buildOpenAlexUrl(baseUrl) {
 async function fetchPapers() {
     try {
         const url = buildOpenAlexUrl(`${OPENALEX_API}/works?search=Carpobrotus+edulis+medicinal+anti-inflammatory&per_page=10&filter=type:article&sort=cited_by_count:desc`);
-        console.log('Fetching papers from:', url);
         const response = await fetch(url);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
-        console.log('Papers data:', data);
+        
         if (data.results && data.results.length > 0) {
             return data.results.map(paper => ({
                 title: paper.title,
                 year: paper.publication_year,
                 citationCount: paper.cited_by_count,
-                url: paper.doi ? `https://doi.org/${paper.doi}` : null,
-                authors: paper.authorships?.map(a => ({ name: a.author?.display_name })).slice(0, 3) || []
+                url: paper.doi || null,
+                authors: paper.authorships?.slice(0, 3).map(a => a.author?.display_name).filter(Boolean) || []
             }));
         }
         return null;
