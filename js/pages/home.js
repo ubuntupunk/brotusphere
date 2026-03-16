@@ -28,7 +28,7 @@ export function home() {
         </div>
         <div class="about-grid">
             <div class="about-image">
-                <div class="about-image-placeholder">🌸</div>
+                <img src="/images/edulis.jpg" alt="Carpobrotus edulis - Sour Fig" />
             </div>
             <div class="about-content">
                 <h3>The Sour Fig Story</h3>

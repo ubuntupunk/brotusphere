@@ -470,6 +470,12 @@ nav.dark-hero.scrolled .mobile-menu-btn span {
     background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
 }
 
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .about-image-placeholder {
     width: 100%;
     height: 100%;
