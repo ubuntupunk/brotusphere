@@ -50,8 +50,11 @@ export function health() {
 <section class="pull-quote-section">
     <div class="container">
         <blockquote class="pull-quote">
-            <p>"In vitro assays of two other South African Carpobrotus species showed that aqueous and ethyl acetate fractions obtained from both C. muirii and C. quadrifidus inhibited the growth of Staphylococcus aureus and Mycobacterium smegmatis."</p>
+            <p>"In vitro assays of two South African Carpobrotus species showed that aqueous and ethyl acetate fractions obtained from both C. muirii and C. quadrifidus inhibited the growth of Staphylococcus aureus and Mycobacterium smegmatis."</p>
         </blockquote>
+        <p class="quote-citation">
+            <a href="https://d1wqtxts1xzle7.cloudfront.net/69056395/Antioxidant_and_Antibacterial_Properties20210904-11664-yw7v9i.pdf?1738422306=&response-content-disposition=inline%3B+filename%3DAntioxidant_and_Antibacterial_Properties.pdf&Expires=1773677618&Signature=ZYI07iPK23exR4oyxc903BVqMw9ocNBBPtB4IYvAxFY6sgRXCn-TeC2qj2yoP114JsO93A23qoAXUKbNlQPDmYwRc8eQV~RL1z0AD5E2AF8AtyIy5VQ8qW6XC5ydnbpgQjZafdqZm3Cnw80KrrYPtP9v8xEpZBEDe64kL44AxObcQjN20sS9vQP-kMVOQv7qUaftfPNrvoXqR6AEjN-CoD8RadNtSchqY5wgz3AAJEAiRgpQ8Cf-dnWm-q35ZJ8fKCECq0YZOel9sAue7muJw8KJ6NkHR6tIrCUADwyv~c9UYk60-xuHQDQnerDn0ska7rOGHCAbWUVF-vSdXZ-qSQ__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA" target="_blank" rel="noopener">Source: Antioxidant and Antibacterial Properties of Mesembryanthemum crystallinum and Carpobrotus edulis Extracts - Advances in Chemical Engineering and Science, 2012</a>
+        </p>
     </div>
 </section>
 

@@ -975,6 +975,23 @@ footer {
     margin-left: 8px;
 }
 
+.quote-citation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.quote-citation a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.quote-citation a:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
 /* Page: Products */
 .shop-hero {
     background: linear-gradient(135deg, var(--secondary) 0%, var(--light-accent) 100%);
