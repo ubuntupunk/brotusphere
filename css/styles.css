@@ -939,6 +939,42 @@ footer {
     text-decoration: none;
 }
 
+.pull-quote-section {
+    padding: 60px 48px;
+    background: var(--primary);
+}
+
+.pull-quote {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pull-quote p {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.pull-quote p::before {
+    content: '"';
+    font-size: 3rem;
+    opacity: 0.5;
+    vertical-align: -0.3em;
+    margin-right: 8px;
+}
+
+.pull-quote p::after {
+    content: '"';
+    font-size: 3rem;
+    opacity: 0.5;
+    vertical-align: -0.3em;
+    margin-left: 8px;
+}
+
 /* Page: Products */
 .shop-hero {
     background: linear-gradient(135deg, var(--secondary) 0%, var(--light-accent) 100%);

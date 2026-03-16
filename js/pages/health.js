@@ -47,6 +47,14 @@ export function health() {
     </div>
 </section>
 
+<section class="pull-quote-section">
+    <div class="container">
+        <blockquote class="pull-quote">
+            <p>"In vitro assays of two other South African Carpobrotus species showed that aqueous and ethyl acetate fractions obtained from both C. muirii and C. quadrifidus inhibited the growth of Staphylococcus aureus and Mycobacterium smegmatis."</p>
+        </blockquote>
+    </div>
+</section>
+
 <section class="content-section" style="background: var(--background);">
     <div class="container">
         <div class="section-header">
