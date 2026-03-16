@@ -115,17 +115,46 @@ mobileOverlay.addEventListener('click', () => {
 });
 
 // Auth Modal
-authBtn.addEventListener('click', () => {
+const authDropdown = document.getElementById('authDropdown');
+
+authBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (currentUser) {
-        // Logout
-        currentUser = null;
-        localStorage.removeItem('brotusphere-user');
-        authText.textContent = 'Login';
-        authModal.classList.remove('active');
+        // Toggle dropdown
+        authDropdown.classList.toggle('active');
     } else {
         authModal.classList.add('active');
         mobileOverlay.classList.add('active');
     }
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', () => {
+    authDropdown.classList.remove('active');
+});
+
+// Logout
+document.getElementById('logoutLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentUser = null;
+    localStorage.removeItem('brotusphere-user');
+    localStorage.removeItem('brotusphere-token');
+    authText.textContent = 'Login';
+    authDropdown.classList.remove('active');
+});
+
+// Profile link
+document.getElementById('profileLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Profile page coming soon!');
+    authDropdown.classList.remove('active');
+});
+
+// Orders link
+document.getElementById('ordersLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Orders page coming soon!');
+    authDropdown.classList.remove('active');
 });
 
 authClose.addEventListener('click', () => {

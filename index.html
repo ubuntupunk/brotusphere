@@ -51,13 +51,20 @@
             <li><a href="/contact" data-link>Contact</a></li>
         </ul>
         <div class="nav-right">
-            <button class="auth-btn" id="authBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                <span id="authText">Login</span>
-            </button>
+            <div class="auth-dropdown" id="authDropdown">
+                <button class="auth-btn" id="authBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span id="authText">Login</span>
+                </button>
+                <div class="auth-menu" id="authMenu">
+                    <a href="#" id="profileLink">My Profile</a>
+                    <a href="#" id="ordersLink">My Orders</a>
+                    <a href="#" id="logoutLink">Logout</a>
+                </div>
+            </div>
             <button class="cart-btn" id="cartBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="9" cy="21" r="1"/>

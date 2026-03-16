@@ -1093,6 +1093,66 @@ footer {
     height: 20px;
 }
 
+/* Auth Dropdown */
+.auth-dropdown {
+    position: relative;
+}
+
+.auth-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+    margin-top: 8px;
+}
+
+.auth-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 14px;
+    height: 14px;
+    background: var(--white);
+    transform: rotate(45deg);
+}
+
+.auth-dropdown.active .auth-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.auth-menu a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.auth-menu a:first-child {
+    border-radius: 12px 12px 0 0;
+}
+
+.auth-menu a:last-child {
+    border-radius: 0 0 12px 12px;
+    color: #dc3545;
+}
+
+.auth-menu a:hover {
+    background: var(--background);
+}
+
 /* Auth Modal */
 .auth-modal {
     position: fixed;
