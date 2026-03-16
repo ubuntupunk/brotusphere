@@ -16,7 +16,7 @@ export function contact() {
                     <div class="icon">📧</div>
                     <div>
                         <div class="label">Email</div>
-                        <div class="value">hello@brotusphere.co.za</div>
+                        <div class="value">brotus@medialternatives.com</div>
                     </div>
                 </li>
                 <li>

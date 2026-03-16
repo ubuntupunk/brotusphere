@@ -131,8 +131,12 @@ class Router {
         if (contactForm) {
             contactForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                alert('Thank you for your message! We\'ll get back to you soon.');
-                e.target.reset();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                const subject = encodeURIComponent(`Contact from ${name}`);
+                const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+                window.location.href = `mailto:brotus@medialternatives.com?subject=${subject}&body=${body}`;
             });
         }
     }
