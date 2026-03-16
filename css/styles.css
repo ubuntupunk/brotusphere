@@ -1874,6 +1874,18 @@ footer {
         display: block;
     }
 
+    .auth-btn {
+        padding: 8px 12px;
+    }
+
+    .auth-btn span {
+        display: none;
+    }
+
+    .nav-right {
+        gap: 12px;
+    }
+
     .hero {
         padding: 0 24px;
     }
