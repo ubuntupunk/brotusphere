@@ -270,6 +270,32 @@ nav.dark-hero.scrolled .mobile-menu-btn span {
     font-weight: 500;
 }
 
+.mobile-cart-btn {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(45, 80, 22, 0.1);
+}
+
+.mobile-cart-btn .cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--secondary);
+    color: var(--text-primary);
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    justify-content: center;
+}
+
+.mobile-cart-btn .cart-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
 .mobile-close {
     position: absolute;
     top: 24px;
@@ -1873,6 +1899,22 @@ footer {
     .mobile-menu-btn {
         display: block;
         margin-left: auto;
+        position: relative;
+    }
+
+    .mobile-menu-btn.active .cart-count {
+        display: flex;
+    }
+
+    .mobile-menu-btn .cart-count {
+        display: none;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+    }
+
+    .cart-btn {
+        display: none;
     }
 
     .auth-btn {

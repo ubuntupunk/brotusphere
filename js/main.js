@@ -105,6 +105,12 @@ cartBtn.addEventListener('click', () => {
     mobileOverlay.classList.add('active');
 });
 
+document.getElementById('mobileCartBtn')?.addEventListener('click', () => {
+    closeMobileMenu();
+    cartModal.classList.add('active');
+    mobileOverlay.classList.add('active');
+});
+
 cartClose.addEventListener('click', () => {
     cartModal.classList.remove('active');
     mobileOverlay.classList.remove('active');
@@ -328,6 +334,8 @@ function updateCartUI() {
     const products = window.appProducts;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
+    const cartCountMobile = document.getElementById('cartCountMobile');
+    if (cartCountMobile) cartCountMobile.textContent = totalItems;
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
