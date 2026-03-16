@@ -1538,7 +1538,7 @@ footer {
 /* Page: Profile */
 .profile-hero {
     background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
-    padding: 180px 48px 80px;
+    padding: 200px 48px 80px;
     text-align: center;
     color: var(--white);
 }
@@ -1607,7 +1607,7 @@ footer {
 /* Page: Orders */
 .orders-hero {
     background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
-    padding: 180px 48px 80px;
+    padding: 200px 48px 80px;
     text-align: center;
     color: var(--white);
 }
