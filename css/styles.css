@@ -836,6 +836,12 @@ footer {
     overflow: hidden;
 }
 
+.content-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .content-image::before {
     content: '';
     position: absolute;
