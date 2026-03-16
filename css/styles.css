@@ -78,8 +78,12 @@ nav.dark-hero .logo {
     color: var(--white);
 }
 
+nav.dark-hero .logo-icon ellipse:first-child {
+    fill: var(--secondary);
+}
+
 nav.dark-hero .logo-icon ellipse:last-child {
-    fill: var(--primary);
+    fill: var(--white);
 }
 
 nav.dark-hero .nav-links a {
