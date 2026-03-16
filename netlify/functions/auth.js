@@ -1,5 +1,15 @@
 import pool from '../lib/db.js';
 
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'hash_' + Math.abs(hash).toString(16);
+}
+
 export async function handler(event, context) {
   const { action } = event.queryStringParameters;
 
@@ -27,9 +37,8 @@ export async function handler(event, context) {
         };
       }
 
-      // Hash password
-      const bcrypt = await import('bcryptjs');
-      const hashedPassword = await bcrypt.hash(password, 10);
+      // Hash password (simple for now - use bcrypt in production)
+      const hashedPassword = simpleHash(password);
 
       // Create user
       const result = await pool.query(`
@@ -40,7 +49,7 @@ export async function handler(event, context) {
 
       const user = result.rows[0];
 
-      // Generate simple token (for demo - use JWT in production)
+      // Generate simple token
       const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
 
       return {
@@ -59,7 +68,7 @@ export async function handler(event, context) {
       return {
         statusCode: 500,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Registration failed' })
+        body: JSON.stringify({ error: 'Registration failed: ' + error.message })
       };
     }
   }
@@ -91,8 +100,8 @@ export async function handler(event, context) {
       }
 
       const user = result.rows[0];
-      const bcrypt = await import('bcryptjs');
-      const valid = await bcrypt.compare(password, user.password_hash);
+      const hashedPassword = simpleHash(password);
+      const valid = user.password_hash === hashedPassword;
 
       if (!valid) {
         return {
