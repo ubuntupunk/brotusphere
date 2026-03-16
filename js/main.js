@@ -1,4 +1,6 @@
 import Router from './router.js';
+import { initProfilePage } from './pages/profile.js';
+import { initOrdersPage } from './pages/orders.js';
 
 console.log('main.js starting...');
 
@@ -146,15 +148,15 @@ document.getElementById('logoutLink').addEventListener('click', (e) => {
 // Profile link
 document.getElementById('profileLink').addEventListener('click', (e) => {
     e.preventDefault();
-    alert('Profile page coming soon!');
     authDropdown.classList.remove('active');
+    window.router.navigate('/profile');
 });
 
 // Orders link
 document.getElementById('ordersLink').addEventListener('click', (e) => {
     e.preventDefault();
-    alert('Orders page coming soon!');
     authDropdown.classList.remove('active');
+    window.router.navigate('/orders');
 });
 
 authClose.addEventListener('click', () => {
@@ -392,7 +394,7 @@ async function initApp() {
     console.log('Products loaded, creating router...');
     
     // Now create router
-    const router = new Router({
+    window.router = new Router({
         '/': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
         '/index.html': { page: 'home', onMount: () => { initAnimations(); initHomePage(); } },
         '/about': { page: 'about', onMount: initAnimations },
@@ -401,7 +403,9 @@ async function initApp() {
         '/shop': { page: 'products', onMount: () => { initAnimations(); initProductsPage(); } },
         '/contact': { page: 'contact', onMount: initAnimations },
         '/science': { page: 'science' },
-        '/sphere': { page: 'sphere', onMount: initAnimations }
+        '/sphere': { page: 'sphere', onMount: initAnimations },
+        '/profile': { page: 'profile', onMount: initProfilePage },
+        '/orders': { page: 'orders', onMount: initOrdersPage }
     });
     
     updateCartUI();

@@ -5,6 +5,8 @@ import { products, initProductsPage } from './pages/products.js';
 import { contact } from './pages/contact.js';
 import { science, initSciencePage } from './pages/science.js';
 import { sphere, initSphereCarousel } from './pages/sphere.js';
+import { profile, initProfilePage } from './pages/profile.js';
+import { orders, initOrdersPage } from './pages/orders.js';
 import { notFound } from './pages/notFound.js';
 
 const pages = {
@@ -15,6 +17,8 @@ const pages = {
     contact,
     science,
     sphere,
+    profile,
+    orders,
     notFound
 };
 
@@ -22,7 +26,9 @@ const pageMounts = {
     home: initHomePage,
     science: initSciencePage,
     sphere: initSphereCarousel,
-    products: initProductsPage
+    products: initProductsPage,
+    profile: initProfilePage,
+    orders: initOrdersPage
 };
 
 const pageTitles = {
@@ -33,6 +39,8 @@ const pageTitles = {
     contact: 'Contact - Brotusphere',
     science: 'Scientific Research - Brotusphere',
     sphere: 'Articles & Library - Brotusphere',
+    profile: 'My Profile - Brotusphere',
+    orders: 'My Orders - Brotusphere',
     notFound: 'Page Not Found - Brotusphere'
 };
 
