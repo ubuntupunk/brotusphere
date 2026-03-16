@@ -220,6 +220,20 @@ async function updatePapersCount() {
 }
 
 async function updatePatentsCount() {
+    if (SERPAPI_KEY) {
+        try {
+            const response = await fetch(
+                `https://serpapi.com/search?engine=google_patents&q=Carpobrotus&api_key=${SERPAPI_KEY}&num=1`
+            );
+            if (response.ok) {
+                const data = await response.json();
+                const count = data.search_information?.total_results || 0;
+                document.getElementById('patentsCount').textContent = count > 100 ? '100+' : count;
+                return;
+            }
+        } catch {}
+    }
+    
     try {
         const response = await fetch(
             'https://patentsview.org/api/patents/query?q={"_text_any":{"patent_abstract":"Carpobrotus"}}&o={"per_page":1}'
@@ -392,7 +406,7 @@ export async function initSciencePage() {
     initAnimations();
 }
 
-import { OPENALEX_API, OPENALEX_API_KEY } from '../config.js';
+import { OPENALEX_API, OPENALEX_API_KEY, SERPAPI_KEY } from '../config.js';
 
 const CORS_PROXY = 'https://corsproxy.io/?';
 
@@ -437,24 +451,44 @@ async function fetchPapers() {
 }
 
 async function fetchPatents() {
+    if (SERPAPI_KEY) {
+        try {
+            const response = await fetch(
+                `https://serpapi.com/search?engine=google_patents&q=Carpobrotus+edulis&api_key=${SERPAPI_KEY}&num=10`
+            );
+            if (response.ok) {
+                const data = await response.json();
+                if (data.organic_results && data.organic_results.length > 0) {
+                    return data.organic_results.map(r => ({
+                        applicationNumber: r.patent_id?.replace('patent/', '').replace('/en', '') || 'N/A',
+                        title: r.title,
+                        assigneeEntityName: r.snippet?.split('by ')[1]?.split('.')[0] || 'Unknown Assignee',
+                        filingDate: r.filed || null,
+                        applicationStatus: 'Active'
+                    }));
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching patents from SerpAPI:', error);
+        }
+    }
+    
     try {
         const response = await fetch(
             'https://patentsview.org/api/patents/query?q={"_text_any":{"patent_abstract":"Carpobrotus"}}&f=["patent_number","patent_title","patent_date","assignee_organization"]&o={"per_page":10}'
         );
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.patents && data.patents.length > 0) {
+                return data.patents.map(p => ({
+                    applicationNumber: p.patent_number,
+                    title: p.patent_title,
+                    assigneeEntityName: p.assignees?.[0]?.assignee_organization || 'Unknown Assignee',
+                    filingDate: p.patent_date,
+                    applicationStatus: 'Active'
+                }));
+            }
         }
-        const data = await response.json();
-        if (data.patents && data.patents.length > 0) {
-            return data.patents.map(p => ({
-                applicationNumber: p.patent_number,
-                title: p.patent_title,
-                assigneeEntityName: p.assignees?.[0]?.assignee_organization || 'Unknown Assignee',
-                filingDate: p.patent_date,
-                applicationStatus: 'Active'
-            }));
-        }
-        return null;
     } catch (error) {
         console.error('Error fetching patents from PatentsView:', error);
     }
@@ -463,18 +497,17 @@ async function fetchPatents() {
         const response = await fetch(
             CORS_PROXY + encodeURIComponent('https://developer.uspto.gov/ibd-api/v1/patent/application?searchText=Carpobrotus&rows=10')
         );
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.response?.docs && data.response.docs.length > 0) {
+                return data.response.docs;
+            }
         }
-        const data = await response.json();
-        if (data.response?.docs && data.response.docs.length > 0) {
-            return data.response.docs;
-        }
-        return null;
     } catch (error) {
         console.error('Error fetching patents from USPTO:', error);
-        return null;
     }
+    
+    return null;
 }
 
 async function fetchClinicalTrials() {
