@@ -220,6 +220,17 @@ async function updatePapersCount() {
 }
 
 async function updatePatentsCount() {
+    try {
+        const response = await fetch(
+            'https://patentsview.org/api/patents/query?q={"_text_any":{"patent_abstract":"Carpobrotus"}}&o={"per_page":1}'
+        );
+        if (response.ok) {
+            const data = await response.json();
+            const count = data.total_patents_count || 0;
+            document.getElementById('patentsCount').textContent = count > 100 ? '100+' : count;
+            return;
+        }
+    } catch {}
     document.getElementById('patentsCount').textContent = '50+';
 }
 
@@ -428,6 +439,28 @@ async function fetchPapers() {
 async function fetchPatents() {
     try {
         const response = await fetch(
+            'https://patentsview.org/api/patents/query?q={"_text_any":{"patent_abstract":"Carpobrotus"}}&f=["patent_number","patent_title","patent_date","assignee_organization"]&o={"per_page":10}'
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.patents && data.patents.length > 0) {
+            return data.patents.map(p => ({
+                applicationNumber: p.patent_number,
+                title: p.patent_title,
+                assigneeEntityName: p.assignees?.[0]?.assignee_organization || 'Unknown Assignee',
+                filingDate: p.patent_date,
+                applicationStatus: 'Active'
+            }));
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching patents from PatentsView:', error);
+    }
+    
+    try {
+        const response = await fetch(
             CORS_PROXY + encodeURIComponent('https://developer.uspto.gov/ibd-api/v1/patent/application?searchText=Carpobrotus&rows=10')
         );
         if (!response.ok) {
@@ -439,7 +472,7 @@ async function fetchPatents() {
         }
         return null;
     } catch (error) {
-        console.error('Error fetching patents:', error);
+        console.error('Error fetching patents from USPTO:', error);
         return null;
     }
 }
