@@ -22,7 +22,7 @@ export function about() {
 <section class="content-section">
     <div class="container">
         <div class="content-grid reverse">
-            <div class="content-image">📜</div>
+            <div class="content-image"><img src="/images/figs.jpg" alt="Traditional use of sour fig" /></div>
             <div class="content-text">
                 <h2>A Rich Heritage</h2>
                 <p>The sour fig has deep roots in South African traditional medicine and cuisine. Indigenous Khoikhoi people have used this plant for generations.</p>
@@ -45,7 +45,7 @@ export function about() {
 <section class="content-section">
     <div class="container">
         <div class="content-grid">
-            <div class="content-image">🎯</div>
+            <div class="content-image"><img src="/images/brotus.jpg" alt="Why we're passionate about sour fig" /></div>
             <div class="content-text">
                 <h2>Why We're Passionate</h2>
                 <p>At Brotusphere, we believe the sour fig deserves recognition as a valuable native plant. Here's why we're dedicated to sharing its story:</p>
