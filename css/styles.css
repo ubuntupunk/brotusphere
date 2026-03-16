@@ -1883,6 +1883,10 @@ footer {
         display: none;
     }
 
+    .auth-btn {
+        display: none;
+    }
+
     .nav-right {
         gap: 12px;
     }
