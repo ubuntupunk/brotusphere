@@ -71,6 +71,11 @@ export function home() {
                 <h3>Delicious & Versatile</h3>
                 <p>Perfect for jams, preserves, and culinary creations. A unique sweet-tart flavor that delights.</p>
             </div>
+            <div class="feature-card fade-in visible">
+                <div class="feature-icon">🔬</div>
+                <h3>The Future of C. edulis</h3>
+                <p>Exciting developments in diabetes treatment and multi-drug resistance research. Scientific studies are validating what traditional healers have known for centuries.</p>
+            </div>
         </div>
     </div>
 </section>
