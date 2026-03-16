@@ -1,8 +1,11 @@
 import pool from '../lib/db.js';
 
 const schema = `
+-- Drop old user_profiles table if exists (schema changed)
+DROP TABLE IF EXISTS user_profiles CASCADE;
+
 -- User profiles table
-CREATE TABLE IF NOT EXISTS user_profiles (
+CREATE TABLE user_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255),
