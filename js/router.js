@@ -65,6 +65,11 @@ class Router {
             e.preventDefault();
             const href = link.getAttribute('href');
             if (href && !href.startsWith('http')) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileOverlay = document.getElementById('mobileOverlay');
+                if (mobileMenu) mobileMenu.classList.remove('active');
+                if (mobileOverlay) mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
                 this.navigate(href);
             }
         }
