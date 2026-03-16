@@ -156,30 +156,30 @@ function getFallbackPapers() {
 function getFallbackPatents() {
     return `
         <div class="patent-card fade-in">
-            <div class="patent-number">US Patent 2023/0187654</div>
-            <h3>Extraction method for Carpobrotus edulis bioactive compounds</h3>
-            <p class="patent-assignee">Inventor: Dr. M. van der Merwe</p>
+            <div class="patent-number">FR3013593A1</div>
+            <h3>Use of a Carpobrotus edulis extract in a cosmetic composition</h3>
+            <p class="patent-assignee">Laboratoires de Biologie Vegetale Yves Rocher SA</p>
             <div class="patent-meta">
-                <span>Filed: 2023</span>
+                <span>Filed: 2013</span>
                 <span>Status: Granted</span>
             </div>
         </div>
         <div class="patent-card fade-in">
-            <div class="patent-number">US Patent 2022/0987654</div>
-            <h3>Cosmetic composition comprising sour fig extract</h3>
-            <p class="patent-assignee">Assignee: Cape Natural Products (Pty) Ltd</p>
+            <div class="patent-number">WO2007144723A2</div>
+            <h3>Use of plants of carpobrotus edulis as anti-itching and/or anti-inflammatory agents</h3>
+            <p class="patent-assignee">Inventor: Giangiacomo Bono</p>
             <div class="patent-meta">
-                <span>Filed: 2022</span>
-                <span>Status: Granted</span>
+                <span>Filed: 2007</span>
+                <span>Status: Ceased</span>
             </div>
         </div>
         <div class="patent-card fade-in">
-            <div class="patent-number">WO Patent 2021/112233</div>
-            <h3>Method of preparing sour fig nutraceutical preparation</h3>
-            <p class="patent-assignee">Inventor: Prof. S. Cloete</p>
+            <div class="patent-number">ZA2019/01458</div>
+            <h3>Carpobrotus edulis extract for treating diabetes</h3>
+            <p class="patent-assignee">University of the Western Cape</p>
             <div class="patent-meta">
-                <span>Filed: 2021</span>
-                <span>Status: Granted</span>
+                <span>Filed: 2019</span>
+                <span>Status: Pending</span>
             </div>
         </div>
     `;
