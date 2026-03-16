@@ -336,6 +336,8 @@ function updateCartUI() {
     cartCount.textContent = totalItems;
     const cartCountMobile = document.getElementById('cartCountMobile');
     if (cartCountMobile) cartCountMobile.textContent = totalItems;
+    const cartCountMobileDrawer = document.getElementById('cartCountMobileDrawer');
+    if (cartCountMobileDrawer) cartCountMobileDrawer.textContent = totalItems;
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
