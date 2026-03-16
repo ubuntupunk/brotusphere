@@ -178,6 +178,32 @@ export function sphere() {
                         </div>
                     </div>
                 </article>
+
+                <article class="carousel-slide" data-slide="2">
+                    <div class="slide-inner">
+                        <span class="article-category category-recipe">Recipe</span>
+                        <h2>Camembert with Sour Fig Jam</h2>
+                        <div class="slide-content">
+                            <p class="recipe-meta">Serves: 6-8 | Prep: 5 min | Cook: 10 min</p>
+                            
+                            <h3>Ingredients</h3>
+                            <ul>
+                                <li>1 jar of Sour Fig Jam</li>
+                                <li>1 camembert cheese</li>
+                                <li>Crackers or ciabatta</li>
+                            </ul>
+
+                            <h3>Method</h3>
+                            <ol>
+                                <li>Remove the camembert cheese from the fridge and allow it to soften at room temperature.</li>
+                                <li>Alternatively, place the cheese in a small oven-proof dish and bake at 180°C for 10 minutes.</li>
+                                <li>Smother the baked or unbaked camembert with Sour Fig Jam and smear lavishly on crackers or ciabatta.</li>
+                            </ol>
+                            
+                            <p class="recipe-source">Source: <a href="https://fishwithastory.org/" target="_blank" rel="noopener">fishwithastory.org</a></p>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
 
@@ -190,6 +216,7 @@ export function sphere() {
         <div class="carousel-dots">
             <button class="carousel-dot active" data-slide="0" aria-label="Go to slide 1"></button>
             <button class="carousel-dot" data-slide="1" aria-label="Go to slide 2"></button>
+            <button class="carousel-dot" data-slide="2" aria-label="Go to slide 3"></button>
         </div>
     </section>
 </div>
