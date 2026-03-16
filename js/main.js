@@ -61,6 +61,17 @@ const cartItems = document.getElementById('cartItems');
 const cartCount = document.getElementById('cartCount');
 const cartTotal = document.getElementById('cartTotal');
 
+// Auth
+const authBtn = document.getElementById('authBtn');
+const authModal = document.getElementById('authModal');
+const authClose = document.getElementById('authClose');
+const authText = document.getElementById('authText');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const authMessage = document.getElementById('authMessage');
+
+let currentUser = null;
+
 // Navigation Scroll Effect
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -99,7 +110,144 @@ cartClose.addEventListener('click', () => {
 
 mobileOverlay.addEventListener('click', () => {
     cartModal.classList.remove('active');
+    authModal.classList.remove('active');
     closeMobileMenu();
+});
+
+// Auth Modal
+authBtn.addEventListener('click', () => {
+    if (currentUser) {
+        // Logout
+        currentUser = null;
+        localStorage.removeItem('brotusphere-user');
+        authText.textContent = 'Login';
+        authModal.classList.remove('active');
+    } else {
+        authModal.classList.add('active');
+        mobileOverlay.classList.add('active');
+    }
+});
+
+authClose.addEventListener('click', () => {
+    authModal.classList.remove('active');
+    mobileOverlay.classList.remove('active');
+});
+
+// Auth tabs
+document.querySelectorAll('.auth-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        if (tab.dataset.tab === 'login') {
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        } else {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        }
+        authMessage.textContent = '';
+    });
+});
+
+// Login
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
+    
+    try {
+        const response = await fetch(`${API_BASE}/auth?action=login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+            currentUser = data.user;
+            localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
+            authText.textContent = data.user.name;
+            authModal.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            authMessage.textContent = '';
+        } else {
+            authMessage.textContent = data.error || 'Login failed';
+            authMessage.className = 'auth-message error';
+        }
+    } catch (error) {
+        authMessage.textContent = 'Connection error';
+        authMessage.className = 'auth-message error';
+    }
+});
+
+// Register
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = registerForm.name.value;
+    const email = registerForm.email.value;
+    const password = registerForm.password.value;
+    
+    try {
+        const response = await fetch(`${API_BASE}/auth?action=signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+            currentUser = data.user;
+            localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
+            authText.textContent = data.user.name;
+            authModal.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            authMessage.textContent = '';
+        } else {
+            authMessage.textContent = data.error || 'Registration failed';
+            authMessage.className = 'auth-message error';
+        }
+    } catch (error) {
+        authMessage.textContent = 'Connection error';
+        authMessage.className = 'auth-message error';
+    }
+});
+
+// Check for existing session
+const savedUser = localStorage.getItem('brotusphere-user');
+if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+    authText.textContent = currentUser.name;
+}
+
+// Mobile auth button
+document.getElementById('mobileAuthBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeMobileMenu();
+    authModal.classList.add('active');
+    mobileOverlay.classList.add('active');
+});
+
+// Checkout button handler
+document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('checkout-btn')) {
+        if (!currentUser) {
+            authModal.classList.add('active');
+            mobileOverlay.classList.add('active');
+            authMessage.textContent = 'Please login to checkout';
+            authMessage.className = 'auth-message error';
+            return;
+        }
+        
+        const cart = window.appCart;
+        if (cart.length === 0) {
+            alert('Your cart is empty');
+            return;
+        }
+        
+        // Proceed with checkout - for now just create order
+        alert('Checkout functionality coming soon!');
+    }
 });
 
 // Cart Functions
