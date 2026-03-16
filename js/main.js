@@ -167,6 +167,7 @@ loginForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             currentUser = data.user;
             localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
+            localStorage.setItem('brotusphere-token', data.token);
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
@@ -199,6 +200,7 @@ registerForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             currentUser = data.user;
             localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
+            localStorage.setItem('brotusphere-token', data.token);
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');

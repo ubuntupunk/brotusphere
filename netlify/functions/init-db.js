@@ -1,11 +1,12 @@
 import pool from '../lib/db.js';
 
 const schema = `
--- User profiles table (extends Neon's auth)
+-- User profiles table
 CREATE TABLE IF NOT EXISTS user_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    neon_user_id UUID NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255),
+    password_hash VARCHAR(255) NOT NULL,
     phone VARCHAR(50),
     default_shipping_address TEXT,
     default_city VARCHAR(100),
@@ -76,7 +77,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_stock_movements_product_id ON stock_movements(product_id);
-CREATE INDEX IF NOT EXISTS idx_user_profiles_neon_id ON user_profiles(neon_user_id);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_email ON user_profiles(email);
 `;
 
 const insertProducts = `

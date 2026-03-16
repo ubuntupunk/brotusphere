@@ -1,23 +1,40 @@
 import pool from '../lib/db.js';
-import { verifyNeonAuth, successResponse, errorResponse, parseCookies } from './utils.js';
+
+function parseCookies(event) {
+  const cookieHeader = event.headers.cookie || '';
+  const cookies = {};
+  cookieHeader.split(';').forEach(c => {
+    const [key, val] = c.trim().split('=');
+    if (key) cookies[key] = val;
+  });
+  return cookies;
+}
 
 async function getUserProfile(event) {
   const cookies = parseCookies(event);
-  const token = cookies['neon-session'] || event.headers.authorization?.replace('Bearer ', '');
+  const token = cookies['auth_token'];
   
   if (!token) return null;
 
   try {
-    const jwt = await import('jsonwebtoken');
-    const decoded = jwt.default.decode(token);
+    const decoded = Buffer.from(token, 'base64').toString();
+    const [userId] = decoded.split(':');
     
-    if (!decoded?.sub) return null;
-
-    const result = await pool.query('SELECT id, neon_user_id, name FROM user_profiles WHERE neon_user_id = $1', [decoded.sub]);
+    if (!userId) return null;
+    
+    const result = await pool.query('SELECT id, name, email FROM user_profiles WHERE id = $1', [userId]);
     return result.rows[0] || null;
   } catch (e) {
     return null;
   }
+}
+
+function successResponse(data) {
+  return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+}
+
+function errorResponse(statusCode, message) {
+  return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: message }) };
 }
 
 export async function handler(event, context) {
@@ -74,7 +91,6 @@ export async function handler(event, context) {
     try {
       await client.query('BEGIN');
 
-      // Check stock and calculate total
       let total = 0;
       const orderItems = [];
 
@@ -100,7 +116,6 @@ export async function handler(event, context) {
         });
       }
 
-      // Create order
       const orderResult = await client.query(`
         INSERT INTO orders (user_id, total, shipping_name, shipping_address, shipping_city, shipping_postal_code, shipping_country, paypal_order_id, status)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending')
@@ -118,7 +133,6 @@ export async function handler(event, context) {
 
       const orderId = orderResult.rows[0].id;
 
-      // Create order items and reduce stock
       for (const item of orderItems) {
         await client.query(`
           INSERT INTO order_items (order_id, product_id, quantity, unit_price)
