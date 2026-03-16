@@ -1872,6 +1872,7 @@ footer {
 
     .mobile-menu-btn {
         display: block;
+        margin-left: auto;
     }
 
     .auth-btn {
