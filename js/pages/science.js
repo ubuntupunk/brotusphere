@@ -156,7 +156,7 @@ function getFallbackPapers() {
 function getFallbackPatents() {
     return `
         <div class="patent-card fade-in">
-            <div class="patent-number">FR3013593A1</div>
+            <div class="patent-number"><a href="https://patents.google.com/patent/FR3013593A1/en?oq=FR3013593A1" target="_blank" rel="noopener">FR3013593A1</a></div>
             <h3>Use of a Carpobrotus edulis extract in a cosmetic composition</h3>
             <p class="patent-assignee">Laboratoires de Biologie Vegetale Yves Rocher SA</p>
             <div class="patent-meta">
@@ -165,7 +165,7 @@ function getFallbackPatents() {
             </div>
         </div>
         <div class="patent-card fade-in">
-            <div class="patent-number">WO2007144723A2</div>
+            <div class="patent-number"><a href="https://patents.google.com/patent/WO2007144723A2/en?oq=WO2007144723A2" target="_blank" rel="noopener">WO2007144723A2</a></div>
             <h3>Use of plants of carpobrotus edulis as anti-itching and/or anti-inflammatory agents</h3>
             <p class="patent-assignee">Inventor: Giangiacomo Bono</p>
             <div class="patent-meta">
@@ -174,7 +174,7 @@ function getFallbackPatents() {
             </div>
         </div>
         <div class="patent-card fade-in">
-            <div class="patent-number">ZA2019/01458</div>
+            <div class="patent-number"><a href="https://patents.google.com/patent/ZA2019/01458?oq=ZA2019/01458" target="_blank" rel="noopener">ZA2019/01458</a></div>
             <h3>Carpobrotus edulis extract for treating diabetes</h3>
             <p class="patent-assignee">University of the Western Cape</p>
             <div class="patent-meta">

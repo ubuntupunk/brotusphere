@@ -2029,6 +2029,16 @@ footer {
     margin-bottom: 12px;
 }
 
+.patent-number a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.patent-number a:hover {
+    color: var(--accent);
+}
+
 .patent-card h3 {
     font-size: 1.1rem;
     color: var(--text-primary);
