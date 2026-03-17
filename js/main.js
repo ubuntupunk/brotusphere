@@ -388,7 +388,7 @@ document.addEventListener('click', async (e) => {
                 updateCartUI();
                 
                 document.body.removeChild(paypalContainer);
-                alert('Order placed successfully! Thank you for your purchase.');
+                window.errorHandler.showSuccess('Order placed successfully! Thank you for your purchase!');
                 
                 // Redirect to orders
                 window.router.navigate('/orders');

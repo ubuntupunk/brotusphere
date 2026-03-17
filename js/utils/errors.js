@@ -3,15 +3,17 @@ import { MESSAGES, TIMING } from '../config.js';
 class ErrorHandler {
     constructor() {
         this.errorContainer = null;
+        this.successContainer = null;
     }
 
     init() {
         this.errorContainer = document.getElementById('error-container');
+        this.successContainer = document.getElementById('success-container');
     }
 
     showError(message, duration = TIMING.ANIMATION_DELAY_MS * 3) {
         if (!this.errorContainer) {
-            this.createContainer();
+            this.createContainer('error');
         }
         
         this.errorContainer.textContent = message;
@@ -23,18 +25,43 @@ class ErrorHandler {
         }, duration);
     }
 
+    showSuccess(message, duration = TIMING.ANIMATION_DELAY_MS * 3) {
+        if (!this.successContainer) {
+            this.createContainer('success');
+        }
+        
+        this.successContainer.textContent = message;
+        this.successContainer.classList.add('visible');
+        
+        clearTimeout(this.hideSuccessTimeout);
+        this.hideSuccessTimeout = setTimeout(() => {
+            this.hideSuccess();
+        }, duration);
+    }
+
     hideError() {
         if (this.errorContainer) {
             this.errorContainer.classList.remove('visible');
         }
     }
 
-    createContainer() {
+    hideSuccess() {
+        if (this.successContainer) {
+            this.successContainer.classList.remove('visible');
+        }
+    }
+
+    createContainer(type) {
         const container = document.createElement('div');
-        container.id = 'error-container';
-        container.className = 'error-toast';
+        container.id = `${type}-container`;
+        container.className = `${type}-toast`;
         document.body.appendChild(container);
-        this.errorContainer = container;
+        
+        if (type === 'error') {
+            this.errorContainer = container;
+        } else {
+            this.successContainer = container;
+        }
     }
 
     handleApiError(error, fallbackMessage = MESSAGES.SERVER_ERROR) {
