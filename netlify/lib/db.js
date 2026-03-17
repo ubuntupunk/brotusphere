@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+const { Pool } = require('pg');
 
 const connectionString = process.env.NEON_DATABASE;
 
@@ -15,9 +15,9 @@ const pool = new Pool({
   ssl: sslConfig
 });
 
-export default pool;
+module.exports = pool;
 
-export async function query(text, params) {
+async function query(text, params) {
   if (!connectionString) {
     throw new Error('Database not configured - NEON_DATABASE is not set');
   }
@@ -29,7 +29,7 @@ export async function query(text, params) {
   return res;
 }
 
-export async function getClient() {
+async function getClient() {
   if (!connectionString) {
     throw new Error('Database not configured - NEON_DATABASE is not set');
   }
@@ -37,7 +37,7 @@ export async function getClient() {
   return client;
 }
 
-export async function withTransaction(callback) {
+async function withTransaction(callback) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -51,3 +51,5 @@ export async function withTransaction(callback) {
     client.release();
   }
 }
+
+module.exports = { query, getClient, withTransaction };

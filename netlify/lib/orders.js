@@ -1,6 +1,6 @@
-import pool from './db.js';
+const pool = require('./db.js');
 
-export async function createOrder(userId, items, shipping = {}, paypalOrderId = null, paypalTransactionId = null, status = 'pending', billing = {}, payerEmail = null) {
+async function createOrder(userId, items, shipping = {}, paypalOrderId = null, paypalTransactionId = null, status = 'pending', billing = {}, payerEmail = null) {
   const client = await pool.connect();
   
   try {
@@ -64,8 +64,6 @@ export async function createOrder(userId, items, shipping = {}, paypalOrderId = 
       paypalTransactionId,
       status
     ]);
-      status
-    ]);
 
     const orderId = orderResult.rows[0].id;
 
@@ -96,7 +94,7 @@ export async function createOrder(userId, items, shipping = {}, paypalOrderId = 
   }
 }
 
-export async function getUserOrders(userId) {
+async function getUserOrders(userId) {
   const result = await pool.query(`
     SELECT o.id, o.status, o.total, o.tracking_number, o.tracking_carrier,
            o.shipping_name, o.shipping_city, o.shipping_postal_code, o.created_at,
@@ -119,3 +117,5 @@ export async function getUserOrders(userId) {
 
   return result.rows;
 }
+
+module.exports = { createOrder, getUserOrders };

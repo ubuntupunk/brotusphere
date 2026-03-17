@@ -1,20 +1,20 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || process.env.AUTH_SECRET || 'dev-secret-change-in-production';
 const ADMIN_KEY = process.env.ADMIN_KEY;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const SALT_ROUNDS = 10;
 
-export async function hashPassword(password) {
+async function hashPassword(password) {
   return bcrypt.hash(password, SALT_ROUNDS);
 }
 
-export async function verifyPassword(password, hash) {
+async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-export function generateToken(user) {
+function generateToken(user) {
   const payload = {
     id: user.id,
     email: user.email,
@@ -23,7 +23,7 @@ export function generateToken(user) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
-export function verifyToken(token) {
+function verifyToken(token) {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
@@ -31,7 +31,7 @@ export function verifyToken(token) {
   }
 }
 
-export function parseCookies(event) {
+function parseCookies(event) {
   const cookieHeader = event.headers.cookie || '';
   const cookies = {};
   cookieHeader.split(';').forEach(c => {
@@ -41,7 +41,7 @@ export function parseCookies(event) {
   return cookies;
 }
 
-export function getTokenFromEvent(event) {
+function getTokenFromEvent(event) {
   const cookies = parseCookies(event);
   const cookieToken = cookies['auth_token'];
   
@@ -55,7 +55,7 @@ export function getTokenFromEvent(event) {
   return null;
 }
 
-export function createAuthResponse(user, token, includeCookie = true) {
+function createAuthResponse(user, token, includeCookie = true) {
   const headers = { 'Content-Type': 'application/json' };
   
   if (includeCookie) {
@@ -72,7 +72,7 @@ export function createAuthResponse(user, token, includeCookie = true) {
   };
 }
 
-export function authError(message, statusCode = 401) {
+function authError(message, statusCode = 401) {
   return {
     statusCode,
     headers: { 'Content-Type': 'application/json' },
@@ -80,7 +80,7 @@ export function authError(message, statusCode = 401) {
   };
 }
 
-export function verifyAdminKey(event) {
+function verifyAdminKey(event) {
   if (!ADMIN_KEY) {
     console.warn('ADMIN_KEY not configured - admin endpoints disabled');
     return { authorized: false, reason: 'Admin not configured' };
@@ -98,3 +98,14 @@ export function verifyAdminKey(event) {
   
   return { authorized: true };
 }
+
+module.exports = {
+  hashPassword,
+  verifyPassword,
+  generateToken,
+  verifyToken,
+  getTokenFromEvent,
+  createAuthResponse,
+  authError,
+  verifyAdminKey
+};
