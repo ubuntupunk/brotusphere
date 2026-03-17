@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '../config.js';
 import { getEmoji } from '../utils/categories.js';
+import { formatCurrency } from '../utils/currency.js';
 
 export function home() {
     return `
@@ -132,7 +133,7 @@ export async function initHomePage() {
             <div class="product-info">
                 <h4>${product.name}</h4>
                 <p>${product.description || ''}</p>
-                <div class="product-price">R${product.price.toFixed(0)}</div>
+                <div class="product-price">${formatCurrency(product.price)}</div>
                 <button class="product-btn" data-product="${product.id}">Add to Cart</button>
             </div>
         </div>

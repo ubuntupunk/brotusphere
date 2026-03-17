@@ -9,6 +9,12 @@ export const ENDPOINTS = {
     INIT_DB: `${API_BASE}/init-db`
 };
 
+export const CURRENCY = {
+    SYMBOL: '$',
+    CODE: 'USD',
+    ZAR_ESTIMATE: 18
+};
+
 export const STORAGE_KEYS = {
     CART: 'brotusphere-cart',
     TOKEN: 'brotusphere-token',

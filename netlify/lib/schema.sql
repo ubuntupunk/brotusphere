@@ -78,12 +78,12 @@ CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_stock_movements_product_id ON stock_movements(product_id);
 CREATE INDEX IF NOT EXISTS idx_user_profiles_neon_id ON user_profiles(neon_user_id);
 
--- Insert sample products
+-- Insert sample products (prices in USD, ~ZAR/18)
 INSERT INTO products (name, description, price, stock, sku, category) VALUES
-('Sour Fig Jam', 'Traditional recipe passed down generations', 85.00, 50, 'SFJ001', 'Preserves'),
-('Sour Fig Honey', 'Natural sweetness with a tangy twist', 120.00, 30, 'SFH001', 'Honey'),
-('Sour Fig Tea', 'Soothing herbal infusion', 65.00, 40, 'SFT001', 'Tea'),
-('Sour Fig Skin Salve', 'Natural skin care product', 95.00, 25, 'SFS001', 'Skincare'),
-('Sour Fig Chutney', 'Tangy condiment', 75.00, 35, 'SFC001', 'Preserves'),
-('Sour Fig Gift Set', 'Collection of sour fig products', 250.00, 15, 'SFG001', 'Gifts')
+('Sour Fig Jam', 'Traditional recipe passed down generations', 4.72, 50, 'SFJ001', 'Preserves'),
+('Sour Fig Honey', 'Natural sweetness with a tangy twist', 6.67, 30, 'SFH001', 'Honey'),
+('Sour Fig Tea', 'Soothing herbal infusion', 3.61, 40, 'SFT001', 'Tea'),
+('Sour Fig Skin Salve', 'Natural skin care product', 5.28, 25, 'SFS001', 'Skincare'),
+('Sour Fig Chutney', 'Tangy condiment', 4.17, 35, 'SFC001', 'Preserves'),
+('Sour Fig Gift Set', 'Collection of sour fig products', 13.89, 15, 'SFG001', 'Gifts')
 ON CONFLICT (sku) DO NOTHING;

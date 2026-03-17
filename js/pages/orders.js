@@ -1,4 +1,5 @@
 import { ENDPOINTS, STORAGE_KEYS } from '../config.js';
+import { formatCurrency } from '../utils/currency.js';
 
 export function orders() {
     return `
@@ -66,7 +67,7 @@ export async function initOrdersPage() {
                 </div>
                 <div class="order-details">
                     <div class="order-date">${new Date(order.created_at).toLocaleDateString()}</div>
-                    <div class="order-total">R${parseFloat(order.total).toFixed(2)}</div>
+                    <div class="order-total">${formatCurrency(parseFloat(order.total))}</div>
                 </div>
                 <div class="order-items">
                     ${(order.items || []).map(item => `

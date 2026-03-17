@@ -1,9 +1,10 @@
 import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
-import { API_BASE, ENDPOINTS, STORAGE_KEYS } from './config.js';
+import { API_BASE, ENDPOINTS, STORAGE_KEYS, CURRENCY } from './config.js';
 import { getEmoji } from './utils/categories.js';
 import { renderPayPalButton, createOrderOnServer } from './utils/checkout.js';
+import { formatCurrency, formatCurrencyWithZar } from './utils/currency.js';
 import './utils/errors.js';
 
 console.log('main.js starting...');
@@ -327,7 +328,7 @@ document.addEventListener('click', async (e) => {
             <button id="close-paypal" style="position:absolute;top:10px;right:15px;font-size:24px;background:none;border:none;cursor:pointer;">&times;</button>
             <h2 style="margin-bottom:20px;">Complete Your Order</h2>
             <p style="margin-bottom:5px;">Total: <strong>$${usdTotal.toFixed(2)} USD</strong></p>
-            <p style="margin-bottom:20px;font-size:12px;color:#666;">(≈ R${total.toFixed(2)} ZAR)</p>
+            <p style="margin-bottom:20px;font-size:12px;color:#666;">(${formatCurrencyWithZar(total)})</p>
             <div id="paypal-button-container"></div>
         `;
         
@@ -348,8 +349,7 @@ document.addEventListener('click', async (e) => {
             country: 'South Africa'
         };
         
-        // Convert ZAR to USD (approximate rate)
-        const usdTotal = total / 18;
+        const usdTotal = total;
         
         renderPayPalButton('paypal-button-container', usdTotal, async (details) => {
             // Payment successful - create order on server
@@ -447,7 +447,7 @@ function updateCartUI() {
                     <div class="cart-item-image">${product.emoji}</div>
                     <div class="cart-item-details">
                         <h4>${product.name}</h4>
-                        <div class="price">R${product.price} x ${item.quantity}</div>
+                        <div class="price">${formatCurrency(product.price * item.quantity)}</div>
                     </div>
                     <button class="cart-item-remove" data-remove="${item.productId}">Remove</button>
                 </div>
@@ -458,7 +458,7 @@ function updateCartUI() {
             cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
         }
         
-        cartTotal.textContent = `R${total}`;
+        cartTotal.textContent = formatCurrency(total);
         
         document.querySelectorAll('[data-remove]').forEach(btn => {
             btn.addEventListener('click', () => {

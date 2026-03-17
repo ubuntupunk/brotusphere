@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '../config.js';
 import { getEmoji } from '../utils/categories.js';
+import { formatCurrency } from '../utils/currency.js';
 
 export function products() {
     return `
@@ -51,7 +52,7 @@ export async function initProductsPage() {
             <div class="shop-product-info">
                 <h3>${product.name}</h3>
                 <p class="description">${product.description || ''}</p>
-                <div class="shop-product-price">R${product.price.toFixed(0)}</div>
+                <div class="shop-product-price">${formatCurrency(product.price)}</div>
                 ${isOutOfStock 
                     ? '<button class="shop-product-btn" disabled>Out of Stock</button>'
                     : `<button class="shop-product-btn" data-product="${product.id}">Add to Cart</button>`
