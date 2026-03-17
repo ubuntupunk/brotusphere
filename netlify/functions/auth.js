@@ -8,9 +8,18 @@ import {
   createAuthResponse,
   authError
 } from '../lib/auth.js';
+import { checkRateLimit } from '../lib/rate-limit.js';
 
 export async function handler(event, context) {
   const { action } = event.queryStringParameters;
+
+  // Apply rate limiting to auth endpoints
+  if (event.httpMethod === 'POST' && (action === 'signup' || action === 'login')) {
+    const rateLimitResponse = checkRateLimit(event, action);
+    if (rateLimitResponse) {
+      return rateLimitResponse;
+    }
+  }
 
   // POST /auth?action=signup - Register new user
   if (event.httpMethod === 'POST' && action === 'signup') {

@@ -1,13 +1,27 @@
 import { Pool } from 'pg';
 
+const connectionString = process.env.NEON_DATABASE;
+
+if (!connectionString) {
+  console.error('NEON_DATABASE environment variable is not set');
+}
+
+const sslConfig = process.env.NODE_ENV === 'development' 
+  ? { rejectUnauthorized: false }
+  : { rejectUnauthorized: true };
+
 const pool = new Pool({
-  connectionString: process.env.NEON_DATABASE,
-  ssl: { rejectUnauthorized: false }
+  connectionString,
+  ssl: sslConfig
 });
 
 export default pool;
 
 export async function query(text, params) {
+  if (!connectionString) {
+    throw new Error('Database not configured - NEON_DATABASE is not set');
+  }
+  
   const start = Date.now();
   const res = await pool.query(text, params);
   const duration = Date.now() - start;
@@ -16,6 +30,9 @@ export async function query(text, params) {
 }
 
 export async function getClient() {
+  if (!connectionString) {
+    throw new Error('Database not configured - NEON_DATABASE is not set');
+  }
   const client = await pool.connect();
   return client;
 }
@@ -33,9 +50,4 @@ export async function withTransaction(callback) {
   } finally {
     client.release();
   }
-}
-
-export async function getClient() {
-  const client = await pool.connect();
-  return client;
 }
