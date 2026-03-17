@@ -1,4 +1,5 @@
 import pool from '../lib/db.js';
+import { createOrder } from '../lib/orders.js';
 
 const PAYPAL_API = process.env.PAYPAL_MODE === 'live' 
   ? 'https://api-m.paypal.com' 
@@ -115,78 +116,16 @@ export async function handler(event, context) {
       // Get the transaction ID
       const transactionId = capture.purchase_units[0]?.payments?.captures[0]?.id;
 
-      // Create order in database
-      const client = await pool.connect();
-      
+      // Create order in database using shared function
       try {
-        await client.query('BEGIN');
-
-        // Calculate total and check stock
-        let total = 0;
-        const orderItems = [];
-
-        for (const item of items) {
-          const product = await client.query(
-            'SELECT id, name, price, stock FROM products WHERE id = $1 AND is_active = true',
-            [item.productId]
-          );
-          
-          if (product.rows.length === 0) {
-            throw new Error(`Product not found: ${item.productId}`);
-          }
-
-          if (product.rows[0].stock < item.quantity) {
-            throw new Error(`Insufficient stock for ${product.rows[0].name}`);
-          }
-
-          const lineTotal = parseFloat(product.rows[0].price) * item.quantity;
-          total += lineTotal;
-
-          orderItems.push({
-            productId: product.rows[0].id,
-            name: product.rows[0].name,
-            price: product.rows[0].price,
-            quantity: item.quantity
-          });
-        }
-
-        // Insert order
-        const orderResult = await client.query(`
-          INSERT INTO orders (user_id, total, shipping_name, shipping_address, shipping_city, shipping_postal_code, shipping_country, paypal_order_id, paypal_transaction_id, status)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'paid')
-          RETURNING id
-        `, [
+        const { orderId: dbOrderId, total } = await createOrder(
           userId,
-          total,
-          shipping?.name,
-          shipping?.address,
-          shipping?.city,
-          shipping?.postalCode,
-          shipping?.country,
+          items,
+          shipping,
           orderId,
-          transactionId
-        ]);
-
-        const dbOrderId = orderResult.rows[0].id;
-
-        // Insert order items and reduce stock
-        for (const item of orderItems) {
-          await client.query(`
-            INSERT INTO order_items (order_id, product_id, quantity, unit_price)
-            VALUES ($1, $2, $3, $4)
-          `, [dbOrderId, item.productId, item.quantity, item.price]);
-
-          await client.query(`
-            UPDATE products SET stock = stock - $1 WHERE id = $2
-          `, [item.quantity, item.productId]);
-
-          await client.query(`
-            INSERT INTO stock_movements (product_id, quantity_change, type, reference_id)
-            VALUES ($1, $2, 'sale', $3)
-          `, [item.productId, -item.quantity, dbOrderId]);
-        }
-
-        await client.query('COMMIT');
+          transactionId,
+          'paid'
+        );
 
         return {
           statusCode: 200,
@@ -198,10 +137,8 @@ export async function handler(event, context) {
           })
         };
       } catch (dbError) {
-        await client.query('ROLLBACK');
+        console.error('Database error:', dbError);
         throw dbError;
-      } finally {
-        client.release();
       }
 
     } catch (error) {
