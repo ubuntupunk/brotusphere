@@ -60,7 +60,10 @@ async function handler(event, context) {
     try {
       const result = await pool.query(`
         SELECT o.id, o.status, o.total, o.tracking_number, o.tracking_carrier,
-               o.shipping_name, o.shipping_city, o.shipping_postal_code, o.created_at,
+               o.shipping_name, o.shipping_address, o.shipping_address2, o.shipping_city, o.shipping_postal_code, o.shipping_country,
+               o.billing_name, o.billing_address, o.billing_address2, o.billing_city, o.billing_postal_code, o.billing_country,
+               o.payer_email, o.paypal_order_id, o.paypal_transaction_id,
+               o.created_at,
                up.name as customer_name, up.email as customer_email,
                json_agg(
                  json_build_object(

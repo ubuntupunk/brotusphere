@@ -2774,6 +2774,46 @@ footer {
     width: 60px;
 }
 
+.order-details-row {
+    background: var(--bg-alt);
+}
+
+.order-details-row td {
+    padding: 1rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.order-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.order-section h4 {
+    margin: 0 0 0.5rem;
+    color: var(--primary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-section p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+.order-items-list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.85rem;
+}
+
+.order-items-list li {
+    margin-bottom: 0.25rem;
+}
+
 .btn-small {
     padding: 0.4rem 0.8rem;
     background: var(--primary);

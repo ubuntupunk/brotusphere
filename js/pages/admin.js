@@ -129,6 +129,45 @@ function renderOrders(panel, orders) {
                             <button class="btn-small save-order-btn" data-order-id="${order.id}">Save</button>
                         </td>
                     </tr>
+                    <tr class="order-details-row" data-order-id="${order.id}">
+                        <td colspan="7">
+                            <div class="order-details-grid">
+                                <div class="order-section">
+                                    <h4>Shipping</h4>
+                                    <p>${order.shipping_name || 'N/A'}</p>
+                                    <p>${order.shipping_address || ''}</p>
+                                    <p>${order.shipping_address2 || ''}</p>
+                                    <p>${order.shipping_city || ''} ${order.shipping_postal_code || ''}</p>
+                                    <p>${order.shipping_country || ''}</p>
+                                </div>
+                                <div class="order-section">
+                                    <h4>Billing</h4>
+                                    <p>${order.billing_name || 'N/A'}</p>
+                                    <p>${order.billing_address || ''}</p>
+                                    <p>${order.billing_address2 || ''}</p>
+                                    <p>${order.billing_city || ''} ${order.billing_postal_code || ''}</p>
+                                    <p>${order.billing_country || ''}</p>
+                                </div>
+                                <div class="order-section">
+                                    <h4>Items</h4>
+                                    ${order.items && order.items.length > 0 ? `
+                                        <ul class="order-items-list">
+                                            ${order.items.map(item => `
+                                                <li>
+                                                    <strong>${item.name}</strong> x${item.quantity} @ ${formatCurrency(parseFloat(item.unit_price))}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    ` : '<p>No items</p>'}
+                                </div>
+                                <div class="order-section">
+                                    <h4>Payment</h4>
+                                    <p><small>PayPal Order:</small> ${order.paypal_order_id || 'N/A'}</p>
+                                    <p><small>Transaction:</small> ${order.paypal_transaction_id || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                 `).join('')}
             </tbody>
         </table>
