@@ -1,4 +1,5 @@
 import { ENDPOINTS } from '../config.js';
+import { getEmoji } from '../utils/categories.js';
 
 export function home() {
     return `
@@ -99,17 +100,6 @@ export function home() {
 </section>
 </div>
 `;
-}
-
-function getEmoji(category) {
-    const emojis = {
-        'Preserves': '🫐',
-        'Honey': '🍯',
-        'Tea': '🍵',
-        'Skincare': '🧴',
-        'Gifts': '🎁'
-    };
-    return emojis[category] || '📦';
 }
 
 export async function initHomePage() {

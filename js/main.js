@@ -2,6 +2,7 @@ import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
 import { API_BASE, ENDPOINTS, STORAGE_KEYS } from './config.js';
+import { getEmoji } from './utils/categories.js';
 import './utils/errors.js';
 
 console.log('main.js starting...');
@@ -40,17 +41,6 @@ async function fetchProducts() {
         console.error('Failed to fetch products:', error);
         productsResolve();
     }
-}
-
-function getEmoji(category) {
-    const emojis = {
-        'Preserves': '🫐',
-        'Honey': '🍯',
-        'Tea': '🍵',
-        'Skincare': '🧴',
-        'Gifts': '🎁'
-    };
-    return emojis[category] || '📦';
 }
 
 // Make functions globally accessible

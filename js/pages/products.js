@@ -1,15 +1,5 @@
 import { ENDPOINTS } from '../config.js';
-
-function getEmoji(category) {
-    const emojis = {
-        'Preserves': '🫐',
-        'Honey': '🍯',
-        'Tea': '🍵',
-        'Skincare': '🧴',
-        'Gifts': '🎁'
-    };
-    return emojis[category] || '📦';
-}
+import { getEmoji } from '../utils/categories.js';
 
 export function products() {
     return `
