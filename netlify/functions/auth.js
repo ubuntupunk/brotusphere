@@ -8,6 +8,34 @@ import {
   createAuthResponse,
   authError
 } from '../lib/auth.js';
+
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'hash_' + Math.abs(hash).toString(16);
+}
+
+async function verifyAndMigratePassword(password, storedHash, userId) {
+  // Check if old simpleHash format
+  if (storedHash.startsWith('hash_')) {
+    const oldHash = simpleHash(password);
+    if (oldHash === storedHash) {
+      // Migrate to bcrypt
+      const newHash = await hashPassword(password);
+      await pool.query('UPDATE user_profiles SET password_hash = $1 WHERE id = $2', [newHash, userId]);
+      console.log('Migrated user password to bcrypt:', userId);
+      return true;
+    }
+    return false;
+  }
+  
+  // Use bcrypt for new format
+  return verifyPassword(password, storedHash);
+}
 import { checkRateLimit } from '../lib/rate-limit.js';
 
 export async function handler(event, context) {
@@ -80,7 +108,7 @@ export async function handler(event, context) {
       }
 
       const user = result.rows[0];
-      const valid = await verifyPassword(password, user.password_hash);
+      const valid = await verifyAndMigratePassword(password, user.password_hash, user.id);
 
       if (!valid) {
         return authError('Invalid credentials');
