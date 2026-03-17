@@ -67,7 +67,7 @@ exports.handler = async function(event, context) {
       const result = await pool.query(`
         INSERT INTO user_profiles (name, email, password_hash)
         VALUES ($1, $2, $3)
-        RETURNING id, name, email, created_at
+        RETURNING id, name, email, role, created_at
       `, [name, email.toLowerCase(), hashedPassword]);
 
       const user = result.rows[0];
@@ -89,7 +89,7 @@ exports.handler = async function(event, context) {
 
     try {
       const result = await pool.query(
-        'SELECT id, name, email, password_hash FROM user_profiles WHERE email = $1',
+        'SELECT id, name, email, password_hash, role FROM user_profiles WHERE email = $1',
         [email.toLowerCase()]
       );
       
@@ -128,7 +128,7 @@ exports.handler = async function(event, context) {
     
     try {
       const result = await pool.query(
-        'SELECT id, name, email FROM user_profiles WHERE id = $1',
+        'SELECT id, name, email, role FROM user_profiles WHERE id = $1',
         [decoded.id]
       );
       
