@@ -322,6 +322,9 @@ document.addEventListener('click', async (e) => {
         paypalContainer.id = 'paypal-checkout-container';
         paypalContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10001;display:flex;justify-content:center;align-items:center;';
         
+        // Calculate total and USD equivalent
+        const usdTotal = total;
+        
         const checkoutBox = document.createElement('div');
         checkoutBox.style.cssText = 'background:#fff;padding:30px;border-radius:12px;max-width:500px;width:90%;position:relative;';
         checkoutBox.innerHTML = `
@@ -348,8 +351,6 @@ document.addEventListener('click', async (e) => {
             postalCode: '',
             country: 'South Africa'
         };
-        
-        const usdTotal = total;
         
         renderPayPalButton('paypal-button-container', usdTotal, async (details) => {
             // Payment successful - create order on server
