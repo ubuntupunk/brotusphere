@@ -1,7 +1,7 @@
-import pool from '../netlify/lib/db.js';
-import schema from '../netlify/lib/schema.sql' with { type: 'text' };
-import insertProducts from '../netlify/lib/insert-products.sql' with { type: 'text' };
-import { verifyAdminKey, authError } from '../netlify/lib/auth.js';
+import pool from '../lib/db.js';
+import schema from '../lib/schema.sql' with { type: 'text' };
+import insertProducts from '../lib/insert-products.sql' with { type: 'text' };
+import { verifyAdminKey, authError } from '../lib/auth.js';
 
 export async function handler(event, context) {
   if (event.httpMethod !== 'POST') {

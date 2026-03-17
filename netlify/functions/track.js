@@ -1,4 +1,4 @@
-import pool from '../netlify/lib/db.js';
+import pool from '../lib/db.js';
 
 export async function handler(event, context) {
   if (event.httpMethod !== 'GET') {
