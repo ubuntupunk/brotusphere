@@ -71,6 +71,7 @@ async function handler(event, context) {
                    'id', oi.id,
                    'product_id', oi.product_id,
                    'name', p.name,
+                   'image_url', p.image_url,
                    'quantity', oi.quantity,
                    'unit_price', oi.unit_price
                  )

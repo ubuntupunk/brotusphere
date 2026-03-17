@@ -154,6 +154,7 @@ function renderOrders(panel, orders) {
                                         <ul class="order-items-list">
                                             ${order.items.map(item => `
                                                 <li>
+                                                    ${item.image_url ? `<img src="${item.image_url}" class="admin-item-thumb" alt="">` : ''}
                                                     <strong>${item.name}</strong> x${item.quantity} @ ${formatCurrency(parseFloat(item.unit_price))}
                                                 </li>
                                             `).join('')}

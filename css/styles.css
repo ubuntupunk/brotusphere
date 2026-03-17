@@ -1831,13 +1831,37 @@ footer {
 
 .order-item {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     padding: 8px 0;
     border-bottom: 1px solid rgba(45, 80, 22, 0.05);
 }
 
 .order-item:last-child {
     border-bottom: none;
+}
+
+.order-item-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: var(--bg-alt);
+}
+
+.order-item-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.order-item-qty {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.order-item-price {
+    font-weight: 600;
+    color: var(--primary);
 }
 
 .order-tracking {
@@ -2859,6 +2883,16 @@ footer {
 
 .order-items-list li {
     margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-item-thumb {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
 .btn-small {
