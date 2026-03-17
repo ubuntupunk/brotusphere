@@ -2,8 +2,8 @@
   publish = "."
   command = ""
 
-[functions]
-  directory = "functions"
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
