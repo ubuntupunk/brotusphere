@@ -223,6 +223,7 @@ document.getElementById('logoutLink').addEventListener('click', (e) => {
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     authText.textContent = 'Login';
     if (mobileAuthBtn) mobileAuthBtn.textContent = 'Login / Register';
+    document.getElementById('mobileAdminLink').style.display = 'none';
     authDropdown.classList.remove('active');
     document.getElementById('adminLink').style.display = 'none';
 });
@@ -295,6 +296,10 @@ loginForm.addEventListener('submit', async (e) => {
             localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
             if (mobileAuthBtn) mobileAuthBtn.textContent = 'Logout';
+            const mobileAdminLink = document.getElementById('mobileAdminLink');
+            if (mobileAdminLink && (data.user.role === 'admin' || data.user.role === 'staff')) {
+                mobileAdminLink.style.display = 'block';
+            }
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -334,6 +339,10 @@ registerForm.addEventListener('submit', async (e) => {
             localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
             if (mobileAuthBtn) mobileAuthBtn.textContent = 'Logout';
+            const mobileAdminLink = document.getElementById('mobileAdminLink');
+            if (mobileAdminLink && (data.user.role === 'admin' || data.user.role === 'staff')) {
+                mobileAdminLink.style.display = 'block';
+            }
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -371,10 +380,13 @@ registerForm.addEventListener('submit', async (e) => {
                 
                 // Show/hide admin link based on role
                 const adminLink = document.getElementById('adminLink');
+                const mobileAdminLink = document.getElementById('mobileAdminLink');
                 if (currentUser.role === 'admin' || currentUser.role === 'staff') {
                     adminLink.style.display = 'block';
+                    if (mobileAdminLink) mobileAdminLink.style.display = 'block';
                 } else {
                     adminLink.style.display = 'none';
+                    if (mobileAdminLink) mobileAdminLink.style.display = 'none';
                 }
             }
         } catch (e) {
