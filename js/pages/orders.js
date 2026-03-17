@@ -24,7 +24,7 @@ function getTrackingUrl(carrier, number) {
         'dhl': `https://www.dhl.com/en/express/tracking.html?AWB=${number}`,
         'fedex': `https://www.fedex.com/fedextrack/?trknbr=${number}`,
         'ups': `https://www.ups.com/track?tracknum=${number}`,
-        'south-african-postal': `https://www.postoffice.co.za/track/',
+        'south-african-postal': `https://www.postoffice.co.za/track/`,
         'default': null
     };
 
