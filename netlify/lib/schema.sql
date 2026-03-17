@@ -91,11 +91,11 @@ CREATE INDEX IF NOT EXISTS idx_stock_movements_product_id ON stock_movements(pro
 CREATE INDEX IF NOT EXISTS idx_user_profiles_neon_id ON user_profiles(neon_user_id);
 
 -- Insert sample products (prices in USD, ~ZAR/18)
-INSERT INTO products (name, description, price, stock, sku, category) VALUES
-('Sour Fig Jam', 'Traditional recipe passed down generations', 4.72, 50, 'SFJ001', 'Preserves'),
-('Sour Fig Honey', 'Natural sweetness with a tangy twist', 6.67, 30, 'SFH001', 'Honey'),
-('Sour Fig Tea', 'Soothing herbal infusion', 3.61, 40, 'SFT001', 'Tea'),
-('Sour Fig Skin Salve', 'Natural skin care product', 5.28, 25, 'SFS001', 'Skincare'),
-('Sour Fig Chutney', 'Tangy condiment', 4.17, 35, 'SFC001', 'Preserves'),
-('Sour Fig Gift Set', 'Collection of sour fig products', 13.89, 15, 'SFG001', 'Gifts')
+INSERT INTO products (name, description, price, stock, sku, category, image_url) VALUES
+('Sour Fig Jam', 'Traditional recipe passed down generations', 4.72, 50, 'SFJ001', 'Preserves', '/images/edulis.webp'),
+('Sour Fig Honey', 'Natural sweetness with a tangy twist', 6.67, 30, 'SFH001', 'Honey', '/images/brotus.webp'),
+('Sour Fig Tea', 'Soothing herbal infusion', 3.61, 40, 'SFT001', 'Tea', '/images/carpo.webp'),
+('Sour Fig Skin Salve', 'Natural skin care product', 5.28, 25, 'SFS001', 'Skincare', '/images/edulis.webp'),
+('Sour Fig Chutney', 'Tangy condiment', 4.17, 35, 'SFC001', 'Preserves', '/images/brotus.webp'),
+('Sour Fig Gift Set', 'Collection of sour fig products', 13.89, 15, 'SFG001', 'Gifts', '/images/carpo.webp')
 ON CONFLICT (sku) DO NOTHING;
