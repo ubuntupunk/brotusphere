@@ -185,7 +185,7 @@ export function sphere() {
                         <h2>Camembert with Sour Fig Jam</h2>
                         <div class="slide-content">
                             <p class="recipe-meta">Serves: 6-8 | Prep: 5 min | Cook: 10 min</p>
-                           <div class="content-image"><img src="/images/food.jpg" alt="Camembert with Sour Fig Jam" /></div> 
+                           <div class="content-image"><img src="/images/food.webp" alt="Camembert with Sour Fig Jam" /></div> 
                             <h3>Ingredients</h3>
                             <ul>
                                 <li>1 jar of Sour Fig Jam</li>

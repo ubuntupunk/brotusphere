@@ -65,7 +65,7 @@ export function health() {
             <h2 class="section-title">Nutritional Profile</h2>
         </div>
         <div class="content-grid">
-            <div class="content-image"><img src="/images/jam.jpg" alt="Sour fig nutritional profile" /></div>
+            <div class="content-image"><img src="/images/jam.webp" alt="Sour fig nutritional profile" /></div>
             <div class="content-text">
                 <h2>What's Inside</h2>
                 <p>Sour fig contains both nutritional compounds (in the fruit) and medicinal compounds (in the leaves).</p>
