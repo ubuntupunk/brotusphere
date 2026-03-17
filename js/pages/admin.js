@@ -154,7 +154,7 @@ function renderOrders(panel, orders) {
                                         <ul class="order-items-list">
                                             ${order.items.map(item => `
                                                 <li>
-                                                    ${item.image_url ? `<img src="${item.image_url}" class="admin-item-thumb" alt="">` : ''}
+                                                    ${item.image_url ? `<img src="${item.image_url}" class="admin-item-thumb" alt="" loading="lazy">` : ''}
                                                     <strong>${item.name}</strong> x${item.quantity} @ ${formatCurrency(parseFloat(item.unit_price))}
                                                 </li>
                                             `).join('')}
@@ -238,7 +238,7 @@ function renderProducts(panel, products) {
                 ${products.map(p => `
                     <tr data-product-id="${p.id}">
                         <td>
-                            ${p.image_url ? `<img src="${p.image_url}" class="product-thumb-admin" alt="">` : ''}
+                            ${p.image_url ? `<img src="${p.image_url}" class="product-thumb-admin" alt="" loading="lazy">` : ''}
                             <input type="text" class="image-url-input" 
                                    placeholder="Image URL"
                                    value="${p.image_url || ''}" 

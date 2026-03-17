@@ -86,7 +86,7 @@ export async function initOrdersPage() {
                 <div class="order-items">
                     ${(order.items || []).map(item => `
                         <div class="order-item">
-                            ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="order-item-image">` : ''}
+                            ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="order-item-image" loading="lazy">` : ''}
                             <span class="order-item-name">${item.name}</span>
                             <span class="order-item-qty">x${item.quantity}</span>
                             <span class="order-item-price">${formatCurrency(parseFloat(item.unit_price))}</span>
