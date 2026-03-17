@@ -161,25 +161,22 @@ async function handler(event, context) {
     }
 
     try {
-      const updates = [];
+      const updates = ['updated_at = NOW()'];
       const params = [orderId];
-      let paramCount = 1;
+      let paramIndex = 2;
 
       if (status) {
-        paramCount++;
-        updates.push(`status = $${paramCount}`);
+        updates.push(`status = $${paramIndex++}`);
         params.push(status);
       }
 
       if (trackingNumber !== undefined) {
-        paramCount++;
-        updates.push(`tracking_number = $${paramCount}`);
+        updates.push(`tracking_number = $${paramIndex++}`);
         params.push(trackingNumber || null);
       }
 
       if (trackingCarrier) {
-        paramCount++;
-        updates.push(`tracking_carrier = $${paramCount}`);
+        updates.push(`tracking_carrier = $${paramIndex++}`);
         params.push(trackingCarrier);
       }
 
@@ -190,9 +187,6 @@ async function handler(event, context) {
           body: JSON.stringify({ error: 'No fields to update' })
         };
       }
-
-      paramCount++;
-      updates.push(`updated_at = NOW()`);
 
       const query = `UPDATE orders SET ${updates.join(', ')} WHERE id = $1 RETURNING *`;
       const result = await pool.query(query, params);
@@ -243,15 +237,13 @@ async function handler(event, context) {
     try {
       const updates = ['updated_at = NOW()'];
       const params = [userId];
-      let paramCount = 1;
-
+      
       if (role) {
-        paramCount++;
-        updates.push(`role = $${paramCount}`);
+        updates.push('role = $2');
         params.push(role);
       }
 
-      const query = `UPDATE user_profiles SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING id, name, email, role`;
+      const query = `UPDATE user_profiles SET ${updates.join(', ')} WHERE id = $1 RETURNING id, name, email, role`;
       const result = await pool.query(query, params);
 
       if (result.rows.length === 0) {
@@ -292,35 +284,30 @@ async function handler(event, context) {
     try {
       const updates = ['updated_at = NOW()'];
       const params = [productId];
-      let paramCount = 1;
+      let paramIndex = 2;
 
       if (name) {
-        paramCount++;
-        updates.push(`name = $${paramCount}`);
+        updates.push(`name = $${paramIndex++}`);
         params.push(name);
       }
       if (description !== undefined) {
-        paramCount++;
-        updates.push(`description = $${paramCount}`);
+        updates.push(`description = $${paramIndex++}`);
         params.push(description);
       }
       if (price !== undefined) {
-        paramCount++;
-        updates.push(`price = $${paramCount}`);
+        updates.push(`price = $${paramIndex++}`);
         params.push(price);
       }
       if (stock !== undefined) {
-        paramCount++;
-        updates.push(`stock = $${paramCount}`);
+        updates.push(`stock = $${paramIndex++}`);
         params.push(stock);
       }
       if (isActive !== undefined) {
-        paramCount++;
-        updates.push(`is_active = $${paramCount}`);
+        updates.push(`is_active = $${paramIndex++}`);
         params.push(isActive);
       }
 
-      const query = `UPDATE products SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING *`;
+      const query = `UPDATE products SET ${updates.join(', ')} WHERE id = $1 RETURNING *`;
       const result = await pool.query(query, params);
 
       if (result.rows.length === 0) {
