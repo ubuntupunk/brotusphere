@@ -56,12 +56,11 @@ async function loadTab(tab) {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.error || 'Failed to load');
-        }
-        
         const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to load');
+        }
         
         if (tab === 'orders') {
             renderOrders(panel, data.orders);

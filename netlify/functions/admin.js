@@ -4,7 +4,7 @@ const { getTokenFromEvent, verifyToken } = require('../lib/auth.js');
 const ROLES = ['admin', 'staff', 'customer'];
 
 function requireAdmin(user) {
-  if (!user || user.role !== 'admin') {
+  if (!user || (user.role !== 'admin' && user.role !== 'staff')) {
     return false;
   }
   return true;
@@ -31,7 +31,7 @@ async function handler(event, context) {
 
   // Get user's role from database
   const userResult = await pool.query(
-    'SELECT id, role FROM user_profiles WHERE neon_user_id = $1',
+    'SELECT id, role FROM user_profiles WHERE id = $1',
     [decoded.id]
   );
 
@@ -49,7 +49,7 @@ async function handler(event, context) {
     return {
       statusCode: 403,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Admin access required' })
+      body: JSON.stringify({ error: 'Admin access required. Your role: ' + (user.role || 'none') })
     };
   }
 
