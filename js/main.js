@@ -3,6 +3,7 @@ import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
 import { API_BASE, ENDPOINTS, STORAGE_KEYS } from './config.js';
 import { getEmoji } from './utils/categories.js';
+import { renderPayPalButton, createOrderOnServer } from './utils/checkout.js';
 import './utils/errors.js';
 
 console.log('main.js starting...');
@@ -250,11 +251,27 @@ registerForm.addEventListener('submit', async (e) => {
 });
 
 // Check for existing session
-const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
-if (savedUser) {
-    currentUser = JSON.parse(savedUser);
-    authText.textContent = currentUser.name;
-}
+    const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
+    if (savedUser) {
+        // Check if user matches current session
+        try {
+            const user = JSON.parse(savedUser);
+            const currentToken = localStorage.getItem(STORAGE_KEYS.TOKEN);
+            if (!currentToken) {
+                // No token - clear stale user data
+                localStorage.removeItem(STORAGE_KEYS.USER);
+                localStorage.removeItem(STORAGE_KEYS.CART);
+                window.appCart = [];
+            } else {
+                currentUser = user;
+                authText.textContent = currentUser.name;
+            }
+        } catch (e) {
+            localStorage.removeItem(STORAGE_KEYS.USER);
+            localStorage.removeItem(STORAGE_KEYS.CART);
+            window.appCart = [];
+        }
+    }
 
 // Mobile auth button
 document.getElementById('mobileAuthBtn')?.addEventListener('click', (e) => {
@@ -281,8 +298,83 @@ document.addEventListener('click', async (e) => {
             return;
         }
         
-        // Proceed with checkout - for now just create order
-        alert('Checkout functionality coming soon!');
+        // Calculate total
+        let total = 0;
+        const products = window.appProducts;
+        cart.forEach(item => {
+            const product = products[item.productId];
+            if (product) {
+                total += product.price * item.quantity;
+            }
+        });
+        
+        if (total === 0) {
+            alert('Invalid cart - no valid products');
+            return;
+        }
+        
+        // Show PayPal checkout
+        e.target.disabled = true;
+        e.target.textContent = 'Processing...';
+        
+        const paypalContainer = document.createElement('div');
+        paypalContainer.id = 'paypal-checkout-container';
+        paypalContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10001;display:flex;justify-content:center;align-items:center;';
+        
+        const checkoutBox = document.createElement('div');
+        checkoutBox.style.cssText = 'background:#fff;padding:30px;border-radius:12px;max-width:500px;width:90%;position:relative;';
+        checkoutBox.innerHTML = `
+            <button id="close-paypal" style="position:absolute;top:10px;right:15px;font-size:24px;background:none;border:none;cursor:pointer;">&times;</button>
+            <h2 style="margin-bottom:20px;">Complete Your Order</h2>
+            <p style="margin-bottom:15px;">Total: <strong>R${total.toFixed(2)}</strong></p>
+            <div id="paypal-button-container"></div>
+        `;
+        
+        paypalContainer.appendChild(checkoutBox);
+        document.body.appendChild(paypalContainer);
+        
+        document.getElementById('close-paypal').onclick = () => {
+            document.body.removeChild(paypalContainer);
+            e.target.disabled = false;
+            e.target.textContent = 'Checkout';
+        };
+        
+        const shipping = {
+            name: currentUser.name,
+            address: '',
+            city: '',
+            postalCode: '',
+            country: 'South Africa'
+        };
+        
+        renderPayPalButton('paypal-button-container', total, async (details) => {
+            // Payment successful - create order on server
+            try {
+                await createOrderOnServer(cart, total, shipping, details.id);
+                
+                // Clear cart and show success
+                window.appCart = [];
+                saveCart();
+                updateCartUI();
+                
+                document.body.removeChild(paypalContainer);
+                alert('Order placed successfully! Thank you for your purchase.');
+                
+                // Redirect to orders
+                window.router.navigate('/orders');
+            } catch (err) {
+                console.error('Order creation error:', err);
+                alert('Payment received but order creation failed. Please contact support.');
+            }
+            
+            e.target.disabled = false;
+            e.target.textContent = 'Checkout';
+        }, (err) => {
+            alert(err);
+            document.body.removeChild(paypalContainer);
+            e.target.disabled = false;
+            e.target.textContent = 'Checkout';
+        });
     }
 });
 
