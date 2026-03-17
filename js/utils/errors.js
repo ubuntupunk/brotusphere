@@ -1,4 +1,4 @@
-import { MESSAGES, TIMING } from './config.js';
+import { MESSAGES, TIMING } from '../config.js';
 
 class ErrorHandler {
     constructor() {
