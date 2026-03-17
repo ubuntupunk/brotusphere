@@ -147,7 +147,6 @@ function closeAllModals() {
         currentFocusTrap = null;
     }
 }
-}
 
 function trapFocus(element) {
     const focusableElements = element.querySelectorAll(
