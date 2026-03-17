@@ -56,6 +56,30 @@ class Router {
         console.log('Router init, container:', this.pageContainer);
         window.addEventListener('popstate', () => this.handleRoute());
         document.addEventListener('click', (e) => this.handleClick(e));
+        
+        // Event delegation for product buttons - set up once, works for all pages
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-product]');
+            if (btn && typeof window.addToCart === 'function') {
+                window.addToCart(btn.dataset.product);
+            }
+        });
+        
+        // Event delegation for contact form - set up once
+        document.addEventListener('submit', (e) => {
+            if (e.target.id === 'contactForm') {
+                e.preventDefault();
+                const name = document.getElementById('name')?.value;
+                const email = document.getElementById('email')?.value;
+                const message = document.getElementById('message')?.value;
+                if (name && email && message) {
+                    const subject = encodeURIComponent(`Contact from ${name}`);
+                    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+                    window.location.href = `mailto:brotus@medialternatives.com?subject=${subject}&body=${body}`;
+                }
+            }
+        });
+        
         this.handleRoute();
     }
 
@@ -105,7 +129,6 @@ class Router {
                     route.onMount();
                 }
                 this.updateActiveLinks();
-                this.reinitializeEventListeners();
             } else {
                 console.error('Page function not found for:', route.page);
             }

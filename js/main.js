@@ -8,6 +8,11 @@ console.log('main.js starting...');
 window.appProducts = {};
 window.appCart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || [];
 
+let productsResolve;
+window.productsReady = new Promise(resolve => {
+    productsResolve = resolve;
+});
+
 async function fetchProducts() {
     try {
         const response = await fetch(ENDPOINTS.PRODUCTS);
@@ -29,8 +34,10 @@ async function fetchProducts() {
             });
             console.log('Products loaded:', Object.keys(window.appProducts).length);
         }
+        productsResolve();
     } catch (error) {
         console.error('Failed to fetch products:', error);
+        productsResolve();
     }
 }
 

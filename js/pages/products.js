@@ -37,57 +37,52 @@ export async function initProductsPage() {
     }
     
     // Wait for products to be loaded
-    const checkProducts = () => {
-        const productList = Object.values(window.appProducts || {});
-        console.log('checkProducts, products:', productList.length);
-        
-        if (productList.length === 0) {
-            setTimeout(checkProducts, 100);
-            return;
-        }
-        
-        console.log('Rendering product list:', productList);
-        
-        grid.innerHTML = productList.map((product, index) => {
-            const emoji = getEmoji(product.category);
-            const isOutOfStock = product.stock === 0;
-            const badge = index === 0 ? '<span class="shop-product-badge">Bestseller</span>' : '';
-            
-            return `
-            <div class="shop-product fade-in visible">
-                <div class="shop-product-image">
-                    ${badge}
-                    ${emoji}
-                </div>
-                <div class="shop-product-info">
-                    <h3>${product.name}</h3>
-                    <p class="description">${product.description || ''}</p>
-                    <div class="shop-product-price">R${product.price.toFixed(0)}</div>
-                    ${isOutOfStock 
-                        ? '<button class="shop-product-btn" disabled>Out of Stock</button>'
-                        : `<button class="shop-product-btn" data-product="${product.id}">Add to Cart</button>`
-                    }
-                    ${product.stock > 0 && product.stock < 10 
-                        ? `<p class="stock-warning">Only ${product.stock} left!</p>` 
-                        : ''
-                    }
-                </div>
-            </div>
-            `;
-        }).join('');
-        
-        console.log('Grid innerHTML set, length:', grid.innerHTML.length);
-        console.log('First 200 chars:', grid.innerHTML.substring(0, 200));
-        
-        // Attach event listeners
-        document.querySelectorAll('[data-product]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.addToCart) {
-                    window.addToCart(btn.dataset.product);
-                }
-            });
-        });
-    };
+    await window.productsReady;
     
-    checkProducts();
+    const productList = Object.values(window.appProducts || {});
+    console.log('Rendering product list:', productList.length);
+    
+    if (productList.length === 0) {
+        grid.innerHTML = '<div class="loading">No products available</div>';
+        return;
+    }
+    
+    grid.innerHTML = productList.map((product, index) => {
+        const emoji = getEmoji(product.category);
+        const isOutOfStock = product.stock === 0;
+        const badge = index === 0 ? '<span class="shop-product-badge">Bestseller</span>' : '';
+        
+        return `
+        <div class="shop-product fade-in visible">
+            <div class="shop-product-image">
+                ${badge}
+                ${emoji}
+            </div>
+            <div class="shop-product-info">
+                <h3>${product.name}</h3>
+                <p class="description">${product.description || ''}</p>
+                <div class="shop-product-price">R${product.price.toFixed(0)}</div>
+                ${isOutOfStock 
+                    ? '<button class="shop-product-btn" disabled>Out of Stock</button>'
+                    : `<button class="shop-product-btn" data-product="${product.id}">Add to Cart</button>`
+                }
+                ${product.stock > 0 && product.stock < 10 
+                    ? `<p class="stock-warning">Only ${product.stock} left!</p>` 
+                    : ''
+                }
+            </div>
+        </div>
+        `;
+    }).join('');
+    
+    console.log('Grid innerHTML set, length:', grid.innerHTML.length);
+    
+    // Attach event listeners
+    document.querySelectorAll('[data-product]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (window.addToCart) {
+                window.addToCart(btn.dataset.product);
+            }
+        });
+    });
 }

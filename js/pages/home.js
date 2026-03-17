@@ -117,58 +117,56 @@ export async function initHomePage() {
     if (!grid) return;
     
     // Wait for products to be loaded from main.js
-    const checkProducts = () => {
-        const products = Object.values(window.appProducts || {});
-        
-        if (products.length === 0) {
-            setTimeout(checkProducts, 100);
-            return;
-        }
-        
-        // Show first 3 products
-        const displayProducts = products.slice(0, 3);
-        
-        grid.innerHTML = displayProducts.map((product, index) => {
-            const emoji = getEmoji(product.category);
-            const badge = index === 0 ? '<span class="product-badge">Bestseller</span>' : '';
-            
-            return `
-            <div class="product-card fade-in visible">
-                <div class="product-image">
-                    ${badge}
-                    ${emoji}
-                </div>
-                <div class="product-info">
-                    <h4>${product.name}</h4>
-                    <p>${product.description || ''}</p>
-                    <div class="product-price">R${product.price.toFixed(0)}</div>
-                    <button class="product-btn" data-product="${product.id}">Add to Cart</button>
-                </div>
-            </div>
-            `;
-        }).join('');
-        
-        // Attach event listeners
-        document.querySelectorAll('[data-product]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.addToCart) {
-                    window.addToCart(btn.dataset.product);
-                }
-            });
-        });
-        
-        // Scroll indicator click handler
-        const scrollIndicator = document.querySelector('.scroll-indicator');
-        if (scrollIndicator) {
-            scrollIndicator.style.cursor = 'pointer';
-            scrollIndicator.addEventListener('click', () => {
-                const aboutSection = document.querySelector('.features');
-                if (aboutSection) {
-                    aboutSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        }
-    };
+    await window.productsReady;
     
-    checkProducts();
+    const products = Object.values(window.appProducts || {});
+    
+    if (products.length === 0) {
+        grid.innerHTML = '<div class="loading">No products available</div>';
+        return;
+    }
+    
+    // Show first 3 products
+    const displayProducts = products.slice(0, 3);
+    
+    grid.innerHTML = displayProducts.map((product, index) => {
+        const emoji = getEmoji(product.category);
+        const badge = index === 0 ? '<span class="product-badge">Bestseller</span>' : '';
+        
+        return `
+        <div class="product-card fade-in visible">
+            <div class="product-image">
+                ${badge}
+                ${emoji}
+            </div>
+            <div class="product-info">
+                <h4>${product.name}</h4>
+                <p>${product.description || ''}</p>
+                <div class="product-price">R${product.price.toFixed(0)}</div>
+                <button class="product-btn" data-product="${product.id}">Add to Cart</button>
+            </div>
+        </div>
+        `;
+    }).join('');
+    
+    // Attach event listeners
+    document.querySelectorAll('[data-product]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (window.addToCart) {
+                window.addToCart(btn.dataset.product);
+            }
+        });
+    });
+    
+    // Scroll indicator click handler
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.style.cursor = 'pointer';
+        scrollIndicator.addEventListener('click', () => {
+            const aboutSection = document.querySelector('.features');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 }
