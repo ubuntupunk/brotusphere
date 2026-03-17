@@ -5,11 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "npx serve -l 3000",
-    "start": "npx serve -l 3000"
+    "start": "npx serve -l 3000",
+    "build": "rm -rf www && mkdir -p www && cp index.html www/ && cp -r css js images www/",
+    "cap:sync": "bun run build && bunx cap sync"
   },
   "dependencies": {
-    "pg": "^8.11.3",
+    "@capacitor/android": "^8.2.0",
+    "@capacitor/cli": "^8.2.0",
+    "@capacitor/core": "^8.2.0",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3"
   }
 }

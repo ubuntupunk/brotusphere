@@ -1,0 +1,10 @@
+{
+  "appId": "app.netbones.brotusphere",
+  "appName": "brotusphere",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost",
+    "cleartext": true
+  }
+}

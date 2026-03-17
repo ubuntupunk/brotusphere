@@ -47,10 +47,7 @@ export async function initProductsPage() {
         <div class="shop-product fade-in visible">
             <div class="shop-product-image">
                 ${badge}
-                ${product.image_url 
-                    ? `<img src="${product.image_url}" alt="${product.name}" loading="lazy">`
-                    : emoji
-                }
+                ${emoji}
             </div>
             <div class="shop-product-info">
                 <h3>${product.name}</h3>
