@@ -8,6 +8,7 @@ import { sphere, initSphereCarousel } from './pages/sphere.js';
 import { profile, initProfilePage } from './pages/profile.js';
 import { orders, initOrdersPage } from './pages/orders.js';
 import { admin, initAdminPage } from './pages/admin.js';
+import { resetPassword, initResetPasswordPage } from './pages/resetPassword.js';
 import { notFound } from './pages/notFound.js';
 
 const pages = {
@@ -21,6 +22,7 @@ const pages = {
     profile,
     orders,
     admin,
+    resetPassword,
     notFound
 };
 
@@ -31,7 +33,8 @@ const pageMounts = {
     products: initProductsPage,
     profile: initProfilePage,
     orders: initOrdersPage,
-    admin: initAdminPage
+    admin: initAdminPage,
+    resetPassword: initResetPasswordPage
 };
 
 const pageTitles = {
@@ -45,6 +48,7 @@ const pageTitles = {
     profile: 'My Profile - Brotusphere',
     orders: 'My Orders - Brotusphere',
     admin: 'Admin Dashboard - Brotusphere',
+    resetPassword: 'Reset Password - Brotusphere',
     notFound: 'Page Not Found - Brotusphere'
 };
 
@@ -185,7 +189,7 @@ class Router {
 
     updateNavStyle(page) {
         const navbar = document.getElementById('navbar');
-        const darkHeroPages = ['health', 'science', 'contact', 'profile', 'orders', 'admin'];
+        const darkHeroPages = ['health', 'science', 'contact', 'profile', 'orders', 'admin', 'resetPassword'];
         if (darkHeroPages.includes(page)) {
             navbar.classList.add('dark-hero');
         } else {

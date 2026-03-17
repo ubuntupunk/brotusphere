@@ -2,6 +2,7 @@ import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
 import { initAdminPage } from './pages/admin.js';
+import { initResetPasswordPage } from './pages/resetPassword.js';
 import { API_BASE, ENDPOINTS, STORAGE_KEYS, CURRENCY } from './config.js';
 import { getEmoji } from './utils/categories.js';
 import { renderPayPalButton, createOrderOnServer } from './utils/checkout.js';
@@ -759,7 +760,8 @@ async function initApp() {
         '/sphere': { page: 'sphere', onMount: initAnimations },
         '/profile': { page: 'profile', onMount: initProfilePage },
         '/orders': { page: 'orders', onMount: initOrdersPage },
-        '/admin': { page: 'admin', onMount: initAdminPage }
+        '/admin': { page: 'admin', onMount: initAdminPage },
+        '/reset-password': { page: 'resetPassword', onMount: initResetPasswordPage }
     });
     
     updateCartUI();

@@ -1783,6 +1783,21 @@ footer {
     margin: 0 auto;
 }
 
+/* Page: Reset Password */
+.page-reset-password .auth-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
+    padding: 200px 48px 80px;
+    text-align: center;
+    color: var(--white);
+}
+
+.page-reset-password .auth-content {
+    padding: 80px 48px;
+    background: var(--white);
+    display: flex;
+    justify-content: center;
+}
+
 .no-orders {
     text-align: center;
     padding: 60px;
