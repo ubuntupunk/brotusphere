@@ -1,5 +1,6 @@
 import pool from '../lib/db.js';
 import { createOrder } from '../lib/orders.js';
+import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
 
 const PAYPAL_API = process.env.PAYPAL_MODE === 'live' 
   ? 'https://api-m.paypal.com' 
@@ -82,7 +83,28 @@ export async function handler(event, context) {
 
   // POST /paypal?action=capture-order
   if (event.httpMethod === 'POST' && action === 'capture-order') {
-    const { orderId, items, userId, shipping } = JSON.parse(event.body || '{}');
+    const { orderId, items, shipping } = JSON.parse(event.body || '{}');
+
+    // Get user from JWT token
+    const token = getTokenFromEvent(event);
+    if (!token) {
+      return {
+        statusCode: 401,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Authentication required' })
+      };
+    }
+    
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return {
+        statusCode: 401,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Invalid or expired token' })
+      };
+    }
+    
+    const userId = decoded.id;
 
     if (!orderId) {
       return {

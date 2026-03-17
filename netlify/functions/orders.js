@@ -1,29 +1,17 @@
 import pool, { query } from '../lib/db.js';
 import { createOrder, getUserOrders } from '../lib/orders.js';
-
-function parseCookies(event) {
-  const cookieHeader = event.headers.cookie || '';
-  const cookies = {};
-  cookieHeader.split(';').forEach(c => {
-    const [key, val] = c.trim().split('=');
-    if (key) cookies[key] = val;
-  });
-  return cookies;
-}
+import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
 
 async function getUserProfile(event) {
-  const cookies = parseCookies(event);
-  const token = cookies['auth_token'];
+  const token = getTokenFromEvent(event);
   
   if (!token) return null;
 
   try {
-    const decoded = Buffer.from(token, 'base64').toString();
-    const [userId] = decoded.split(':');
+    const decoded = verifyToken(token);
+    if (!decoded) return null;
     
-    if (!userId) return null;
-    
-    const result = await query('SELECT id, name, email FROM user_profiles WHERE id = $1', [userId]);
+    const result = await query('SELECT id, name, email FROM user_profiles WHERE id = $1', [decoded.id]);
     return result.rows[0] || null;
   } catch (e) {
     return null;

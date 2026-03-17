@@ -1,14 +1,13 @@
 import pool from '../lib/db.js';
-
-function simpleHash(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return 'hash_' + Math.abs(hash).toString(16);
-}
+import { 
+  hashPassword, 
+  verifyPassword, 
+  generateToken, 
+  verifyToken,
+  getTokenFromEvent,
+  createAuthResponse,
+  authError
+} from '../lib/auth.js';
 
 export async function handler(event, context) {
   const { action } = event.queryStringParameters;
@@ -18,11 +17,11 @@ export async function handler(event, context) {
     const { name, email, password } = JSON.parse(event.body || '{}');
 
     if (!name || !email || !password) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Name, email and password required' })
-      };
+      return authError('Name, email and password required', 400);
+    }
+
+    if (password.length < 6) {
+      return authError('Password must be at least 6 characters', 400);
     }
 
     try {
@@ -30,15 +29,11 @@ export async function handler(event, context) {
       const existing = await pool.query('SELECT id FROM user_profiles WHERE email = $1', [email.toLowerCase()]);
       
       if (existing.rows.length > 0) {
-        return {
-          statusCode: 409,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'User already exists' })
-        };
+        return authError('User already exists', 409);
       }
 
-      // Hash password (simple for now - use bcrypt in production)
-      const hashedPassword = simpleHash(password);
+      // Hash password with bcrypt
+      const hashedPassword = await hashPassword(password);
 
       // Create user
       const result = await pool.query(`
@@ -48,28 +43,12 @@ export async function handler(event, context) {
       `, [name, email.toLowerCase(), hashedPassword]);
 
       const user = result.rows[0];
+      const token = generateToken(user);
 
-      // Generate simple token
-      const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
-
-      return {
-        statusCode: 201,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Set-Cookie': `auth_token=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}`
-        },
-        body: JSON.stringify({ 
-          user: { id: user.id, name: user.name, email: user.email },
-          token
-        })
-      };
+      return createAuthResponse(user, token);
     } catch (error) {
       console.error('Signup error:', error);
-      return {
-        statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Registration failed: ' + error.message })
-      };
+      return authError('Registration failed: ' + error.message, 500);
     }
   }
 
@@ -78,11 +57,7 @@ export async function handler(event, context) {
     const { email, password } = JSON.parse(event.body || '{}');
 
     if (!email || !password) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Email and password required' })
-      };
+      return authError('Email and password required', 400);
     }
 
     try {
@@ -92,51 +67,55 @@ export async function handler(event, context) {
       );
       
       if (result.rows.length === 0) {
-        return {
-          statusCode: 401,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Invalid credentials' })
-        };
+        return authError('Invalid credentials');
       }
 
       const user = result.rows[0];
-      const hashedPassword = simpleHash(password);
-      const valid = user.password_hash === hashedPassword;
+      const valid = await verifyPassword(password, user.password_hash);
 
       if (!valid) {
-        return {
-          statusCode: 401,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Invalid credentials' })
-        };
+        return authError('Invalid credentials');
       }
 
-      const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+      const token = generateToken(user);
 
-      return {
-        statusCode: 200,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Set-Cookie': `auth_token=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}`
-        },
-        body: JSON.stringify({ 
-          user: { id: user.id, name: user.name, email: user.email },
-          token
-        })
-      };
+      return createAuthResponse(user, token);
     } catch (error) {
       console.error('Login error:', error);
-      return {
-        statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Login failed' })
-      };
+      return authError('Login failed', 500);
     }
   }
 
-  return {
-    statusCode: 400,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ error: 'Invalid action' })
-  };
+  // GET /auth?action=verify - Verify token
+  if (event.httpMethod === 'GET' && action === 'verify') {
+    const token = getTokenFromEvent(event);
+    
+    if (!token) {
+      return authError('No token provided', 401);
+    }
+    
+    const decoded = verifyToken(token);
+    
+    if (!decoded) {
+      return authError('Invalid or expired token', 401);
+    }
+    
+    try {
+      const result = await pool.query(
+        'SELECT id, name, email FROM user_profiles WHERE id = $1',
+        [decoded.id]
+      );
+      
+      if (result.rows.length === 0) {
+        return authError('User not found', 404);
+      }
+      
+      return createAuthResponse(result.rows[0], token);
+    } catch (error) {
+      console.error('Verify error:', error);
+      return authError('Verification failed', 500);
+    }
+  }
+
+  return authError('Invalid action', 400);
 }
