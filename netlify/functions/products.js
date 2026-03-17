@@ -1,5 +1,5 @@
-import pool from '../netlify/lib/db.js';
-import { verifyAdminKey, authError } from '../netlify/lib/auth.js';
+import pool from '../lib/db.js';
+import { verifyAdminKey, authError } from '../lib/auth.js';
 
 export async function handler(event, context) {
   // GET - List all products

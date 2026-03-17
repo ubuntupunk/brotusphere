@@ -1,6 +1,6 @@
-import pool from '../netlify/lib/db.js';
-import { createOrder } from '../netlify/lib/orders.js';
-import { getTokenFromEvent, verifyToken } from '../netlify/lib/auth.js';
+import pool from '../lib/db.js';
+import { createOrder } from '../lib/orders.js';
+import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
 
 const PAYPAL_API = process.env.PAYPAL_MODE === 'live' 
   ? 'https://api-m.paypal.com' 
