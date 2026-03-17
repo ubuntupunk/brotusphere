@@ -183,7 +183,7 @@ class Router {
 
     updateNavStyle(page) {
         const navbar = document.getElementById('navbar');
-        const darkHeroPages = ['health', 'science', 'contact', 'profile', 'orders'];
+        const darkHeroPages = ['health', 'science', 'contact', 'profile', 'orders', 'admin'];
         if (darkHeroPages.includes(page)) {
             navbar.classList.add('dark-hero');
         } else {

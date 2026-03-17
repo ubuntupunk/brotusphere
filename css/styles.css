@@ -1974,11 +1974,11 @@ footer {
         padding: 60px 24px;
     }
 
-    .health-hero, .shop-hero, .contact-hero, .profile-hero, .orders-hero {
+    .health-hero, .shop-hero, .contact-hero, .profile-hero, .orders-hero, .admin-hero {
         padding: 140px 24px 60px;
     }
 
-    .health-content, .shop-content, .contact-content, .profile-content, .orders-content {
+    .health-content, .shop-content, .contact-content, .profile-content, .orders-content, .admin-content {
         padding: 60px 24px;
     }
 
@@ -2683,15 +2683,15 @@ footer {
 
 /* Admin Dashboard */
 .admin-hero {
-    background: linear-gradient(135deg, var(--primary) 0%, #1a3009 100%);
-    color: white;
-    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
+    padding: 200px 48px 80px;
     text-align: center;
+    color: var(--white);
 }
 
 .admin-hero h1 {
-    font-size: 2.5rem;
-    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: 16px;
 }
 
 .admin-content {
