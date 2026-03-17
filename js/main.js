@@ -103,23 +103,95 @@ mobileOverlay.addEventListener('click', closeMobileMenu);
 cartBtn.addEventListener('click', () => {
     cartModal.classList.add('active');
     mobileOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    currentFocusTrap = trapFocus(cartModal);
 });
 
 document.getElementById('mobileCartBtn')?.addEventListener('click', () => {
     closeMobileMenu();
     cartModal.classList.add('active');
     mobileOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    currentFocusTrap = trapFocus(cartModal);
 });
 
 cartClose.addEventListener('click', () => {
     cartModal.classList.remove('active');
     mobileOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    if (currentFocusTrap) {
+        currentFocusTrap();
+        currentFocusTrap = null;
+    }
 });
 
 mobileOverlay.addEventListener('click', () => {
     cartModal.classList.remove('active');
     authModal.classList.remove('active');
     closeMobileMenu();
+    document.body.style.overflow = '';
+    if (currentFocusTrap) {
+        currentFocusTrap();
+        currentFocusTrap = null;
+    }
+});
+
+// Modal utilities
+function closeAllModals() {
+    cartModal.classList.remove('active');
+    authModal.classList.remove('active');
+    closeMobileMenu();
+    document.body.style.overflow = '';
+    if (currentFocusTrap) {
+        currentFocusTrap();
+        currentFocusTrap = null;
+    }
+}
+}
+
+function trapFocus(element) {
+    const focusableElements = element.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+    
+    function handleTabKey(e) {
+        if (e.key !== 'Tab') return;
+        
+        if (e.shiftKey) {
+            if (document.activeElement === firstFocusable) {
+                e.preventDefault();
+                lastFocusable.focus();
+            }
+        } else {
+            if (document.activeElement === lastFocusable) {
+                e.preventDefault();
+                firstFocusable.focus();
+            }
+        }
+    }
+    
+    element.addEventListener('keydown', handleTabKey);
+    firstFocusable?.focus();
+    
+    return () => element.removeEventListener('keydown', handleTabKey);
+}
+
+let currentFocusTrap = null;
+
+// Escape key to close modals
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (cartModal.classList.contains('active') || 
+            authModal.classList.contains('active') ||
+            mobileMenu.classList.contains('active')) {
+            e.preventDefault();
+            closeAllModals();
+            // Return focus to trigger element
+            if (e.target) e.target.blur();
+        }
+    }
 });
 
 // Auth Modal
@@ -133,6 +205,8 @@ authBtn.addEventListener('click', (e) => {
     } else {
         authModal.classList.add('active');
         mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        currentFocusTrap = trapFocus(authModal);
     }
 });
 
@@ -176,6 +250,11 @@ document.getElementById('adminLink').addEventListener('click', (e) => {
 authClose.addEventListener('click', () => {
     authModal.classList.remove('active');
     mobileOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    if (currentFocusTrap) {
+        currentFocusTrap();
+        currentFocusTrap = null;
+    }
 });
 
 // Auth tabs
@@ -216,6 +295,11 @@ loginForm.addEventListener('submit', async (e) => {
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (currentFocusTrap) {
+                currentFocusTrap();
+                currentFocusTrap = null;
+            }
             authMessage.textContent = '';
         } else {
             authMessage.textContent = data.error || 'Login failed';
@@ -249,6 +333,11 @@ registerForm.addEventListener('submit', async (e) => {
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (currentFocusTrap) {
+                currentFocusTrap();
+                currentFocusTrap = null;
+            }
             authMessage.textContent = '';
         } else {
             authMessage.textContent = data.error || 'Registration failed';
