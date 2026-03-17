@@ -51,7 +51,8 @@ export function renderPayPalButton(containerId, total, onApprove, onError) {
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: total.toFixed(2)
+                        value: total.toFixed(2),
+                        currency_code: 'USD'
                     },
                     description: 'Brotusphere Order'
                 }]
