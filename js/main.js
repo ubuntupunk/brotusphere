@@ -353,9 +353,23 @@ document.addEventListener('click', async (e) => {
         };
         
         renderPayPalButton('paypal-button-container', usdTotal, async (details) => {
+            // Extract billing address from PayPal
+            const payer = details.payer || {};
+            const billingAddress = payer.address || {};
+            const shippingAddress = details.purchase_units?.[0]?.shipping?.address || {};
+            
+            const fullShipping = {
+                name: currentUser.name,
+                address: shippingAddress.address_line_1 || billingAddress.address_line_1 || '',
+                address2: shippingAddress.address_line_2 || billingAddress.address_line_2 || '',
+                city: shippingAddress.admin_area_2 || billingAddress.admin_area_2 || '',
+                postalCode: shippingAddress.postal_code || billingAddress.postal_code || '',
+                country: shippingAddress.country_code || billingAddress.country_code || 'ZA'
+            };
+            
             // Payment successful - create order on server
             try {
-                await createOrderOnServer(cart, total, shipping, details.id);
+                await createOrderOnServer(cart, total, fullShipping, details.id);
                 
                 // Clear cart and show success
                 window.appCart = [];
