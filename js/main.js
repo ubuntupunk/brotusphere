@@ -326,8 +326,8 @@ document.addEventListener('click', async (e) => {
         checkoutBox.innerHTML = `
             <button id="close-paypal" style="position:absolute;top:10px;right:15px;font-size:24px;background:none;border:none;cursor:pointer;">&times;</button>
             <h2 style="margin-bottom:20px;">Complete Your Order</h2>
-            <p style="margin-bottom:5px;">Total: <strong>R${total.toFixed(2)} ZAR</strong></p>
-            <p style="margin-bottom:20px;font-size:12px;color:#666;">(Payment in USD ~ $${(total / 18).toFixed(2)})</p>
+            <p style="margin-bottom:5px;">Total: <strong>$${usdTotal.toFixed(2)} USD</strong></p>
+            <p style="margin-bottom:20px;font-size:12px;color:#666;">(≈ R${total.toFixed(2)} ZAR)</p>
             <div id="paypal-button-container"></div>
         `;
         
