@@ -1,6 +1,6 @@
-import pool, { query } from '../lib/db.js';
-import { createOrder, getUserOrders } from '../lib/orders.js';
-import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
+import pool, { query } from '../netlify/lib/db.js';
+import { createOrder, getUserOrders } from '../netlify/lib/orders.js';
+import { getTokenFromEvent, verifyToken } from '../netlify/lib/auth.js';
 
 async function getUserProfile(event) {
   const token = getTokenFromEvent(event);
