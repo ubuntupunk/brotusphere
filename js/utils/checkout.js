@@ -94,8 +94,9 @@ export async function createOrderOnServer(items, total, shipping, paypalOrderId,
     });
     
     if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error || 'Failed to create order');
+        const err = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Order API error:', response.status, err);
+        throw new Error(err.error || `Server error: ${response.status}`);
     }
     
     return response.json();

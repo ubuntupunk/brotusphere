@@ -394,7 +394,7 @@ document.addEventListener('click', async (e) => {
                 window.router.navigate('/orders');
             } catch (err) {
                 console.error('Order creation error:', err);
-                alert('Payment received but order creation failed. Please contact support.');
+                alert('Order creation failed: ' + err.message);
             }
             
             e.target.disabled = false;
