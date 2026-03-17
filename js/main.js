@@ -1,6 +1,7 @@
 import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
+import { initAdminPage } from './pages/admin.js';
 import { API_BASE, ENDPOINTS, STORAGE_KEYS, CURRENCY } from './config.js';
 import { getEmoji } from './utils/categories.js';
 import { renderPayPalButton, createOrderOnServer } from './utils/checkout.js';
@@ -148,6 +149,7 @@ document.getElementById('logoutLink').addEventListener('click', (e) => {
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     authText.textContent = 'Login';
     authDropdown.classList.remove('active');
+    document.getElementById('adminLink').style.display = 'none';
 });
 
 // Profile link
@@ -162,6 +164,13 @@ document.getElementById('ordersLink').addEventListener('click', (e) => {
     e.preventDefault();
     authDropdown.classList.remove('active');
     window.router.navigate('/orders');
+});
+
+// Admin link
+document.getElementById('adminLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    authDropdown.classList.remove('active');
+    window.router.navigate('/admin');
 });
 
 authClose.addEventListener('click', () => {
@@ -266,6 +275,14 @@ registerForm.addEventListener('submit', async (e) => {
             } else {
                 currentUser = user;
                 authText.textContent = currentUser.name;
+                
+                // Show/hide admin link based on role
+                const adminLink = document.getElementById('adminLink');
+                if (currentUser.role === 'admin' || currentUser.role === 'staff') {
+                    adminLink.style.display = 'block';
+                } else {
+                    adminLink.style.display = 'none';
+                }
             }
         } catch (e) {
             localStorage.removeItem(STORAGE_KEYS.USER);
@@ -546,7 +563,8 @@ async function initApp() {
         '/science': { page: 'science' },
         '/sphere': { page: 'sphere', onMount: initAnimations },
         '/profile': { page: 'profile', onMount: initProfilePage },
-        '/orders': { page: 'orders', onMount: initOrdersPage }
+        '/orders': { page: 'orders', onMount: initOrdersPage },
+        '/admin': { page: 'admin', onMount: initAdminPage }
     });
     
     updateCartUI();

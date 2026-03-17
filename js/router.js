@@ -7,6 +7,7 @@ import { science, initSciencePage } from './pages/science.js';
 import { sphere, initSphereCarousel } from './pages/sphere.js';
 import { profile, initProfilePage } from './pages/profile.js';
 import { orders, initOrdersPage } from './pages/orders.js';
+import { admin, initAdminPage } from './pages/admin.js';
 import { notFound } from './pages/notFound.js';
 
 const pages = {
@@ -19,6 +20,7 @@ const pages = {
     sphere,
     profile,
     orders,
+    admin,
     notFound
 };
 
@@ -28,7 +30,8 @@ const pageMounts = {
     sphere: initSphereCarousel,
     products: initProductsPage,
     profile: initProfilePage,
-    orders: initOrdersPage
+    orders: initOrdersPage,
+    admin: initAdminPage
 };
 
 const pageTitles = {
@@ -41,6 +44,7 @@ const pageTitles = {
     sphere: 'Articles & Library - Brotusphere',
     profile: 'My Profile - Brotusphere',
     orders: 'My Orders - Brotusphere',
+    admin: 'Admin Dashboard - Brotusphere',
     notFound: 'Page Not Found - Brotusphere'
 };
 

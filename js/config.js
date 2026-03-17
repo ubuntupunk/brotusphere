@@ -6,6 +6,7 @@ export const ENDPOINTS = {
     ORDERS: `${API_BASE}/orders`,
     PAYPAL: `${API_BASE}/paypal`,
     TRACK: `${API_BASE}/track`,
+    ADMIN: `${API_BASE}/admin`,
     INIT_DB: `${API_BASE}/init-db`
 };
 

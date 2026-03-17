@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS user_profiles (
     neon_user_id UUID NOT NULL,  -- References neon.users.id
     name VARCHAR(255),
     phone VARCHAR(50),
+    role VARCHAR(20) DEFAULT 'customer',  -- 'admin', 'staff', 'customer'
     default_shipping_address TEXT,
     default_city VARCHAR(100),
     default_postal_code VARCHAR(20),

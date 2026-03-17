@@ -66,7 +66,7 @@ function createAuthResponse(user, token, includeCookie = true) {
     statusCode: 200,
     headers,
     body: JSON.stringify({
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id, name: user.name, email: user.email, role: user.role || 'customer' },
       token
     })
   };
