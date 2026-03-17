@@ -50,14 +50,14 @@ export async function handler(event, context) {
       return errorResponse(401, 'Please sign in to place an order');
     }
 
-    const { items, shipping, paypalOrderId } = JSON.parse(event.body || '{}');
+    const { items, shipping, paypalOrderId, billing, payerEmail } = JSON.parse(event.body || '{}');
 
     if (!items || items.length === 0) {
       return errorResponse(400, 'No items in cart');
     }
 
     try {
-      const { orderId, total } = await createOrder(user.id, items, shipping, paypalOrderId);
+      const { orderId, total } = await createOrder(user.id, items, shipping, paypalOrderId, null, 'paid', billing, payerEmail);
       return successResponse({ orderId, total });
     } catch (error) {
       console.error('Create order error:', error);

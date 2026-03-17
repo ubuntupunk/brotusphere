@@ -74,7 +74,7 @@ export function renderPayPalButton(containerId, total, onApprove, onError) {
     }).render(`#${containerId}`);
 }
 
-export async function createOrderOnServer(items, total, shipping, paypalOrderId) {
+export async function createOrderOnServer(items, total, shipping, paypalOrderId, billing = {}, payerEmail = null) {
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     
     const response = await fetch(ENDPOINTS.ORDERS, {
@@ -83,7 +83,14 @@ export async function createOrderOnServer(items, total, shipping, paypalOrderId)
             'Content-Type': 'application/json',
             ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         },
-        body: JSON.stringify({ items, total, shipping, paypalOrderId })
+        body: JSON.stringify({ 
+            items, 
+            total, 
+            shipping, 
+            paypalOrderId,
+            billing,
+            payerEmail
+        })
     });
     
     if (!response.ok) {

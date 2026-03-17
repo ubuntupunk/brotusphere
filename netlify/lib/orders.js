@@ -1,6 +1,6 @@
 import pool from './db.js';
 
-export async function createOrder(userId, items, shipping, paypalOrderId = null, paypalTransactionId = null, status = 'pending') {
+export async function createOrder(userId, items, shipping = {}, paypalOrderId = null, paypalTransactionId = null, status = 'pending', billing = {}, payerEmail = null) {
   const client = await pool.connect();
   
   try {
@@ -35,19 +35,35 @@ export async function createOrder(userId, items, shipping, paypalOrderId = null,
     }
 
     const orderResult = await client.query(`
-      INSERT INTO orders (user_id, total, shipping_name, shipping_address, shipping_city, shipping_postal_code, shipping_country, paypal_order_id, paypal_transaction_id, status)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      INSERT INTO orders (
+        user_id, total, 
+        shipping_name, shipping_address, shipping_address2, shipping_city, shipping_postal_code, shipping_country,
+        billing_name, billing_address, billing_address2, billing_city, billing_postal_code, billing_country,
+        payer_email,
+        paypal_order_id, paypal_transaction_id, status
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
       RETURNING id
     `, [
       userId,
       total,
       shipping?.name,
       shipping?.address,
+      shipping?.address2,
       shipping?.city,
       shipping?.postalCode,
       shipping?.country,
+      billing?.name || shipping?.name,
+      billing?.address,
+      billing?.address2,
+      billing?.city,
+      billing?.postalCode,
+      billing?.country,
+      payerEmail,
       paypalOrderId,
       paypalTransactionId,
+      status
+    ]);
       status
     ]);
 
