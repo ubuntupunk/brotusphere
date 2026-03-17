@@ -2,11 +2,12 @@
   publish = "."
   command = ""
 
+[functions]
+  node_bundler = "esbuild"
+  directory = "netlify/functions"
+
 [build.environment]
   NODE_VERSION = "18"
-
-[functions]
-  directory = "netlify/functions"
 
 [[redirects]]
   from = "/*"
