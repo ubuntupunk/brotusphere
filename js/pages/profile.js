@@ -1,3 +1,5 @@
+import { STORAGE_KEYS } from '../config.js';
+
 export function profile() {
     return `
 <div class="page" id="page-profile">
@@ -54,7 +56,7 @@ export function profile() {
 }
 
 export function initProfilePage() {
-    const savedUser = localStorage.getItem('brotusphere-user');
+    const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
     if (!savedUser) {
         window.location.href = '/';
         return;
@@ -65,7 +67,7 @@ export function initProfilePage() {
     document.getElementById('profileEmail').value = user.email || '';
     
     // Load additional profile data if available
-    const profileData = localStorage.getItem('brotusphere-profile');
+    const profileData = localStorage.getItem(STORAGE_KEYS.PROFILE);
     if (profileData) {
         const data = JSON.parse(profileData);
         document.getElementById('profilePhone').value = data.phone || '';
@@ -80,7 +82,7 @@ export function initProfilePage() {
         e.preventDefault();
         const name = document.getElementById('profileName').value;
         const updatedUser = { ...user, name };
-        localStorage.setItem('brotusphere-user', JSON.stringify(updatedUser));
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
         document.getElementById('authText').textContent = name;
         alert('Profile saved!');
     });
@@ -95,7 +97,7 @@ export function initProfilePage() {
             postalCode: document.getElementById('profilePostal').value,
             country: document.getElementById('profileCountry').value
         };
-        localStorage.setItem('brotusphere-profile', JSON.stringify(profileData));
+        localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profileData));
         alert('Address saved!');
     });
 }

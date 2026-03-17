@@ -1,4 +1,4 @@
-const API_BASE = '/.netlify/functions';
+import { ENDPOINTS, STORAGE_KEYS } from '../config.js';
 
 export function orders() {
     return `
@@ -18,7 +18,7 @@ export function orders() {
 
 export async function initOrdersPage() {
     const ordersList = document.getElementById('ordersList');
-    const token = localStorage.getItem('brotusphere-token');
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     
     if (!token) {
         ordersList.innerHTML = '<div class="no-orders">Please <a href="#" id="loginLink">login</a> to view your orders</div>';
@@ -30,7 +30,7 @@ export async function initOrdersPage() {
     }
     
     try {
-        const response = await fetch(`${API_BASE}/orders`, {
+        const response = await fetch(ENDPOINTS.ORDERS, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

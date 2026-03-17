@@ -1,17 +1,16 @@
 import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
+import { API_BASE, ENDPOINTS, STORAGE_KEYS } from './config.js';
 
 console.log('main.js starting...');
 
-const API_BASE = '/.netlify/functions';
-
 window.appProducts = {};
-window.appCart = JSON.parse(localStorage.getItem('brotusphere-cart')) || [];
+window.appCart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || [];
 
 async function fetchProducts() {
     try {
-        const response = await fetch(`${API_BASE}/products`);
+        const response = await fetch(ENDPOINTS.PRODUCTS);
         const data = await response.json();
         
         if (data.products) {
@@ -145,8 +144,8 @@ document.addEventListener('click', () => {
 document.getElementById('logoutLink').addEventListener('click', (e) => {
     e.preventDefault();
     currentUser = null;
-    localStorage.removeItem('brotusphere-user');
-    localStorage.removeItem('brotusphere-token');
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    localStorage.removeItem(STORAGE_KEYS.TOKEN);
     authText.textContent = 'Login';
     authDropdown.classList.remove('active');
 });
@@ -194,7 +193,7 @@ loginForm.addEventListener('submit', async (e) => {
     const password = loginForm.password.value;
     
     try {
-        const response = await fetch(`${API_BASE}/auth?action=login`, {
+        const response = await fetch(`${ENDPOINTS.AUTH}?action=login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -203,8 +202,8 @@ loginForm.addEventListener('submit', async (e) => {
         
         if (response.ok) {
             currentUser = data.user;
-            localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
-            localStorage.setItem('brotusphere-token', data.token);
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
+            localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
@@ -227,7 +226,7 @@ registerForm.addEventListener('submit', async (e) => {
     const password = registerForm.password.value;
     
     try {
-        const response = await fetch(`${API_BASE}/auth?action=signup`, {
+        const response = await fetch(`${ENDPOINTS.AUTH}?action=signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
@@ -236,8 +235,8 @@ registerForm.addEventListener('submit', async (e) => {
         
         if (response.ok) {
             currentUser = data.user;
-            localStorage.setItem('brotusphere-user', JSON.stringify(data.user));
-            localStorage.setItem('brotusphere-token', data.token);
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
+            localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
@@ -253,7 +252,7 @@ registerForm.addEventListener('submit', async (e) => {
 });
 
 // Check for existing session
-const savedUser = localStorage.getItem('brotusphere-user');
+const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
 if (savedUser) {
     currentUser = JSON.parse(savedUser);
     authText.textContent = currentUser.name;
@@ -326,7 +325,7 @@ function removeFromCart(productId) {
 }
 
 function saveCart() {
-    localStorage.setItem('brotusphere-cart', JSON.stringify(window.appCart));
+    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(window.appCart));
 }
 
 function updateCartUI() {

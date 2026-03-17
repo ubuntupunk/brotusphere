@@ -1,4 +1,4 @@
-const API_BASE = '/.netlify/functions';
+import { ENDPOINTS } from '../config.js';
 
 function getEmoji(category) {
     const emojis = {

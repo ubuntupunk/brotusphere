@@ -1,3 +1,5 @@
+import { ENDPOINTS } from '../config.js';
+
 export function home() {
     return `
 <div class="page active" id="page-home">
@@ -98,8 +100,6 @@ export function home() {
 </div>
 `;
 }
-
-const API_BASE = '/.netlify/functions';
 
 function getEmoji(category) {
     const emojis = {
