@@ -36,6 +36,17 @@ export async function initOrdersPage() {
             }
         });
         
+        if (response.status === 401 || response.status === 403) {
+            ordersList.innerHTML = '<div class="no-orders">Session expired. Please <a href="#" id="loginLink">login</a> again to view your orders.</div>';
+            document.getElementById('loginLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem(STORAGE_KEYS.TOKEN);
+                localStorage.removeItem(STORAGE_KEYS.USER);
+                document.getElementById('authBtn').click();
+            });
+            return;
+        }
+        
         if (!response.ok) {
             throw new Error('Failed to fetch orders');
         }
