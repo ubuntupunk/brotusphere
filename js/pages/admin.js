@@ -225,6 +225,7 @@ function renderProducts(panel, products) {
         <table class="admin-table">
             <thead>
                 <tr>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Stock</th>
@@ -236,6 +237,13 @@ function renderProducts(panel, products) {
             <tbody>
                 ${products.map(p => `
                     <tr data-product-id="${p.id}">
+                        <td>
+                            ${p.image_url ? `<img src="${p.image_url}" class="product-thumb-admin" alt="">` : ''}
+                            <input type="text" class="image-url-input" 
+                                   placeholder="Image URL"
+                                   value="${p.image_url || ''}" 
+                                   data-product-id="${p.id}">
+                        </td>
                         <td>${p.name}</td>
                         <td>
                             <input type="number" class="price-input" 
@@ -270,7 +278,8 @@ function renderProducts(panel, products) {
             await updateProduct(productId, {
                 price: parseFloat(row.querySelector('.price-input').value),
                 stock: parseInt(row.querySelector('.stock-input').value),
-                isActive: row.querySelector('.active-check').checked
+                isActive: row.querySelector('.active-check').checked,
+                imageUrl: row.querySelector('.image-url-input').value
             });
         });
     });

@@ -285,7 +285,7 @@ async function handler(event, context) {
 
   // PATCH /admin?action=update-product
   if (event.httpMethod === 'PATCH' && action === 'update-product') {
-    const { productId, name, description, price, stock, isActive } = JSON.parse(event.body || '{}');
+    const { productId, name, description, price, stock, isActive, imageUrl } = JSON.parse(event.body || '{}');
 
     if (!productId) {
       return {
@@ -319,6 +319,10 @@ async function handler(event, context) {
       if (isActive !== undefined) {
         updates.push(`is_active = $${paramIndex++}`);
         params.push(isActive);
+      }
+      if (imageUrl !== undefined) {
+        updates.push(`image_url = $${paramIndex++}`);
+        params.push(imageUrl);
       }
 
       const query = `UPDATE products SET ${updates.join(', ')} WHERE id = $1 RETURNING *`;
