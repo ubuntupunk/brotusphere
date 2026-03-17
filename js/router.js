@@ -95,8 +95,10 @@ class Router {
             if (href && !href.startsWith('http')) {
                 const mobileMenu = document.getElementById('mobileMenu');
                 const mobileOverlay = document.getElementById('mobileOverlay');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
                 if (mobileMenu) mobileMenu.classList.remove('active');
                 if (mobileOverlay) mobileOverlay.classList.remove('active');
+                if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
                 document.body.style.overflow = '';
                 this.navigate(href);
             }

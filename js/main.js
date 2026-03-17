@@ -86,16 +86,52 @@ window.addEventListener('scroll', () => {
 
 // Mobile Menu
 mobileMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.add('active');
-    mobileOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+    } else {
+        mobileMenu.classList.add('active');
+        mobileMenuBtn.classList.add('active');
+        mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 });
 
 const closeMobileMenu = () => {
     mobileMenu.classList.remove('active');
+    mobileMenuBtn.classList.remove('active');
     mobileOverlay.classList.remove('active');
     document.body.style.overflow = '';
 };
+
+// Touch swipe support for mobile menu
+let touchStartX = 0;
+let touchEndX = 0;
+
+mobileMenu.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+mobileMenu.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    // Swipe right to close
+    if (diff > swipeThreshold && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+    }
+    // Swipe left to open
+    else if (diff < -swipeThreshold && !mobileMenu.classList.contains('active')) {
+        mobileMenu.classList.add('active');
+        mobileMenuBtn.classList.add('active');
+        mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
 
 mobileClose.addEventListener('click', closeMobileMenu);
 mobileOverlay.addEventListener('click', closeMobileMenu);
