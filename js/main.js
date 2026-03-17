@@ -68,6 +68,7 @@ const authBtn = document.getElementById('authBtn');
 const authModal = document.getElementById('authModal');
 const authClose = document.getElementById('authClose');
 const authText = document.getElementById('authText');
+const mobileAuthBtn = document.getElementById('mobileAuthBtn');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const authMessage = document.getElementById('authMessage');
@@ -221,6 +222,7 @@ document.getElementById('logoutLink').addEventListener('click', (e) => {
     localStorage.removeItem(STORAGE_KEYS.USER);
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     authText.textContent = 'Login';
+    if (mobileAuthBtn) mobileAuthBtn.textContent = 'Login / Register';
     authDropdown.classList.remove('active');
     document.getElementById('adminLink').style.display = 'none';
 });
@@ -292,6 +294,7 @@ loginForm.addEventListener('submit', async (e) => {
             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
             localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
+            if (mobileAuthBtn) mobileAuthBtn.textContent = 'Logout';
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -330,6 +333,7 @@ registerForm.addEventListener('submit', async (e) => {
             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
             localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
             authText.textContent = data.user.name;
+            if (mobileAuthBtn) mobileAuthBtn.textContent = 'Logout';
             authModal.classList.remove('active');
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -363,6 +367,7 @@ registerForm.addEventListener('submit', async (e) => {
             } else {
                 currentUser = user;
                 authText.textContent = currentUser.name;
+                if (mobileAuthBtn) mobileAuthBtn.textContent = 'Logout';
                 
                 // Show/hide admin link based on role
                 const adminLink = document.getElementById('adminLink');
