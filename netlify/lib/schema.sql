@@ -5,6 +5,7 @@
 CREATE TABLE IF NOT EXISTS user_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     neon_user_id UUID NOT NULL,  -- References neon.users.id
+    email VARCHAR(255) UNIQUE,
     name VARCHAR(255),
     phone VARCHAR(50),
     role VARCHAR(20) DEFAULT 'customer',  -- 'admin', 'staff', 'customer'
