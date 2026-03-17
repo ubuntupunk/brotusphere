@@ -1429,6 +1429,18 @@ footer {
     color: #dc3545;
 }
 
+.auth-forgot {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.auth-forgot a {
+    color: var(--primary);
+    text-decoration: underline;
+}
+}
+
 .cart-header {
     display: flex;
     justify-content: space-between;

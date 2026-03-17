@@ -143,5 +143,92 @@ exports.handler = async function(event, context) {
     }
   }
 
+  // POST /auth?action=forgot-password
+  if (event.httpMethod === 'POST' && action === 'forgot-password') {
+    const { email } = JSON.parse(event.body || '{}');
+
+    if (!email) {
+      return authError('Email required', 400);
+    }
+
+    try {
+      const result = await pool.query(
+        'SELECT id, name FROM user_profiles WHERE email = $1',
+        [email.toLowerCase()]
+      );
+
+      if (result.rows.length === 0) {
+        // Don't reveal if user exists
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'If the email exists, a reset link will be sent.' })
+        };
+      }
+
+      // Generate reset token
+      const crypto = require('crypto');
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetExpiry = new Date(Date.now() + 3600000); // 1 hour
+
+      await pool.query(
+        'UPDATE user_profiles SET password_reset_token = $1, password_reset_expires = $2 WHERE email = $3',
+        [resetToken, resetExpiry, email.toLowerCase()]
+      );
+
+      // In production, send email here
+      console.log('Password reset token:', resetToken);
+
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'If the email exists, a reset link will be sent.' })
+      };
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      return authError('Failed to process request', 500);
+    }
+  }
+
+  // POST /auth?action=reset-password
+  if (event.httpMethod === 'POST' && action === 'reset-password') {
+    const { token, password } = JSON.parse(event.body || '{}');
+
+    if (!token || !password) {
+      return authError('Token and password required', 400);
+    }
+
+    if (password.length < 6) {
+      return authError('Password must be at least 6 characters', 400);
+    }
+
+    try {
+      const result = await pool.query(
+        'SELECT id FROM user_profiles WHERE password_reset_token = $1 AND password_reset_expires > NOW()',
+        [token]
+      );
+
+      if (result.rows.length === 0) {
+        return authError('Invalid or expired token', 400);
+      }
+
+      const hashedPassword = await hashPassword(password);
+
+      await pool.query(
+        'UPDATE user_profiles SET password_hash = $1, password_reset_token = NULL, password_reset_expires = NULL WHERE id = $2',
+        [hashedPassword, result.rows[0].id]
+      );
+
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Password reset successful' })
+      };
+    } catch (error) {
+      console.error('Reset password error:', error);
+      return authError('Failed to reset password', 500);
+    }
+  }
+
   return authError('Invalid action', 400);
 };

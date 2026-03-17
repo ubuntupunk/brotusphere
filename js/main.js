@@ -299,16 +299,72 @@ document.querySelectorAll('.auth-tab').forEach(tab => {
         document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         
+        const forgotForm = document.getElementById('forgotPasswordForm');
+        
         if (tab.dataset.tab === 'login') {
             loginForm.classList.remove('hidden');
             registerForm.classList.add('hidden');
+            if (forgotForm) forgotForm.classList.add('hidden');
         } else {
             loginForm.classList.add('hidden');
             registerForm.classList.remove('hidden');
+            if (forgotForm) forgotForm.classList.add('hidden');
         }
         authMessage.textContent = '';
     });
 });
+
+// Forgot password
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+const backToLoginLink = document.getElementById('backToLoginLink');
+
+if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginForm.classList.add('hidden');
+        registerForm.classList.add('hidden');
+        forgotPasswordForm.classList.remove('hidden');
+        authMessage.textContent = '';
+    });
+}
+
+if (backToLoginLink) {
+    backToLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        forgotPasswordForm.classList.add('hidden');
+        authMessage.textContent = '';
+    });
+}
+
+if (forgotPasswordForm) {
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = forgotPasswordForm.email.value;
+        
+        try {
+            const response = await fetch(`${ENDPOINTS.AUTH}?action=forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            
+            if (response.ok) {
+                authMessage.textContent = 'If the email exists, a reset link will be sent.';
+                authMessage.className = 'auth-message success';
+            } else {
+                const data = await response.json();
+                authMessage.textContent = data.error || 'Failed to process request';
+                authMessage.className = 'auth-message error';
+            }
+        } catch (error) {
+            authMessage.textContent = 'Connection error';
+            authMessage.className = 'auth-message error';
+        }
+    });
+}
 
 // Login
 loginForm.addEventListener('submit', async (e) => {

@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS user_profiles (
     name VARCHAR(255),
     phone VARCHAR(50),
     role VARCHAR(20) DEFAULT 'customer',  -- 'admin', 'staff', 'customer'
+    password_hash VARCHAR(255),
+    password_reset_token VARCHAR(255),
+    password_reset_expires TIMESTAMP WITH TIME ZONE,
     default_shipping_address TEXT,
     default_city VARCHAR(100),
     default_postal_code VARCHAR(20),
