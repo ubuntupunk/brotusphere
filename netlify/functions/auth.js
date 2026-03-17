@@ -1,4 +1,4 @@
-const pool = require('../lib/db.js');
+const { pool } = require('../lib/db.js');
 const { 
   hashPassword, 
   verifyPassword, 

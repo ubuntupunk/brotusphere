@@ -1,5 +1,4 @@
-const pool = require('../lib/db.js');
-const { query } = require('../lib/db.js');
+const { pool, query } = require('../lib/db.js');
 const { createOrder, getUserOrders } = require('../lib/orders.js');
 const { getTokenFromEvent, verifyToken } = require('../lib/auth.js');
 

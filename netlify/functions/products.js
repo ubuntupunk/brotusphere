@@ -1,4 +1,4 @@
-const pool = require('../lib/db.js');
+const { pool } = require('../lib/db.js');
 const { verifyAdminKey, authError } = require('../lib/auth.js');
 
 exports.handler = async function(event, context) {

@@ -1,4 +1,4 @@
-const pool = require('./db.js');
+const { pool } = require('./db.js');
 
 async function createOrder(userId, items, shipping = {}, paypalOrderId = null, paypalTransactionId = null, status = 'pending', billing = {}, payerEmail = null) {
   const client = await pool.connect();

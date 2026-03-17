@@ -15,8 +15,6 @@ const pool = new Pool({
   ssl: sslConfig
 });
 
-module.exports = pool;
-
 async function query(text, params) {
   if (!connectionString) {
     throw new Error('Database not configured - NEON_DATABASE is not set');
@@ -52,4 +50,4 @@ async function withTransaction(callback) {
   }
 }
 
-module.exports = { query, getClient, withTransaction };
+module.exports = { pool, query, getClient, withTransaction };

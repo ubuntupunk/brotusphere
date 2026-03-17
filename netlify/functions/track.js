@@ -1,4 +1,4 @@
-const pool = require('../lib/db.js');
+const { pool } = require('../lib/db.js');
 
 module.exports.handler = async function handler(event, context) {
   if (event.httpMethod !== 'GET') {
