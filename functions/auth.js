@@ -1,4 +1,4 @@
-import pool from '../lib/db.js';
+import pool from '../netlify/lib/db.js';
 import { 
   hashPassword, 
   verifyPassword, 
@@ -7,7 +7,7 @@ import {
   getTokenFromEvent,
   createAuthResponse,
   authError
-} from '../lib/auth.js';
+} from '../netlify/lib/auth.js';
 
 function simpleHash(str) {
   let hash = 0;
@@ -36,7 +36,7 @@ async function verifyAndMigratePassword(password, storedHash, userId) {
   // Use bcrypt for new format
   return verifyPassword(password, storedHash);
 }
-import { checkRateLimit } from '../lib/rate-limit.js';
+import { checkRateLimit } from '../netlify/lib/rate-limit.js';
 
 export async function handler(event, context) {
   const { action } = event.queryStringParameters;
