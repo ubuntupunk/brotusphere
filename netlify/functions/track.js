@@ -1,6 +1,6 @@
-import pool from '../lib/db.js';
+const pool = require('../lib/db.js');
 
-export async function handler(event, context) {
+module.exports.handler = async function handler(event, context) {
   if (event.httpMethod !== 'GET') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -81,7 +81,7 @@ export async function handler(event, context) {
       body: JSON.stringify({ error: 'Failed to fetch order' })
     };
   }
-}
+};
 
 function getTrackingUrl(carrier, number) {
   if (!carrier || !number) return null;
@@ -90,7 +90,7 @@ function getTrackingUrl(carrier, number) {
     'dhl': `https://www.dhl.com/en/express/tracking.html?AWB=${number}`,
     'fedex': `https://www.fedex.com/fedextrack/?trknbr=${number}`,
     'ups': `https://www.ups.com/track?tracknum=${number}`,
-    'south-african-postal': `https://www.postoffice.co.za/track/',
+    'south-african-postal': `https://www.postoffice.co.za/track/`,
     'default': null
   };
 

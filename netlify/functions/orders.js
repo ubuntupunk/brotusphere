@@ -1,6 +1,7 @@
-import pool, { query } from '../lib/db.js';
-import { createOrder, getUserOrders } from '../lib/orders.js';
-import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
+const pool = require('../lib/db.js');
+const { query } = require('../lib/db.js');
+const { createOrder, getUserOrders } = require('../lib/orders.js');
+const { getTokenFromEvent, verifyToken } = require('../lib/auth.js');
 
 async function getUserProfile(event) {
   const token = getTokenFromEvent(event);
@@ -26,10 +27,9 @@ function errorResponse(statusCode, message) {
   return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: message }) };
 }
 
-export async function handler(event, context) {
+exports.handler = async function(event, context) {
   const user = await getUserProfile(event);
 
-  // GET - List user's orders
   if (event.httpMethod === 'GET') {
     if (!user) {
       return errorResponse(401, 'Unauthorized');
@@ -44,7 +44,6 @@ export async function handler(event, context) {
     }
   }
 
-  // POST - Create new order
   if (event.httpMethod === 'POST') {
     if (!user) {
       return errorResponse(401, 'Please sign in to place an order');
@@ -66,4 +65,4 @@ export async function handler(event, context) {
   }
 
   return errorResponse(405, 'Method Not Allowed');
-}
+};

@@ -1,13 +1,11 @@
 {
   "name": "brotusphere-backend",
   "version": "1.0.0",
-  "type": "module",
   "description": "Brotusphere e-commerce backend",
   "scripts": {
     "start": "npx serve -l 3001"
   },
   "dependencies": {
-    "@neon-tech/postgres-pooled": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"

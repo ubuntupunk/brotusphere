@@ -3,7 +3,7 @@ const rateLimitStore = new Map();
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 const RATE_LIMIT_MAX_REQUESTS = 5;
 
-export function rateLimit(key, maxRequests = RATE_LIMIT_MAX_REQUESTS, windowMs = RATE_LIMIT_WINDOW_MS) {
+function rateLimit(key, maxRequests = RATE_LIMIT_MAX_REQUESTS, windowMs = RATE_LIMIT_WINDOW_MS) {
   const now = Date.now();
   const windowStart = now - windowMs;
   
@@ -40,7 +40,7 @@ export function rateLimit(key, maxRequests = RATE_LIMIT_MAX_REQUESTS, windowMs =
   };
 }
 
-export function checkRateLimit(event, action = 'auth') {
+function checkRateLimit(event, action = 'auth') {
   const ip = event.headers['x-forwarded-for'] || 
              event.headers['client-ip'] || 
              'unknown';
@@ -74,3 +74,8 @@ setInterval(() => {
     }
   }
 }, 5 * 60 * 1000); // Every 5 minutes
+
+module.exports = {
+  rateLimit,
+  checkRateLimit
+};

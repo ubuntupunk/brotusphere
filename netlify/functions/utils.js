@@ -1,11 +1,13 @@
-export function createCookieHeader(token) {
+const jwt = require('jsonwebtoken');
+
+function createCookieHeader(token) {
   const isProduction = process.env.NODE_ENV === 'production';
   return {
     'Set-Cookie': `auth_token=${token}; HttpOnly; ${isProduction ? 'Secure; ' : ''}SameSite=Lax; Path=/; Max-Age=${60 * 60 * 24 * 7}`
   };
 }
 
-export function parseCookies(event) {
+function parseCookies(event) {
   const cookieHeader = event.headers.cookie || '';
   const cookies = {};
   cookieHeader.split(';').forEach(c => {
@@ -15,24 +17,31 @@ export function parseCookies(event) {
   return cookies;
 }
 
-export async function verifyToken(event) {
+async function verifyToken(event) {
   const cookies = parseCookies(event);
   const token = cookies.auth_token || event.headers.authorization?.replace('Bearer ', '');
   
   if (!token) return null;
 
   try {
-    const jwt = await import('jsonwebtoken');
-    return jwt.default.verify(token, process.env.JWT_SECRET || 'dev-secret-change-in-production');
+    return jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-in-production');
   } catch (e) {
     return null;
   }
 }
 
-export function successResponse(data) {
+function successResponse(data) {
   return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
 }
 
-export function errorResponse(statusCode, message) {
+function errorResponse(statusCode, message) {
   return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: message }) };
 }
+
+module.exports = {
+  createCookieHeader,
+  parseCookies,
+  verifyToken,
+  successResponse,
+  errorResponse
+};

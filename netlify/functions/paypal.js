@@ -1,6 +1,6 @@
-import pool from '../lib/db.js';
-import { createOrder } from '../lib/orders.js';
-import { getTokenFromEvent, verifyToken } from '../lib/auth.js';
+const pool = require('../lib/db.js');
+const { createOrder } = require('../lib/orders.js');
+const { getTokenFromEvent, verifyToken } = require('../lib/auth.js');
 
 const PAYPAL_API = process.env.PAYPAL_MODE === 'live' 
   ? 'https://api-m.paypal.com' 
@@ -25,7 +25,7 @@ async function getAccessToken() {
   return data.access_token;
 }
 
-export async function handler(event, context) {
+module.exports.handler = async function handler(event, context) {
   const { action } = event.queryStringParameters;
 
   // POST /paypal?action=create-order

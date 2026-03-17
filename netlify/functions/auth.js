@@ -1,5 +1,5 @@
-import pool from '../lib/db.js';
-import { 
+const pool = require('../lib/db.js');
+const { 
   hashPassword, 
   verifyPassword, 
   generateToken, 
@@ -7,7 +7,8 @@ import {
   getTokenFromEvent,
   createAuthResponse,
   authError
-} from '../lib/auth.js';
+} = require('../lib/auth.js');
+const { checkRateLimit } = require('../lib/rate-limit.js');
 
 function simpleHash(str) {
   let hash = 0;
@@ -20,11 +21,9 @@ function simpleHash(str) {
 }
 
 async function verifyAndMigratePassword(password, storedHash, userId) {
-  // Check if old simpleHash format
   if (storedHash.startsWith('hash_')) {
     const oldHash = simpleHash(password);
     if (oldHash === storedHash) {
-      // Migrate to bcrypt
       const newHash = await hashPassword(password);
       await pool.query('UPDATE user_profiles SET password_hash = $1 WHERE id = $2', [newHash, userId]);
       console.log('Migrated user password to bcrypt:', userId);
@@ -32,16 +31,12 @@ async function verifyAndMigratePassword(password, storedHash, userId) {
     }
     return false;
   }
-  
-  // Use bcrypt for new format
   return verifyPassword(password, storedHash);
 }
-import { checkRateLimit } from '../lib/rate-limit.js';
 
-export async function handler(event, context) {
-  const { action } = event.queryStringParameters;
+exports.handler = async function(event, context) {
+  const { action } = event.queryStringParameters || {};
 
-  // Apply rate limiting to auth endpoints
   if (event.httpMethod === 'POST' && (action === 'signup' || action === 'login')) {
     const rateLimitResponse = checkRateLimit(event, action);
     if (rateLimitResponse) {
@@ -49,7 +44,6 @@ export async function handler(event, context) {
     }
   }
 
-  // POST /auth?action=signup - Register new user
   if (event.httpMethod === 'POST' && action === 'signup') {
     const { name, email, password } = JSON.parse(event.body || '{}');
 
@@ -62,17 +56,14 @@ export async function handler(event, context) {
     }
 
     try {
-      // Check if user exists
       const existing = await pool.query('SELECT id FROM user_profiles WHERE email = $1', [email.toLowerCase()]);
       
       if (existing.rows.length > 0) {
         return authError('User already exists', 409);
       }
 
-      // Hash password with bcrypt
       const hashedPassword = await hashPassword(password);
 
-      // Create user
       const result = await pool.query(`
         INSERT INTO user_profiles (name, email, password_hash)
         VALUES ($1, $2, $3)
@@ -89,7 +80,6 @@ export async function handler(event, context) {
     }
   }
 
-  // POST /auth?action=login - Login user
   if (event.httpMethod === 'POST' && action === 'login') {
     const { email, password } = JSON.parse(event.body || '{}');
 
@@ -123,7 +113,6 @@ export async function handler(event, context) {
     }
   }
 
-  // GET /auth?action=verify - Verify token
   if (event.httpMethod === 'GET' && action === 'verify') {
     const token = getTokenFromEvent(event);
     
@@ -155,4 +144,4 @@ export async function handler(event, context) {
   }
 
   return authError('Invalid action', 400);
-}
+};

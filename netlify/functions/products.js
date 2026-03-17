@@ -1,8 +1,7 @@
-import pool from '../lib/db.js';
-import { verifyAdminKey, authError } from '../lib/auth.js';
+const pool = require('../lib/db.js');
+const { verifyAdminKey, authError } = require('../lib/auth.js');
 
-export async function handler(event, context) {
-  // GET - List all products
+exports.handler = async function(event, context) {
   if (event.httpMethod === 'GET') {
     try {
       const result = await pool.query(`
@@ -27,7 +26,6 @@ export async function handler(event, context) {
     }
   }
 
-  // POST - Create product (admin only)
   if (event.httpMethod === 'POST') {
     const adminCheck = verifyAdminKey(event);
     if (!adminCheck.authorized) {
@@ -59,4 +57,4 @@ export async function handler(event, context) {
   }
 
   return authError('Method Not Allowed', 405);
-}
+};
