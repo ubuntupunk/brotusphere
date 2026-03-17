@@ -28,19 +28,19 @@ export function renderPayPalButton(containerId, total, onApprove, onError) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error('PayPal container not found:', containerId);
+        onError?.('Checkout container not found');
         return;
     }
     
     container.innerHTML = '';
     
-    // Use namespaced paypal if available
-    const paypal = window.paypal;
-    if (!paypal) {
+    if (!window.paypal) {
+        container.innerHTML = '<p style="color:red;">PayPal failed to load. Please refresh and try again.</p>';
         onError?.('PayPal not loaded');
         return;
     }
     
-    paypal.Buttons({
+    window.paypal.Buttons({
         style: {
             layout: 'vertical',
             color: 'blue',
