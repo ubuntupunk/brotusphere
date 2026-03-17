@@ -55,7 +55,6 @@ const navbar = document.getElementById('navbar');
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileOverlay = document.getElementById('mobileOverlay');
-const mobileClose = document.getElementById('mobileClose');
 const cartBtn = document.getElementById('cartBtn');
 const cartModal = document.getElementById('cartModal');
 const cartClose = document.getElementById('cartClose');
@@ -133,7 +132,6 @@ function handleSwipe() {
     }
 }
 
-mobileClose.addEventListener('click', closeMobileMenu);
 mobileOverlay.addEventListener('click', closeMobileMenu);
 
 // Cart Modal
