@@ -2,6 +2,7 @@ import Router from './router.js';
 import { initProfilePage } from './pages/profile.js';
 import { initOrdersPage } from './pages/orders.js';
 import { API_BASE, ENDPOINTS, STORAGE_KEYS } from './config.js';
+import './utils/errors.js';
 
 console.log('main.js starting...');
 
@@ -408,6 +409,9 @@ async function initApp() {
     // Fetch products before creating router
     await fetchProducts();
     console.log('Products loaded, creating router...');
+    
+    // Initialize error handler
+    window.errorHandler.init();
     
     // Now create router
     window.router = new Router({

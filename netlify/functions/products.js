@@ -1,4 +1,5 @@
 import pool from '../lib/db.js';
+import { verifyAdminKey, authError } from '../lib/auth.js';
 
 export async function handler(event, context) {
   // GET - List all products
@@ -28,18 +29,15 @@ export async function handler(event, context) {
 
   // POST - Create product (admin only)
   if (event.httpMethod === 'POST') {
-    const adminKey = event.headers['x-admin-key'];
-    if (adminKey !== process.env.ADMIN_KEY) {
-      return { statusCode: 403, body: 'Forbidden' };
+    const adminCheck = verifyAdminKey(event);
+    if (!adminCheck.authorized) {
+      return authError(adminCheck.reason, 403);
     }
 
     const { name, description, price, stock, sku, category, imageUrl } = JSON.parse(event.body || '{}');
 
     if (!name || !price) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Name and price required' })
-      };
+      return authError('Name and price required', 400);
     }
 
     try {
@@ -56,12 +54,9 @@ export async function handler(event, context) {
       };
     } catch (error) {
       console.error('Create product error:', error);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to create product' })
-      };
+      return authError('Failed to create product', 500);
     }
   }
 
-  return { statusCode: 405, body: 'Method Not Allowed' };
+  return authError('Method Not Allowed', 405);
 }

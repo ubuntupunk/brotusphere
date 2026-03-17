@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || process.env.AUTH_SECRET || 'dev-secret-change-in-production';
+const ADMIN_KEY = process.env.ADMIN_KEY;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const SALT_ROUNDS = 10;
 
@@ -77,4 +78,23 @@ export function authError(message, statusCode = 401) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ error: message })
   };
+}
+
+export function verifyAdminKey(event) {
+  if (!ADMIN_KEY) {
+    console.warn('ADMIN_KEY not configured - admin endpoints disabled');
+    return { authorized: false, reason: 'Admin not configured' };
+  }
+  
+  const providedKey = event.headers['x-admin-key'];
+  
+  if (!providedKey) {
+    return { authorized: false, reason: 'No admin key provided' };
+  }
+  
+  if (providedKey !== ADMIN_KEY) {
+    return { authorized: false, reason: 'Invalid admin key' };
+  }
+  
+  return { authorized: true };
 }

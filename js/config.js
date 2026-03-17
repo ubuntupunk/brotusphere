@@ -27,6 +27,13 @@ export const LIMITS = {
     MIN_PASSWORD_LENGTH: 6
 };
 
+export const MESSAGES = {
+    NETWORK_ERROR: 'Unable to connect. Please check your internet connection.',
+    SERVER_ERROR: 'Something went wrong. Please try again later.',
+    AUTH_ERROR: 'Please log in to continue.',
+    NOT_FOUND: 'The requested item was not found.'
+};
+
 export const OPENALEX_API = 'https://api.openalex.org';
 export const OPENALEX_API_KEY = ''; 
 export const SERPAPI_KEY = ''; 
