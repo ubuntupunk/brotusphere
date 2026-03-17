@@ -165,6 +165,12 @@ function renderOrders(panel, orders) {
                                     <p><small>PayPal Order:</small> ${order.paypal_order_id || 'N/A'}</p>
                                     <p><small>Transaction:</small> ${order.paypal_transaction_id || 'N/A'}</p>
                                 </div>
+                                <div class="order-section">
+                                    <h4>Status Timeline</h4>
+                                    <p><small>Created:</small> ${new Date(order.created_at).toLocaleString()}</p>
+                                    <p><small>Fulfilled:</small> ${order.fulfilled_at ? new Date(order.fulfilled_at).toLocaleString() : 'Not yet'}</p>
+                                    <p><small>Received:</small> ${order.received_at ? new Date(order.received_at).toLocaleString() : 'Not yet'}</p>
+                                </div>
                             </div>
                         </td>
                     </tr>

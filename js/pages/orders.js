@@ -17,6 +17,20 @@ export function orders() {
     `;
 }
 
+function getTrackingUrl(carrier, number) {
+    if (!carrier || !number) return null;
+    
+    const carriers = {
+        'dhl': `https://www.dhl.com/en/express/tracking.html?AWB=${number}`,
+        'fedex': `https://www.fedex.com/fedextrack/?trknbr=${number}`,
+        'ups': `https://www.ups.com/track?tracknum=${number}`,
+        'south-african-postal': `https://www.postoffice.co.za/track/',
+        'default': null
+    };
+
+    return carriers[carrier?.toLowerCase()] || carriers.default;
+}
+
 export async function initOrdersPage() {
     const ordersList = document.getElementById('ordersList');
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
@@ -74,12 +88,32 @@ export async function initOrdersPage() {
                         <div class="order-item">
                             <span>${item.name}</span>
                             <span>x${item.quantity}</span>
+                            <span>${formatCurrency(parseFloat(item.unit_price))}</span>
                         </div>
                     `).join('')}
                 </div>
                 ${order.tracking_number ? `
                 <div class="order-tracking">
-                    <strong>Tracking:</strong> ${order.tracking_number} (${order.tracking_carrier})
+                    <strong>Tracking:</strong> 
+                    ${order.tracking_carrier ? `${order.tracking_carrier}: ` : ''}${order.tracking_number}
+                    ${getTrackingUrl(order.tracking_carrier, order.tracking_number) ? `
+                        <a href="${getTrackingUrl(order.tracking_carrier, order.tracking_number)}" target="_blank" rel="noopener">Track Package</a>
+                    ` : ''}
+                </div>
+                ` : ''}
+                <div class="order-addresses">
+                    <div class="order-address">
+                        <strong>Shipping to:</strong>
+                        <p>${order.shipping_name || 'N/A'}</p>
+                        <p>${order.shipping_address || ''}</p>
+                        <p>${order.shipping_city || ''} ${order.shipping_postal_code || ''}</p>
+                        <p>${order.shipping_country || ''}</p>
+                    </div>
+                </div>
+                ${order.fulfilled_at ? `
+                <div class="order-fulfillment">
+                    <span class="fulfilled-badge">Fulfilled: ${new Date(order.fulfilled_at).toLocaleDateString()}</span>
+                    ${order.received_at ? `<span class="received-badge">Received: ${new Date(order.received_at).toLocaleDateString()}</span>` : ''}
                 </div>
                 ` : ''}
             </div>

@@ -1847,6 +1847,53 @@ footer {
     color: var(--text-secondary);
 }
 
+.order-tracking a {
+    margin-left: 8px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.order-addresses {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(45, 80, 22, 0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.order-address p {
+    margin: 2px 0;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.order-fulfillment {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(45, 80, 22, 0.1);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.fulfilled-badge, .received-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.fulfilled-badge {
+    background: var(--secondary);
+    color: white;
+}
+
+.received-badge {
+    background: var(--primary);
+    color: white;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {

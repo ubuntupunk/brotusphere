@@ -60,6 +60,7 @@ async function handler(event, context) {
     try {
       const result = await pool.query(`
         SELECT o.id, o.status, o.total, o.tracking_number, o.tracking_carrier,
+               o.fulfilled_at, o.received_at,
                o.shipping_name, o.shipping_address, o.shipping_address2, o.shipping_city, o.shipping_postal_code, o.shipping_country,
                o.billing_name, o.billing_address, o.billing_address2, o.billing_city, o.billing_postal_code, o.billing_country,
                o.payer_email, o.paypal_order_id, o.paypal_transaction_id,
@@ -153,7 +154,7 @@ async function handler(event, context) {
 
   // PATCH /admin?action=update-order
   if (event.httpMethod === 'PATCH' && action === 'update-order') {
-    const { orderId, status, trackingNumber, trackingCarrier } = JSON.parse(event.body || '{}');
+    const { orderId, status, trackingNumber, trackingCarrier, markFulfilled } = JSON.parse(event.body || '{}');
 
     if (!orderId) {
       return {
@@ -176,11 +177,20 @@ async function handler(event, context) {
       if (trackingNumber !== undefined) {
         updates.push(`tracking_number = $${paramIndex++}`);
         params.push(trackingNumber || null);
+        
+        // Auto-set fulfilled_at when tracking number is added
+        if (trackingNumber) {
+          updates.push(`fulfilled_at = NOW()`);
+        }
       }
 
       if (trackingCarrier) {
         updates.push(`tracking_carrier = $${paramIndex++}`);
         params.push(trackingCarrier);
+      }
+
+      if (markFulfilled === true) {
+        updates.push(`fulfilled_at = NOW()`);
       }
 
       if (updates.length === 0) {

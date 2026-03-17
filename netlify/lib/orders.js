@@ -97,7 +97,9 @@ async function createOrder(userId, items, shipping = {}, paypalOrderId = null, p
 async function getUserOrders(userId) {
   const result = await pool.query(`
     SELECT o.id, o.status, o.total, o.tracking_number, o.tracking_carrier,
-           o.shipping_name, o.shipping_city, o.shipping_postal_code, o.created_at,
+           o.fulfilled_at, o.received_at,
+           o.shipping_name, o.shipping_address, o.shipping_address2, o.shipping_city, o.shipping_postal_code, o.shipping_country,
+           o.created_at,
            json_agg(
              json_build_object(
                'id', oi.id,

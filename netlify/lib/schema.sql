@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS orders (
     paypal_transaction_id VARCHAR(50),
     tracking_number VARCHAR(100),
     tracking_carrier VARCHAR(50),
+    fulfilled_at TIMESTAMP WITH TIME ZONE,
+    received_at TIMESTAMP WITH TIME ZONE,
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
