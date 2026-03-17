@@ -126,6 +126,8 @@ module.exports.handler = async function handler(event, context) {
       });
 
       const capture = await response.json();
+      
+      console.log('PayPal capture response:', JSON.stringify(capture, null, 2));
 
       if (capture.status !== 'COMPLETED') {
         return {
@@ -137,6 +139,7 @@ module.exports.handler = async function handler(event, context) {
 
       // Get the transaction ID
       const transactionId = capture.purchase_units[0]?.payments?.captures[0]?.id;
+      console.log('Transaction ID:', transactionId);
 
       // Create order in database using shared function
       try {
@@ -146,7 +149,9 @@ module.exports.handler = async function handler(event, context) {
           shipping,
           orderId,
           transactionId,
-          'paid'
+          'paid',
+          billing,
+          payerEmail
         );
 
         return {

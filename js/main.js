@@ -387,6 +387,15 @@ document.addEventListener('click', async (e) => {
                 saveCart();
                 updateCartUI();
                 
+                // Close cart modal if open
+                const cartModal = document.getElementById('cartModal');
+                if (cartModal) {
+                    cartModal.classList.remove('active');
+                }
+                
+                // Ensure body is scrollable
+                document.body.style.overflow = '';
+                
                 document.body.removeChild(paypalContainer);
                 window.errorHandler.showSuccess('Order placed successfully! Thank you for your purchase!');
                 
