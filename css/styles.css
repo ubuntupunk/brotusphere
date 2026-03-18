@@ -2032,6 +2032,7 @@ footer {
 @media (max-width: 768px) {
     nav {
         padding: 16px 24px;
+        z-index: 1000;
     }
 
     .nav-links {
@@ -2042,6 +2043,7 @@ footer {
         display: block;
         margin-left: auto;
         position: relative;
+        visibility: visible;
     }
 
     .mobile-menu-btn.active .cart-count {
