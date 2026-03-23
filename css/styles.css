@@ -2113,8 +2113,13 @@ body.is-app .bottom-nav {
     display: flex !important;
 }
 
-body.is-app nav#navbar {
+body.is-app > nav#navbar,
+body.is-app nav#navbar,
+nav#navbar {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 body.is-app {
