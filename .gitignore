@@ -5,3 +5,16 @@ node_modules/
 
 # Local Netlify folder
 .netlify
+
+# Capacitor
+# android/
+ios/
+www/
+
+# Capacitor config (optional - see note below)
+# capacitor.config.json
+
+
+# Build artifacts
+*.log
+.DS_Store

@@ -630,6 +630,125 @@ document.addEventListener('click', async (e) => {
     }
 });
 
+// Capacitor/App Detection
+async function initCapacitor() {
+    try {
+        const { isPlatform } = await import('@capacitor/core');
+        const isAndroid = isPlatform('android');
+        const isIOS = isPlatform('ios');
+        
+        if (isAndroid || isIOS) {
+            document.body.classList.add('is-app');
+            console.log('Running as Capacitor app');
+            
+            // Initialize plugins
+            await initCapacitorPlugins();
+            
+            // Hide desktop nav, show bottom nav
+            const navbar = document.getElementById('navbar');
+            if (navbar) navbar.style.display = 'none';
+            
+            // Initialize bottom nav functionality
+            initBottomNav();
+        }
+    } catch (e) {
+        // Not running in Capacitor - web mode
+        console.log('Running as web app');
+    }
+}
+
+async function initCapacitorPlugins() {
+    try {
+        // Status Bar
+        const { StatusBar } = await import('@capacitor/status-bar');
+        StatusBar.setStyle({ style: 'dark' });
+        StatusBar.setBackgroundColor({ color: '#FEFAE0' });
+        
+        // App lifecycle
+        const { App } = await import('@capacitor/app');
+        App.addListener('backButton', ({ canGoBack }) => {
+            if (!canGoBack) {
+                App.exitApp();
+            } else {
+                window.history.back();
+            }
+        });
+        
+        console.log('Capacitor plugins initialized');
+    } catch (e) {
+        console.log('Capacitor plugins not available:', e.message);
+    }
+}
+
+// Bottom Navigation
+function initBottomNav() {
+    const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-tab]');
+    const bottomProfileBtn = document.getElementById('bottomProfileBtn');
+    
+    bottomNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            // Update active state
+            updateBottomNavActive(item.dataset.tab);
+        });
+    });
+    
+    if (bottomProfileBtn) {
+        bottomProfileBtn.addEventListener('click', () => {
+            if (currentUser) {
+                window.router.navigate('/profile');
+            } else {
+                authModal.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            updateBottomNavActive('profile');
+        });
+    }
+}
+
+function updateBottomNavActive(tab) {
+    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.tab === tab) {
+            item.classList.add('active');
+        }
+    });
+}
+
+// Sync cart badge to bottom nav
+function syncCartBadge(count) {
+    const bottomBadge = document.getElementById('bottomCartBadge');
+    if (bottomBadge) {
+        if (count > 0) {
+            bottomBadge.textContent = count > 99 ? '99+' : count;
+            bottomBadge.style.display = 'flex';
+        } else {
+            bottomBadge.style.display = 'none';
+        }
+    }
+}
+
+// Page Transition Handler
+function handlePageTransition(fromPage, toPage) {
+    const fromEl = document.getElementById(`page-${fromPage}`);
+    const toEl = document.getElementById(`page-${toPage}`);
+    
+    if (fromEl) {
+        fromEl.classList.add('exit');
+        fromEl.classList.remove('active');
+    }
+    
+    if (toEl) {
+        // Small delay for exit animation
+        setTimeout(() => {
+            toEl.classList.add('active');
+            toEl.classList.remove('exit');
+            // Scroll to top on page change
+            window.scrollTo(0, 0);
+        }, 50);
+    }
+}
+
 // Cart Functions
 function addToCart(productId) {
     const products = window.appProducts;
@@ -649,6 +768,16 @@ function addToCart(productId) {
     window.appCart = cart;
     saveCart();
     updateCartUI();
+    
+    // Haptic feedback if available (Capacitor)
+    if (document.body.classList.contains('is-app')) {
+        try {
+            const { Haptics, ImpactStyle } = await import('@capacitor/haptics');
+            Haptics.impact({ style: ImpactStyle.Light });
+        } catch (e) {
+            // Haptics not available
+        }
+    }
     
     // Show feedback
     const btn = document.querySelector(`[data-product="${productId}"]`);
@@ -679,6 +808,9 @@ function updateCartUI() {
     if (cartCountMobile) cartCountMobile.textContent = totalItems;
     const cartCountMobileDrawer = document.getElementById('cartCountMobileDrawer');
     if (cartCountMobileDrawer) cartCountMobileDrawer.textContent = totalItems;
+    
+    // Sync to bottom nav badge
+    syncCartBadge(totalItems);
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
@@ -739,6 +871,9 @@ function initAnimations() {
 // Initialize app - fetch products FIRST, then create router
 async function initApp() {
     console.log('initApp starting...');
+    
+    // Initialize Capacitor/app detection
+    await initCapacitor();
     
     // Fetch products before creating router
     await fetchProducts();
