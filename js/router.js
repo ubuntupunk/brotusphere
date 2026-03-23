@@ -115,7 +115,23 @@ class Router {
     }
 
     async handleRoute() {
-        const path = window.location.pathname || '/';
+        // More robust path detection for Capacitor/web
+        let path = window.location.pathname || '/';
+        
+        // Handle Capacitor file:// URLs or hash-based routing
+        if (!path || path === '/' || path === '/index.html') {
+            // Try to get path from hash or href
+            const hash = window.location.hash?.replace('#', '');
+            if (hash && hash !== '/') {
+                path = hash.startsWith('/') ? hash : '/' + hash;
+            }
+        }
+        
+        // Fallback to root if still invalid
+        if (!path || path === '' || !path.startsWith('/')) {
+            path = '/';
+        }
+        
         console.log('handleRoute path:', path);
         const route = this.routes[path];
         console.log('handleRoute route:', route);

@@ -10,6 +10,7 @@ import { formatCurrency, formatCurrencyWithZar } from './utils/currency.js';
 import './utils/errors.js';
 
 console.log('main.js starting...');
+console.log('Capacitor global:', window.Capacitor);
 
 window.appProducts = {};
 window.appCart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || [];
@@ -633,9 +634,10 @@ document.addEventListener('click', async (e) => {
 // Capacitor/App Detection
 async function initCapacitor() {
     try {
-        const { isPlatform } = await import('@capacitor/core');
-        const isAndroid = isPlatform('android');
-        const isIOS = isPlatform('ios');
+        // Use global Capacitor object if available (more reliable than dynamic import)
+        const Capacitor = window.Capacitor;
+        const isAndroid = Capacitor?.isPlatform?.('android');
+        const isIOS = Capacitor?.isPlatform?.('ios');
         
         if (isAndroid || isIOS) {
             document.body.classList.add('is-app');
@@ -650,29 +652,36 @@ async function initCapacitor() {
             
             // Initialize bottom nav functionality
             initBottomNav();
+        } else {
+            console.log('Running as web app');
         }
     } catch (e) {
-        // Not running in Capacitor - web mode
-        console.log('Running as web app');
+        console.log('Running as web app, Capacitor not available');
     }
 }
 
 async function initCapacitorPlugins() {
     try {
+        const Capacitor = window.Capacitor;
+        
         // Status Bar
-        const { StatusBar } = await import('@capacitor/status-bar');
-        StatusBar.setStyle({ style: 'dark' });
-        StatusBar.setBackgroundColor({ color: '#FEFAE0' });
+        const StatusBar = Capacitor?.Plugins?.StatusBar;
+        if (StatusBar) {
+            StatusBar.setStyle({ style: 'dark' });
+            StatusBar.setBackgroundColor({ color: '#FEFAE0' });
+        }
         
         // App lifecycle
-        const { App } = await import('@capacitor/app');
-        App.addListener('backButton', ({ canGoBack }) => {
-            if (!canGoBack) {
-                App.exitApp();
-            } else {
-                window.history.back();
-            }
-        });
+        const App = Capacitor?.Plugins?.App;
+        if (App) {
+            App.addListener('backButton', ({ canGoBack }) => {
+                if (!canGoBack) {
+                    App.exitApp();
+                } else {
+                    window.history.back();
+                }
+            });
+        }
         
         console.log('Capacitor plugins initialized');
     } catch (e) {
@@ -772,8 +781,10 @@ function addToCart(productId) {
     // Haptic feedback if available (Capacitor)
     if (document.body.classList.contains('is-app')) {
         try {
-            const { Haptics, ImpactStyle } = await import('@capacitor/haptics');
-            Haptics.impact({ style: ImpactStyle.Light });
+            const Haptics = window.Capacitor?.Plugins?.Haptics;
+            if (Haptics) {
+                Haptics.impact({ style: 'Light' });
+            }
         } catch (e) {
             // Haptics not available
         }
@@ -872,8 +883,12 @@ function initAnimations() {
 async function initApp() {
     console.log('initApp starting...');
     
-    // Initialize Capacitor/app detection
-    await initCapacitor();
+    try {
+        // Initialize Capacitor/app detection
+        await initCapacitor();
+    } catch (e) {
+        console.error('initCapacitor error:', e);
+    }
     
     // Fetch products before creating router
     await fetchProducts();
@@ -901,6 +916,12 @@ async function initApp() {
     
     updateCartUI();
     console.log('App fully initialized');
+    
+    // Debug: Add visible marker that JS ran
+    const app = document.getElementById('app');
+    if (app && !app.innerHTML.trim()) {
+        console.log('WARNING: App container is empty after init');
+    }
 }
 
-initApp();
+initApp().catch(e => console.error('initApp failed:', e));
