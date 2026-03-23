@@ -632,31 +632,32 @@ document.addEventListener('click', async (e) => {
 });
 
 // Capacitor/App Detection
-async function initCapacitor() {
-    try {
-        // Use global Capacitor object if available (more reliable than dynamic import)
-        const Capacitor = window.Capacitor;
-        const isAndroid = Capacitor?.isPlatform?.('android');
-        const isIOS = Capacitor?.isPlatform?.('ios');
+function initCapacitor() {
+    // Check Capacitor global
+    const Capacitor = window.Capacitor;
+    
+    // Check platform using Capacitor's built-in method
+    const isAndroid = Capacitor?.isPlatform?.('android');
+    const isIOS = Capacitor?.isPlatform?.('ios');
+    
+    // Fallback: check user agent for mobile (less reliable but works)
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isAndroid || isIOS || (Capacitor && isMobileUA)) {
+        document.body.classList.add('is-app');
+        console.log('Running as Capacitor app (android:', isAndroid, ', ios:', isIOS, ')');
         
-        if (isAndroid || isIOS) {
-            document.body.classList.add('is-app');
-            console.log('Running as Capacitor app');
-            
-            // Initialize plugins
-            await initCapacitorPlugins();
-            
-            // Hide desktop nav, show bottom nav
-            const navbar = document.getElementById('navbar');
-            if (navbar) navbar.style.display = 'none';
-            
-            // Initialize bottom nav functionality
-            initBottomNav();
-        } else {
-            console.log('Running as web app');
-        }
-    } catch (e) {
-        console.log('Running as web app, Capacitor not available');
+        // Hide desktop nav
+        const navbar = document.getElementById('navbar');
+        if (navbar) navbar.style.display = 'none';
+        
+        // Initialize plugins (async but don't wait)
+        initCapacitorPlugins().catch(e => console.log('Plugin init error:', e));
+        
+        // Initialize bottom nav functionality
+        initBottomNav();
+    } else {
+        console.log('Running as web app, Capacitor:', !!Capacitor);
     }
 }
 
