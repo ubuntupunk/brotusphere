@@ -2032,8 +2032,9 @@ footer {
     left: 0;
     right: 0;
     background: var(--white);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
     z-index: 9999;
+    height: 60px;
     padding-bottom: env(safe-area-inset-bottom, 0);
     padding-bottom: constant(safe-area-inset-bottom);
 }
