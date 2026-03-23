@@ -2109,7 +2109,11 @@ footer {
 
 /* Show bottom nav when running as app */
 body.is-app .bottom-nav {
-    display: block;
+    display: flex !important;
+}
+
+body.is-app nav#navbar {
+    display: none !important;
 }
 
 body.is-app {
@@ -2129,16 +2133,13 @@ body.is-app footer {
 
 /* Page Transitions - Mobile App Style */
 .page {
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    /* Removed animation for now - keep pages visible */
     display: none;
+    min-height: 100vh;
 }
 
 .page.active {
     display: block;
-    opacity: 1;
-    transform: translateX(0);
 }
 
 .page.exit {
