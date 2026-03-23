@@ -633,19 +633,19 @@ document.addEventListener('click', async (e) => {
 
 // Capacitor/App Detection
 function initCapacitor() {
-    // Check Capacitor global
+    // Check Capacitor global - should be available in native app
     const Capacitor = window.Capacitor;
     
     // Check platform using Capacitor's built-in method
     const isAndroid = Capacitor?.isPlatform?.('android');
     const isIOS = Capacitor?.isPlatform?.('ios');
     
-    // Fallback: check user agent for mobile (less reliable but works)
-    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // Also check for Cordova (some Capacitor apps use it)
+    const isCordova = window.Cordova !== undefined;
     
-    if (isAndroid || isIOS || (Capacitor && isMobileUA)) {
+    if (isAndroid || isIOS || isCordova || Capacitor) {
         document.body.classList.add('is-app');
-        console.log('Running as Capacitor app (android:', isAndroid, ', ios:', isIOS, ')');
+        console.log('Running as mobile app - Capacitor:', !!Capacitor, 'Android:', isAndroid, 'iOS:', isIOS, 'Cordova:', !!window.Cordova);
         
         // Hide desktop nav
         const navbar = document.getElementById('navbar');
@@ -657,7 +657,7 @@ function initCapacitor() {
         // Initialize bottom nav functionality
         initBottomNav();
     } else {
-        console.log('Running as web app, Capacitor:', !!Capacitor);
+        console.log('Running as web app');
     }
 }
 
