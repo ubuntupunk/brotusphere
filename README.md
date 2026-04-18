@@ -1,5 +1,12 @@
 # Brotusphere
 
+[![GitHub](https://img.shields.io/badge/GitHub-ubuntupunk/brotusphere-blue)](https://github.com/ubuntupunk/brotusphere)
+[![License](https://img.shields.io/badge/License-GPL-green.svg)](LICENSE)
+
+<a href="https://github.com/pedromxavier/flag-badges">
+    <img src="https://raw.githubusercontent.com/pedromxavier/flag-badges/main/badges/ZA.svg" alt="made in za">
+</a>
+
 Sour Fig (Carpobrotus) educational website featuring scientific research, products, and health information.
 
 ## About the Name
